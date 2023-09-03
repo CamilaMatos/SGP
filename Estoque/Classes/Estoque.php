@@ -1,5 +1,5 @@
 <?php
-Class Estoque {
+class Estoque {
     private $idEstoque;
     private $nome;
     private $descricao;
@@ -46,5 +46,25 @@ Class Estoque {
         $this->idStatus = $idStatus;
 
         return $this;
+    }
+
+    public function cadastrarEstoque($nome, $descricao, $idStatus){
+        
+    }
+
+    public function editarEstoque($idEstoque, $nome, $descricao){
+
+    }
+
+    public function excluirEstoque($idEstoque){
+
+    }
+
+    public function alterarStatusEstoque($idEstoque, $idStatus){
+
+    }
+
+    public function consultarEstoque($parametro){
+        
     }
 }
