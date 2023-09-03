@@ -7,7 +7,9 @@ Class Estoque {
 
     public function __construct($nome, $descricao, $idStatus)
     {
-        
+        $this->nome = $nome;
+        $this->descricao = $descricao;
+        $this->idStatus = $idStatus;
     }
 
     public function getNome()
