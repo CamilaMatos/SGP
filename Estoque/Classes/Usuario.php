@@ -109,7 +109,4 @@ class Usuario {
 
     }
 
-    public function consultarUsuario($parametro){
-        
-    }
 }

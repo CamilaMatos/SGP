@@ -64,7 +64,4 @@ class Estoque {
 
     }
 
-    public function consultarEstoque($parametro){
-        
-    }
 }

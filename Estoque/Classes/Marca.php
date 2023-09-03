@@ -44,7 +44,4 @@ class Marca {
 
     }
 
-    public function consultarMarca($parametro){
-        
-    }
 }

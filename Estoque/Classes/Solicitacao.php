@@ -90,7 +90,4 @@ class Solicitacao {
 
     }
 
-    public function consultarSolicitacao($parametro){
-        
-    }
 }

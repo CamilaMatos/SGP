@@ -44,7 +44,4 @@ class UnidadeMedida {
 
     }
 
-    public function consultarUnidadeMedida($parametro){
-        
-    }
 }

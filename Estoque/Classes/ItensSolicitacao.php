@@ -59,8 +59,4 @@ class ItensSolicitacao{
 
     }
 
-    public function consultarItemSolicitacao($idItemSolicitacao, $idLote){
-        
-    }
-
 }

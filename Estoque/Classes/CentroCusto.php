@@ -64,8 +64,4 @@ class CentroCusto {
 
     }
 
-    public function consultarCentroCusto($parametro){
-        
-    }
-
 }

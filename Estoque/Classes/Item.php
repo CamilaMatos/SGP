@@ -113,7 +113,4 @@ class Item{
 
     }
 
-    public function consultarItem($parametro){
-        
-    }
 }

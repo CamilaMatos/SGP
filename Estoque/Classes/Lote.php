@@ -110,10 +110,6 @@ class Lote {
 
     }
 
-    public function consultarLote($parametro){
-        
-    }
-
     public function consultarEstoqueItem($idItem, $idEstoque){
         
     }

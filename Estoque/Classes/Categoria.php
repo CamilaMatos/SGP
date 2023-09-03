@@ -20,8 +20,19 @@ class Categoria {
         return $this;
     }
 
-    public function cadastrarCategoria($nome){
-        
+    public function cadastrarCategoria(){
+        /*$sql = "insert into categoria values (NULL, :nome)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->execute();
+
+        if ($consulta->execute()) {
+            $resultado = "S";
+        } else {
+            $resultado = "S";
+        }
+
+        return $resultado;*/
     }
 
     public function editarCategoria($idCategoria, $nome){
@@ -30,10 +41,6 @@ class Categoria {
 
     public function excluirCategoria($idCategoria){
 
-    }
-
-    public function consultarCategoria($parametro){
-        
     }
 
 }
