@@ -10,6 +10,18 @@ class Categoria {
         $this->nome = $nome;
     }
 
+    public function getIdCategoria()
+    {
+        return $this->idCategoria;
+    }
+
+    public function setIdCategoria($idCategoria)
+    {
+        $this->idCategoria = $idCategoria;
+
+        return $this;
+    }
+
     public function getNome()
     {
         return $this->nome;
@@ -61,7 +73,7 @@ class Categoria {
         $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa categoria
         if(empty($this->verificarRegistros())){
-            $sql = "delete categoria where idCategoria=:idCategoria";
+            $sql = "delete from categoria where idCategoria=:idCategoria";
             $consulta = $pdo->prepare($sql);
             $consulta->bindParam(":idCategoria", $this->idCategoria);
 
@@ -80,23 +92,14 @@ class Categoria {
     public function verificarRegistros() {
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $sql = "select * from item where idCategoria=:idCategoria";
+        $sql = "select idCategoria from item where idCategoria=:idCategoria";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":idCategoria", $this->idCategoria);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
 
-    public function getIdCategoria()
-    {
-        return $this->idCategoria;
-    }
-
-    public function setIdCategoria($idCategoria)
-    {
-        $this->idCategoria = $idCategoria;
-
-        return $this;
-    }
+    
 }

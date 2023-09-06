@@ -29,7 +29,8 @@ class Consultar {
         $sql = "select * from centroCusto where idCentroCusto=:parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
@@ -41,7 +42,8 @@ class Consultar {
         $sql = "select * from centroCusto where nome like :parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $parametro1);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
@@ -52,7 +54,8 @@ class Consultar {
         $sql = "select * from usuario where idUsuario=:parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
@@ -64,7 +67,8 @@ class Consultar {
         $sql = "select * from usuario where nome like :parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $parametro1);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
@@ -76,7 +80,8 @@ class Consultar {
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->bindParam(":parametro1", $this->parametro2);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
@@ -87,7 +92,8 @@ class Consultar {
         $sql = "select * from usuario where documento=:parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }

@@ -91,7 +91,7 @@ class CentroCusto {
         $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa categoria
         if(empty($this->verificarRegistros())){
-            $sql = "delete centroCusto where idCentroCusto=:idCentroCusto";
+            $sql = "delete from centroCusto where idCentroCusto=:idCentroCusto";
             $consulta = $pdo->prepare($sql);
             $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
 
@@ -130,7 +130,8 @@ class CentroCusto {
         $sql = "select * from solicitacao where idCentroCusto=:idCentroCusto";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
-        $resultado = $consulta->execute();
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
