@@ -1,65 +1,132 @@
 <?php
+require_once "Conecta.php";
 class Consultar {
-    private $parametro;
+    private $parametro1;
+    private $parametro2;
 
-    public function __construct($parametro)
+
+    public function __construct($parametro1)
     {
-        $this->parametro = $parametro;
+        $this->parametro1 = $parametro1;
     }
 
-    public function getParametro()
+    public function getParametro1()
     {
-        return $this->parametro;
+        return $this->parametro1;
     }
 
-    public function setParametro($parametro)
+    public function setParametro1($parametro1)
     {
-        $this->parametro = $parametro;
+        $this->parametro1 = $parametro1;
 
         return $this;
     }
 
-    public function consultarCentroCusto($parametro)
+    public function centroCustoPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from centroCusto where idCentroCusto=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $resultado = $consulta->execute();
+
+        return $resultado;
+    }
+
+    public function centroCustoPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from centroCusto where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
+        $resultado = $consulta->execute();
+
+        return $resultado;
+    }
+
+    public function usuarioPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from usuario where idUsuario=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $resultado = $consulta->execute();
+
+        return $resultado;
+    }
+
+    public function usuarioPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from usuario where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
+        $resultado = $consulta->execute();
+
+        return $resultado;
+    }
+
+    public function usuarioPorNasc(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from usuario where dataNasc between :parametro1 and :parametro2";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->bindParam(":parametro1", $this->parametro2);
+        $resultado = $consulta->execute();
+
+        return $resultado;
+    }
+
+    public function usuario()
+    {
+       
+    }
+    
+
+    public function usuarioPorTipo()
     {
         
     }
 
-    public function consultarUsuario($parametro)
+    public function usuarioPorLogin()
     {
         
     }
 
-    public function consultarEstoque($parametro)
+    public function consultarEstoque()
     {
         
     }
 
-    public function consultarCategoria($parametro)
+    public function consultarCategoria()
     {
         
     }
 
-    public function consultarMarca($parametro)
+    public function consultarMarca()
     {
       
     }
 
-    public function consultarUnidadeMedida($parametro)
+    public function consultarUnidadeMedida()
     {
         
     }
 
-    public function consultarItem($parametro)
+    public function consultarItem()
     {
         
     }
 
-    public function consultarSolicitacao($parametro)
+    public function consultarSolicitacao()
     {
         
     }
 
-    public function consultarMovimentacao($parametro)
+    public function consultarMovimentacao()
     {
         
     }
@@ -69,8 +136,8 @@ class Consultar {
         
     }
 
-    public function consultarLote($parametro){
+    public function consultarLote(){
         
     }
-    
+
 }
