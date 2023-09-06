@@ -6,8 +6,9 @@ class Movimentacao {
     private $idStatus;
     private $data;
 
-    public function __construct($idSolicitacao, $idUsuario, $idStatus, $data)
+    public function __construct($idMovimentacao, $idSolicitacao, $idUsuario, $idStatus, $data)
     {
+        $this->idMovimentacao = $idMovimentacao;
         $this->idSolicitacao = $idSolicitacao;
         $this->idUsuario = $idUsuario;
         $this->idStatus = $idStatus;

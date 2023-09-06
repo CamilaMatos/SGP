@@ -5,8 +5,9 @@ class Estoque {
     private $descricao;
     private $idStatus;
 
-    public function __construct($nome, $descricao, $idStatus)
+    public function __construct($idEstoque, $nome, $descricao, $idStatus)
     {
+        $this->idEstoque = $idEstoque;
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;

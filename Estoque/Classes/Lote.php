@@ -8,8 +8,9 @@ class Lote {
     private $validade;
     private $valorUnitario;
 
-    public function __construct($idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
+    public function __construct($idLote, $idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
     {
+        $this->idLote = $idLote;
         $this->idItem = $idItem;
         $this->idEstoque = $idEstoque;
         $this->quantidadeInicial = $quantidadeInicial;

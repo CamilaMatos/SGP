@@ -8,9 +8,9 @@ class Item{
     private $idUnidadeMedida;
     private $idStatus;
 
-    public function __construct($nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus)
-    
+    public function __construct($idItem, $nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus)
     {
+        $this->idItem = $idItem;
         $this->nome = $nome;
         $this->unidadeMedia = $unidadeMedia;
         $this->idCategoria = $idCategoria;

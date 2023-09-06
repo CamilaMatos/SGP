@@ -3,8 +3,9 @@ class Marca {
     private $idMarca;
     private $nome;
 
-    public function __construct($nome)
+    public function __construct($idMarca, $nome)
     {
+        $this->idMarca = $idMarca;
         $this->nome = $nome;
     }
      

@@ -6,8 +6,9 @@ class CentroCusto {
     private $descricao;
     private $idStatus;
 
-    public function __construct($nome, $descricao, $idStatus)
+    public function __construct($idCentroCusto, $nome, $descricao, $idStatus)
     {
+        $this->idCentroCusto = $idCentroCusto;
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;

@@ -4,8 +4,9 @@ class Categoria {
     private $idCategoria;
     private $nome;
 
-    public function __construct($nome)
+    public function __construct($idCategoria, $nome)
     {
+        $this->idCategoria = $idCategoria;
         $this->nome = $nome;
     }
 
@@ -87,4 +88,15 @@ class Categoria {
         return $resultado;
     }
 
+    public function getIdCategoria()
+    {
+        return $this->idCategoria;
+    }
+
+    public function setIdCategoria($idCategoria)
+    {
+        $this->idCategoria = $idCategoria;
+
+        return $this;
+    }
 }

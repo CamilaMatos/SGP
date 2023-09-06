@@ -3,8 +3,9 @@ class UnidadeMedida {
     private $idUnidadeMedida;
     private $nome;
 
-    public function __construct($nome)
+    public function __construct($idUnidadeMedida, $nome)
     {
+        $this->idUnidadeMedida = $idUnidadeMedida;
         $this->nome = $nome;
     }
  

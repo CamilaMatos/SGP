@@ -1,5 +1,6 @@
 <?php
 class Usuario {
+    private $idUsuario;
     private $nome;
     private $dataNasc;
     private $documento;
@@ -7,14 +8,27 @@ class Usuario {
     private $login;
     private $senha;
 
-    public function __construct($nome, $dataNasc, $documento, $idTipo, $login, $senha)
+    public function __construct($idUsuario, $nome, $dataNasc, $documento, $idTipo, $login, $senha)
     {
+        $this->idUsuario = $idUsuario;
         $this->nome = $nome;
         $this->dataNasc = $dataNasc;
         $this->documento = $documento;
         $this->idTipo = $idTipo;
         $this->login = $login;
         $this->senha = $senha;
+    }
+
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+
+    public function setIdUsuario($idUsuario)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
     }
  
     public function getNome()

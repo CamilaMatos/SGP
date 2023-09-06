@@ -5,9 +5,10 @@ class Consultar {
     private $parametro2;
 
 
-    public function __construct($parametro1)
+    public function __construct($parametro1, $parametro2)
     {
         $this->parametro1 = $parametro1;
+        $this->parametro2 = $parametro2;
     }
 
     public function getParametro1()
@@ -80,9 +81,15 @@ class Consultar {
         return $resultado;
     }
 
-    public function usuario()
-    {
-       
+    public function usuarioPorDocumento(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from usuario where documento=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $resultado = $consulta->execute();
+
+        return $resultado;
     }
     
 
