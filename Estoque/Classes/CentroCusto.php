@@ -13,6 +13,18 @@ class CentroCusto {
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;
     }
+
+    public function getIdCentroCusto()
+    {
+        return $this->idCentroCusto;
+    }
+
+    public function setIdCentroCusto($idCentroCusto)
+    {
+        $this->idCentroCusto = $idCentroCusto;
+
+        return $this;
+    }
  
     public function getNome()
     {
@@ -68,37 +80,37 @@ class CentroCusto {
         return $resultado;
     }
 
-    public function editarCentroCusto(){
+    public function editarCentroCusto($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "update centroCusto SET nome=:nome, descricao=:descricao where idCentroCusto=:idCentroCusto";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
-        $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+        $consulta->bindParam(":idCentroCusto", $id);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
         } else {
-            $resultado = "S";//erro
+            $resultado = "E";//erro
         }
 
         return $resultado;
     }
 
-    public function excluirCentroCusto(){
+    public function excluirCentroCusto($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa categoria
-        if(empty($this->verificarRegistros())){
+        if(empty($this->verificarRegistros($id))){
             $sql = "delete from centroCusto where idCentroCusto=:idCentroCusto";
             $consulta = $pdo->prepare($sql);
-            $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+            $consulta->bindParam(":idCentroCusto", $id);
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
             } else {
-                $resultado = "N";//erro
+                $resultado = "E";//erro
             }
         } else {
             $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
@@ -107,33 +119,34 @@ class CentroCusto {
         return $resultado;
     }
 
-    public function alterarStatusCentroCusto($idCentroCusto, $idStatus){
+    public function alterarStatusCentroCusto($id, $idStatus){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "update centroCusto SET idStatus=:idStatus where idCentroCusto=:idCentroCusto";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
-        $consulta->bindParam(":idCentroCustoStatus", $this->idCentroCusto);
+        $consulta->bindParam(":idCentroCustoStatus", $id);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
         } else {
-            $resultado = "S";//erro
+            $resultado = "E";//erro
         }
 
         return $resultado;
     }
 
-    public function verificarRegistros() {
+    public function verificarRegistros($id) {
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $sql = "select * from solicitacao where idCentroCusto=:idCentroCusto";
+        $sql = "select * from solicitacaomovimentacao where centroCusto=:centroCusto";
         $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+        $consulta->bindParam(":centroCusto", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }
 
+    
 }

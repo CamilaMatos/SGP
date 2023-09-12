@@ -51,36 +51,36 @@ class Categoria {
         return $resultado;
     }
 
-    public function editarCategoria(){
+    public function editarCategoria($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idCategoria", $this->idCategoria);
+        $consulta->bindParam(":idCategoria", $id);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
         } else {
-            $resultado = "S";//erro
+            $resultado = "E";//erro
         }
 
         return $resultado;
     }
 
-    public function excluirCategoria(){
+    public function excluirCategoria($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa categoria
-        if(empty($this->verificarRegistros())){
+        if(empty($this->verificarRegistros($id))){
             $sql = "delete from categoria where idCategoria=:idCategoria";
             $consulta = $pdo->prepare($sql);
-            $consulta->bindParam(":idCategoria", $this->idCategoria);
+            $consulta->bindParam(":idCategoria", $id);
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
             } else {
-                $resultado = "N";//erro
+                $resultado = "E";//erro
             }
         } else {
             $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
@@ -89,12 +89,12 @@ class Categoria {
         return $resultado;
     }
 
-    public function verificarRegistros() {
+    public function verificarRegistros($id) {
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "select idCategoria from item where idCategoria=:idCategoria";
         $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":idCategoria", $this->idCategoria);
+        $consulta->bindParam(":idCategoria", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
