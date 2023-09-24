@@ -1,4 +1,5 @@
 <?php
+require_once "Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idLote;
@@ -48,15 +49,78 @@ class ItensSolicitacao{
     }
 
     public function inserirItemSolicitacao($idSolicitacao, $idLote, $quantidade){
-        
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "insert into itensSolicitacao values (:idSolicitacao, :idLote, :quantidade)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->bindParam(":idLote", $this->idLote);
+        $consulta->bindParam(":quantidade", $this->quantidade);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
-    public function editarItemSolicitacao($idSolicitacao, $idLote, $quantidade){
+    public function editarItemSolicitacao($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($id))){
+            $sql = "update itensSolicitacao SET idLote=:idLote, quantidade=:quantidade where idSolicitacao=:idSolicitacao";
+            $consulta = $pdo->prepare($sql);
+            $consulta->bindParam(":idLote", $this->idLote);
+            $consulta->bindParam(":quantidade", $this->quantidade);
+            $consulta->bindParam(":idSolicitacao", $id);
 
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+        }
+
+        return $resultado;
     }
 
-    public function excluirItemSolicitacao($idItemSolicitacao, $idLote){
+    public function excluirItemSolicitacao($id, $idLote){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($id))){
+            $sql = "delete from itensSolicitacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
+            $consulta = $pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $id);
+            $consulta->bindParam(":idLote", $idLote);
 
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+        }
+
+        return $resultado;
+    }
+
+    public function verificarRegistros($id) {
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
     }
 
 }
