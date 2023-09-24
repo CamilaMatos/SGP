@@ -1,4 +1,6 @@
 <?php
+require_once "Conecta.php";
+require_once "Consultar.php";
 class Usuario {
     private $idUsuario;
     private $nome;
@@ -104,23 +106,78 @@ class Usuario {
     }
 
     public function logar($login, $senha){
+        $consulta= new Consultar($login, NULL);
+        $dados = $consulta->usuarioPorLogin();
+        if(!empty($dados)){
+            if($senha==$dados->senha){
+                $resultado= "S";//sucesso
+            } else {
+                $resultado= "SI";//senha inválida
+            }
+        } else{
+            $resultado="LI";//login inválido
+        }
 
+        return $resultado;
     }
 
-    public function cadastrarUsuario($nome, $dataNasc, $documento, $idTipo, $login, $senha){
-        
+    public function cadastrarUsuario(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->bindParam(":dataNasc", $this->dataNasc);
+        $consulta->bindParam(":documento", $this->documento);
+        $consulta->bindParam(":idTipo", $this->idTipo);
+        $consulta->bindParam(":login", $this->login);
+        $consulta->bindParam(":senha", $this->senha);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
-    public function editarUsuario($idUsuario, $nome, $dataNasc, $documento, $idTipo, $login, $senha){
+    public function editarUsuario($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login, senha=:senha where idUsuario=:idUsuario";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->bindParam(":dataNasc", $this->dataNasc);
+        $consulta->bindParam(":documento", $this->documento);
+        $consulta->bindParam(":idTipo", $this->idTipo);
+        $consulta->bindParam(":login", $this->login);
+        $consulta->bindParam(":senha", $this->senha);
+        $consulta->bindParam(":idUsuario", $id);
 
-    }
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
 
-    public function excluirUsuario($idUsuario){
-
+        return $resultado;
     }
 
     public function alterarTipoUsuario($idUsuario, $idTipo){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idTipo", $this->idTipo);
 
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
 }
