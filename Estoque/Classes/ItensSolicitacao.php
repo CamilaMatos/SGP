@@ -48,7 +48,7 @@ class ItensSolicitacao{
         return $this;
     }
 
-    public function inserirItemSolicitacao($idSolicitacao, $idLote, $quantidade){
+    public function inserirItemSolicitacao(){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "insert into itensSolicitacao values (:idSolicitacao, :idLote, :quantidade)";
