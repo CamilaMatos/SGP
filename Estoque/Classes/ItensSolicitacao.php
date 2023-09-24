@@ -82,7 +82,7 @@ class ItensSolicitacao{
                 $resultado = "E";//erro
             }
         } else {
-            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+            $resultado = "R";//operação recusada
         }
 
         return $resultado;
@@ -104,7 +104,7 @@ class ItensSolicitacao{
                 $resultado = "E";//erro
             }
         } else {
-            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+            $resultado = "R";//operação recusada
         }
 
         return $resultado;

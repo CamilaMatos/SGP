@@ -83,7 +83,7 @@ class Categoria {
                 $resultado = "E";//erro
             }
         } else {
-            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+            $resultado = "R";//operação recusada
         }
 
         return $resultado;
