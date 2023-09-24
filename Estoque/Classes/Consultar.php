@@ -114,8 +114,7 @@ class Consultar {
     public function usuarioPorLogin(){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $parametro1 = "%{$this->parametro1}%";
-        $sql = "select * from usuario where login like :parametro1";
+        $sql = "select * from usuario where login=:parametro1";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
