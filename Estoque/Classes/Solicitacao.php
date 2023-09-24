@@ -1,19 +1,27 @@
 <?php
+require_once "Conecta.php";
 class Solicitacao {
     private $idSolicitacaoMovimentacao;
     private $idTipo;
-    private $destino;
+    private $idCentroCusto;
     private $idStatus;
     private $idSolicitante;
+    private $idEstoque;
+    private $data;
+    private $necessidade;
 
-    public function __construct($idSolicitacaoMovimentacao, $idTipo, $destino, $idStatus, $idSolicitante)
+    public function __construct($idSolicitacaoMovimentacao, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade)
     {
         $this->idSolicitacaoMovimentacao = $idSolicitacaoMovimentacao;
         $this->idTipo = $idTipo;
-        $this->destino = $destino;
+        $this->idCentroCusto = $idCentroCusto;
         $this->idStatus = $idStatus;
         $this->idSolicitante = $idSolicitante;
+        $this->idEstoque = $idEstoque;
+        $this->data = $data;
+        $this->necessidade = $necessidade;
     }
+
  
     public function getIdSolicitacaoMovimentacao()
     {
@@ -39,14 +47,14 @@ class Solicitacao {
         return $this;
     }
  
-    public function getDestino()
+    public function getIdCentroCusto()
     {
-        return $this->destino;
+        return $this->idCentroCusto;
     }
 
-    public function setDestino($destino)
+    public function setIdCentroCusto($idCentroCusto)
     {
-        $this->destino = $destino;
+        $this->idCentroCusto = $idCentroCusto;
 
         return $this;
     }
@@ -75,20 +83,160 @@ class Solicitacao {
         return $this;
     }
 
-    public function cadastrarSolicitacao($idTipo, $destino, $idStatus, $idSolicitante){
-        
+    public function getIdEstoque()
+    {
+        return $this->idEstoque;
     }
 
-    public function editarSolicitacao($idSolicitacao, $idTipo, $destino, $idSolicitante){
+    public function setIdEstoque($idEstoque)
+    {
+        $this->idEstoque = $idEstoque;
 
+        return $this;
     }
 
-    public function excluirSolicitacao($idSolicitacao){
-
+    /**
+     * Get the value of data
+     */ 
+    public function getData()
+    {
+        return $this->data;
     }
 
-    public function alterarStatusSolicitacao($idSolicitacao, $idStatus){
+    /**
+     * Set the value of data
+     *
+     * @returnself
+     */ 
+    public function setData($data)
+    {
+        $this->data = $data;
 
+        return $this;
+    }
+
+    public function getNecessidade()
+    {
+        return $this->necessidade;
+    }
+
+    public function setNecessidade($necessidade)
+    {
+        $this->necessidade = $necessidade;
+
+        return $this;
+    }
+
+    public function solicitarRequisicao(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "insert into solicitacao values (NULL, 2, :idCentroCusto, NULL, :idStatus, :idSolicitante, :data, :necessidade)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idSolicitante", $this->idSolicitante);
+        $consulta->bindParam(":data", $this->data);
+        $consulta->bindParam(":necessidade", $this->necessidade);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function solicitarTransferencia(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "insert into solicitacao values (NULL, 3, NULL, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idEstoque", $this->idEstoque);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idSolicitante", $this->idSolicitante);
+        $consulta->bindParam(":data", $this->data);
+        $consulta->bindParam(":necessidade", $this->necessidade);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function alterarNecessidadeSolicitacao($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($id))){
+            $sql = "update solicitacaoMovimentacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
+            $consulta = $pdo->prepare($sql);
+            $consulta->bindParam(":necessidade", $this->necessidade);
+            $consulta->bindParam(":idSolicitacao", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada
+        }
+
+        return $resultado;
+    }
+
+    public function excluirSolicitacao($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($id))){
+            $sql = "delete from solicitacaoMovimentacao where idSolicitacao=:idSolicitacao";
+            $consulta = $pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada
+        }
+
+        return $resultado;
+    }
+
+    public function alterarStatusSolicitacao($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "update solicitacaoMovimentacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idSolicitacao", $id);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function verificarRegistros($id) {
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
     }
 
 }
