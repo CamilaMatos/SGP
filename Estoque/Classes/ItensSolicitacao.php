@@ -71,9 +71,8 @@ class ItensSolicitacao{
         $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update itensSolicitacao SET idLote=:idLote, quantidade=:quantidade where idSolicitacao=:idSolicitacao";
+            $sql = "update itensSolicitacao SET quantidade=:quantidade where idSolicitacao=:idSolicitacao";
             $consulta = $pdo->prepare($sql);
-            $consulta->bindParam(":idLote", $this->idLote);
             $consulta->bindParam(":quantidade", $this->quantidade);
             $consulta->bindParam(":idSolicitacao", $id);
 
