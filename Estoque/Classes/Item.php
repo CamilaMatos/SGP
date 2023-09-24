@@ -182,9 +182,9 @@ class Item{
     public function verificarRegistros($id) {
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $sql = "select * from lote where idItem=:idIten";
+        $sql = "select * from lote where idItem=:idItem";
         $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":idIten", $id);
+        $consulta->bindParam(":idItem", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
