@@ -41,7 +41,7 @@ class Consultar {
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from centroCusto where nome like :parametro1";
         $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $parametro1);
+        $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -66,7 +66,7 @@ class Consultar {
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from usuario where nome like :parametro1";
         $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $parametro1);
+        $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -99,37 +99,192 @@ class Consultar {
     }
     
 
-    public function usuarioPorTipo()
+    public function usuarioPorTipo(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from usuario where idTipo=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function usuarioPorLogin(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from usuario where login like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function estoquePorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from estoque where idEstoque=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function estoquePorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from estoque where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function categoriaPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from categoria where idCategoria=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function categoriaPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from categoria where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function marcaPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from marca where idMarca=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function marcaPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from marca where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function unidadeMedidaPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from unidadeMedida where idUnidadeMedida=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function unidadeMedidaPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from unidadeMedida where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function unidadeMedidaPorDescricao(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from unidadeMedida where descricao like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function itemPorId(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from item where idItem=:parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1); 
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function itemPorNome(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $parametro1 = "%{$this->parametro1}%";
+        $sql = "select * from item where nome like :parametro1";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function itemPorCategoria(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from item where idCategoria=:parametro1 and nome like :parametro2";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta->bindParam(":parametro2", $this->parametro2);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+
+        return $resultado;
+    }
+
+    public function itemPorMarca()
     {
         
     }
-
-    public function usuarioPorLogin()
+    public function itemPorUnidadeMedida()
     {
         
     }
-
-    public function consultarEstoque()
-    {
-        
-    }
-
-    public function consultarCategoria()
-    {
-        
-    }
-
-    public function consultarMarca()
-    {
-      
-    }
-
-    public function consultarUnidadeMedida()
-    {
-        
-    }
-
-    public function consultarItem()
+    public function itemPorStatus()
     {
         
     }
@@ -149,8 +304,16 @@ class Consultar {
         
     }
 
-    public function consultarLote(){
-        
+    public function quantidadeLote(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select quantidadeAtual from lote where idLote=:idLote";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idLote", $this->parametro1);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
     }
 
 }
