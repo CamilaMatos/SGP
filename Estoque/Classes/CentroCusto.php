@@ -83,10 +83,11 @@ class CentroCusto {
     public function editarCentroCusto($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $sql = "update centroCusto SET nome=:nome, descricao=:descricao where idCentroCusto=:idCentroCusto";
+        $sql = "update centroCusto SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idCentroCusto=:idCentroCusto";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
+        $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idCentroCusto", $id);
 
         if ($consulta->execute()) {
@@ -125,7 +126,7 @@ class CentroCusto {
         $sql = "update centroCusto SET idStatus=:idStatus where idCentroCusto=:idCentroCusto";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
-        $consulta->bindParam(":idCentroCustoStatus", $id);
+        $consulta->bindParam(":idCentroCusto", $id);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso

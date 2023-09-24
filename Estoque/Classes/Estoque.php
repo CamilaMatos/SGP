@@ -71,10 +71,11 @@ class Estoque {
     public function editarEstoque($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        $sql = "update estoque SET nome=:nome, descricao=:descricao where idEstoque=:idEstoque";
+        $sql = "update estoque SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idEstoque=:idEstoque";
         $consulta = $pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
+        $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idEstoque", $id);
 
         if ($consulta->execute()) {
