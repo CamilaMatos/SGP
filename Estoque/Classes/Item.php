@@ -1,4 +1,5 @@
 <?php
+require_once "Conecta.php";
 class Item{
     private $idItem;
     private $nome;
@@ -97,20 +98,97 @@ class Item{
         return $this;
     }
 
-    public function cadastrarItem($nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus){
-        
+    public function cadastrarItem(){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
+        $consulta->bindParam(":idCategoria", $this->idCategoria);
+        $consulta->bindParam(":idMarca", $this->idMarca);
+        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
-    public function editarItem($idItem, $nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus){
+    public function editarItem($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
+        $consulta->bindParam(":idCategoria", $this->idCategoria);
+        $consulta->bindParam(":idMarca", $this->idMarca);
+        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idItem", $id);
 
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
-    public function excluirItem($idItem){
+    public function excluirItem($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        //verificar se não há lotes cadastrados com esse item
+        if(empty($this->verificarRegistros($id))){
+            $sql = "delete from item where idItem=:idItem";
+            $consulta = $pdo->prepare($sql);
+            $consulta->bindParam(":idItem", $id);
 
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada, não é permitido excluir categorias com item registrados
+        }
+
+        return $resultado;
     }
 
-    public function alterarStatusItem($idItem, $idStatus){
+    public function alterarStatusItem($id){
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "update item SET idStatus=:idStatus where idItem=:idItem";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idItem", $id);
 
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function verificarRegistros($id) {
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
+        $sql = "select * from lote where idItem=:idIten";
+        $consulta = $pdo->prepare($sql);
+        $consulta->bindParam(":idIten", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
     }
 
 }
