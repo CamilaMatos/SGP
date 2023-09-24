@@ -119,7 +119,7 @@ class CentroCusto {
         return $resultado;
     }
 
-    public function alterarStatusCentroCusto($id, $idStatus){
+    public function alterarStatusCentroCusto($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "update centroCusto SET idStatus=:idStatus where idCentroCusto=:idCentroCusto";
