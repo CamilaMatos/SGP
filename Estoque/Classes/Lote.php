@@ -150,7 +150,7 @@ class Lote {
     public function excluirLote($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
-        //verificar se a solicitação ainda não foi atendida
+        //verificar se não existe solicitação com esse lote
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from lote where idLote=:idLote";
             $consulta = $pdo->prepare($sql);

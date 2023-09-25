@@ -66,15 +66,16 @@ class ItensSolicitacao{
         return $resultado;
     }
 
-    public function editarItemSolicitacao($id){
+    public function editarItemSolicitacao($id, $idLote){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update itensSolicitacao SET quantidade=:quantidade where idSolicitacao=:idSolicitacao";
+            $sql = "update itensSolicitacao SET quantidade=:quantidade where idSolicitacao=:idSolicitacao and idLote=:idLote";
             $consulta = $pdo->prepare($sql);
             $consulta->bindParam(":quantidade", $this->quantidade);
             $consulta->bindParam(":idSolicitacao", $id);
+            $consulta->bindParam(":idLote", $idLote);
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso

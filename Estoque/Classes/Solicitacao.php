@@ -94,20 +94,12 @@ class Solicitacao {
 
         return $this;
     }
-
-    /**
-     * Get the value of data
-     */ 
+ 
     public function getData()
     {
         return $this->data;
     }
 
-    /**
-     * Set the value of data
-     *
-     * @returnself
-     */ 
     public function setData($data)
     {
         $this->data = $data;
@@ -167,7 +159,7 @@ class Solicitacao {
         return $resultado;
     }
 
-    public function alterarNecessidadeSolicitacao($id){
+    public function alterarNecessidade($id){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida

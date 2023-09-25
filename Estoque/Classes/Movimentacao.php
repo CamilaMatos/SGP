@@ -77,7 +77,7 @@ class Movimentacao {
         return $this;
     }
 
-    public function registrarMovimentacao($idSolicitacao, $idUsuario, $idStatus, $data){
+    public function registrarMovimentacao(){
         $conectar = new Conecta();
         $pdo = $conectar->conectar();
         $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
