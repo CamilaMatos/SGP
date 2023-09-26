@@ -5,7 +5,7 @@ $dbname = "sgp";
 $user = "root";
 $password = "";
 
-$base = "http://localhost/TccCode2/SGP/Estoque/";
+$base = "http://localhost/SGP/";
 
 try {
     $pdo = new PDO("mysql:host={$server};dbname={$dbname};charset=utf8;", $user, $password);
