@@ -116,7 +116,7 @@ class Usuario {
         $consulta= new Consultar($login, NULL);
         $dados = $consulta->usuarioPorLogin();
         if(!empty($dados)){
-            if($senha==$dados->senha){
+            if(password_verify($dados->senha, $this->encriptador($senha))){
                 $resultado= "S";//sucesso
             } else {
                 $resultado= "SI";//senha inválida
@@ -128,7 +128,14 @@ class Usuario {
         return $resultado;
     }
 
+    function encriptador($senha){
+		$hash = password_hash($senha, PASSWORD_BCRYPT);
+
+		return $hash;
+	}
+
     public function cadastrarUsuario(){
+        $senha = $this->encriptador($this->senha);
         $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
@@ -136,7 +143,7 @@ class Usuario {
         $consulta->bindParam(":documento", $this->documento);
         $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":login", $this->login);
-        $consulta->bindParam(":senha", $this->senha);
+        $consulta->bindParam(":senha", $senha);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso

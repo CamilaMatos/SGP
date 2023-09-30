@@ -138,7 +138,7 @@ class CentroCusto {
     }
 
     public function verificarRegistros($id) {
-        $sql = "select * from solicitacaomovimentacao where centroCusto=:centroCusto";
+        $sql = "select * from solicitacaomovimentacao where idCentroCusto=:centroCusto";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":centroCusto", $id);
         $consulta->execute();
