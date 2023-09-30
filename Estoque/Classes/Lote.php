@@ -104,11 +104,16 @@ class Lote {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function inserirLote(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into lote values (NULL, :idItem, :idEstoque, :quantidadeInicial, :quantidadeAtual, :validade, :valorUnitario)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":quantidadeInicial", $this->quantidadeInicial);
@@ -126,10 +131,8 @@ class Lote {
     }
 
     public function editarLote($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update lote SET idEstoque=:idEstoque, quantidadeInicial=:quantidadeInicial, quantidadeAtual=:quantidadeAtual, validade=:validade, valorUnitario=:valorUnitario where idLote=:idLote";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":quantidadeInicial", $this->quantidadeInicial);
@@ -148,12 +151,10 @@ class Lote {
     }
 
     public function excluirLote($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se não existe solicitação com esse lote
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from lote where idLote=:idLote";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idLote", $id);
 
             if ($consulta->execute()) {
@@ -169,10 +170,8 @@ class Lote {
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from itensSolicitacao where idLote=:idLote";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idLote", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -182,10 +181,8 @@ class Lote {
 
 
     public function consultarEstoqueItem($idItem, $idEstoque){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select SUM(quantidadeAtual) from lote where idItem=:idItem and idEstoque=:idEstoque";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idItem", $idItem);
         $consulta->bindParam(":idEstoque", $idEstoque);
         $consulta->execute();

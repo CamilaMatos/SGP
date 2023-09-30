@@ -98,11 +98,16 @@ class Item{
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function cadastrarItem(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
         $consulta->bindParam(":idCategoria", $this->idCategoria);
@@ -120,10 +125,8 @@ class Item{
     }
 
     public function editarItem($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
         $consulta->bindParam(":idCategoria", $this->idCategoria);
@@ -142,12 +145,10 @@ class Item{
     }
 
     public function excluirItem($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se não há lotes cadastrados com esse item
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from item where idItem=:idItem";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idItem", $id);
 
             if ($consulta->execute()) {
@@ -163,10 +164,8 @@ class Item{
     }
 
     public function alterarStatusItem($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update item SET idStatus=:idStatus where idItem=:idItem";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idItem", $id);
 
@@ -180,10 +179,8 @@ class Item{
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from lote where idItem=:idItem";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idItem", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

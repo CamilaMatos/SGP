@@ -105,6 +105,13 @@ class Usuario {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function logar($login, $senha){
         $consulta= new Consultar($login, NULL);
         $dados = $consulta->usuarioPorLogin();
@@ -122,10 +129,8 @@ class Usuario {
     }
 
     public function cadastrarUsuario(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":dataNasc", $this->dataNasc);
         $consulta->bindParam(":documento", $this->documento);
@@ -143,10 +148,8 @@ class Usuario {
     }
 
     public function editarUsuario($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login, senha=:senha where idUsuario=:idUsuario";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":dataNasc", $this->dataNasc);
         $consulta->bindParam(":documento", $this->documento);
@@ -164,12 +167,11 @@ class Usuario {
         return $resultado;
     }
 
-    public function alterarTipoUsuario($idUsuario, $idTipo){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
+    public function alterarTipoUsuario($idUsuario){
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idTipo", $this->idTipo);
+        $consulta->bindParam(":idUsuario", $idUsuario);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso

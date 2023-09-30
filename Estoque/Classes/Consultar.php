@@ -23,11 +23,16 @@ class Consultar {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function centroCustoPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from centroCusto where idCentroCusto=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -36,12 +41,10 @@ class Consultar {
     }
 
     public function centroCustoPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from centroCusto where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -49,10 +52,8 @@ class Consultar {
     }
 
     public function usuarioPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from usuario where idUsuario=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -61,12 +62,10 @@ class Consultar {
     }
 
     public function usuarioPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from usuario where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -74,10 +73,8 @@ class Consultar {
     }
 
     public function usuarioPorNasc(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from usuario where dataNasc between :parametro1 and :parametro2";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->bindParam(":parametro1", $this->parametro2);
         $consulta->execute();
@@ -87,10 +84,8 @@ class Consultar {
     }
 
     public function usuarioPorDocumento(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from usuario where documento=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -100,10 +95,8 @@ class Consultar {
     
 
     public function usuarioPorTipo(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from usuario where idTipo=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -112,10 +105,8 @@ class Consultar {
     }
 
     public function usuarioPorLogin(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from usuario where login=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -124,10 +115,8 @@ class Consultar {
     }
 
     public function estoquePorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from estoque where idEstoque=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -136,12 +125,10 @@ class Consultar {
     }
 
     public function estoquePorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from estoque where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -149,10 +136,8 @@ class Consultar {
     }
 
     public function categoriaPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from categoria where idCategoria=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -161,12 +146,10 @@ class Consultar {
     }
 
     public function categoriaPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from categoria where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -174,10 +157,8 @@ class Consultar {
     }
 
     public function marcaPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from marca where idMarca=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -186,12 +167,10 @@ class Consultar {
     }
 
     public function marcaPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from marca where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -199,10 +178,8 @@ class Consultar {
     }
 
     public function unidadeMedidaPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from unidadeMedida where idUnidadeMedida=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -211,12 +188,10 @@ class Consultar {
     }
 
     public function unidadeMedidaPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from unidadeMedida where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -224,12 +199,10 @@ class Consultar {
     }
 
     public function unidadeMedidaPorDescricao(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from unidadeMedida where descricao like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -237,10 +210,8 @@ class Consultar {
     }
 
     public function itemPorId(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from item where idItem=:parametro1";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1); 
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -249,12 +220,10 @@ class Consultar {
     }
 
     public function itemPorNome(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $parametro1 = "%{$this->parametro1}%";
         $sql = "select * from item where nome like :parametro1";
-        $consulta = $pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $this->parametro1);
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":parametro1", $parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -262,10 +231,8 @@ class Consultar {
     }
 
     public function itemPorCategoria(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from item where idCategoria=:parametro1 and nome like :parametro2";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->bindParam(":parametro2", $this->parametro2);
         $consulta->execute();
@@ -304,10 +271,8 @@ class Consultar {
     }
 
     public function quantidadeLote(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select quantidadeAtual from lote where idLote=:idLote";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idLote", $this->parametro1);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

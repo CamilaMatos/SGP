@@ -34,11 +34,16 @@ class Marca {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function cadastrarMarca(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into marca values (NULL, :nome)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
 
         if ($consulta->execute()) {
@@ -51,10 +56,8 @@ class Marca {
     }
 
     public function editarMarca($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update marca SET nome=:nome where idMarca=:idMarca";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idMarca", $id);
 
@@ -68,12 +71,10 @@ class Marca {
     }
 
     public function excluirMarca($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa marca
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from marca where idMarca=:idMarca";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idMarca", $id);
 
             if ($consulta->execute()) {
@@ -89,10 +90,8 @@ class Marca {
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from item where idMarca=:idMarca";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idMarca", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

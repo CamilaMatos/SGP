@@ -2,6 +2,7 @@
 session_start();
 
 include "configs/conecta.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

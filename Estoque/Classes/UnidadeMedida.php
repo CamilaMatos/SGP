@@ -34,11 +34,16 @@ class UnidadeMedida {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function cadastrarUnidadeMedida(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into unidadeMedida values (NULL, :nome)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
 
         if ($consulta->execute()) {
@@ -51,10 +56,8 @@ class UnidadeMedida {
     }
 
     public function editarUnidadeMedida($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update unidadeMedida SET nome=:nome where idUnidadeMedida=:idUnidadeMedida";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idUnidadeMedida", $id);
 
@@ -68,12 +71,10 @@ class UnidadeMedida {
     }
 
     public function excluirUnidadeMedida($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa unidade de medida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from unidadeMedida where idUnidadeMedida=:idUnidadeMedida";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idUnidadeMedida", $id);
 
             if ($consulta->execute()) {
@@ -89,10 +90,8 @@ class UnidadeMedida {
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from item where idUnidadeMedida=:idUnidadeMedida";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idUnidadeMedida", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
