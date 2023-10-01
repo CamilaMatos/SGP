@@ -242,34 +242,6 @@ class Consultar {
         return $resultado;
     }
 
-    public function itemPorMarca()
-    {
-        
-    }
-    public function itemPorUnidadeMedida()
-    {
-        
-    }
-    public function itemPorStatus()
-    {
-        
-    }
-
-    public function consultarSolicitacao()
-    {
-        
-    }
-
-    public function consultarMovimentacao()
-    {
-        
-    }
-
-    public function consultarItemSolicitacao($idSolicitacao, $idLote)
-    {
-        
-    }
-
     public function quantidadeLote(){
         $sql = "select quantidadeAtual from lote where idLote=:idLote";
         $consulta = $this->conexao()->prepare($sql);

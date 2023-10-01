@@ -1,6 +1,7 @@
 <?php
 require_once "Conecta.php";
 require_once "Consultar.php";
+require_once "Lote.php";
 class Movimentacao {
     private $idMovimentacao;
     private $idSolicitacao;
@@ -84,7 +85,7 @@ class Movimentacao {
         return $pdo;
     }
 
-    public function registrarMovimentacao(){
+    public function realizarMovimentacao(){
         $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
@@ -98,13 +99,22 @@ class Movimentacao {
             $resultado = "E";//erro
         }
 
+        $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->execute();
+        
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+            $this->baixarItem($dados->idLote);
+        };
+        
         return $resultado;
     }
 
     public function baixarItem($idLote) {
         $qtdSolicitada = $this->verificarQuantidade($idLote);
-        $consulta = new Consultar($idLote, NULL);
-        $qtdLote = $consulta->quantidadeLote();
+        $consultar = new Consultar($idLote, NULL);
+        $qtdLote = $consultar->quantidadeLote();
         $quantidade = $qtdLote->quantidadeAtual - $qtdSolicitada->quantidade;
         $sql = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
         $consulta = $this->conexao()->prepare($sql);

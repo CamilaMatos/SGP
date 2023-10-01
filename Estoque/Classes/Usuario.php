@@ -135,21 +135,27 @@ class Usuario {
 	}
 
     public function cadastrarUsuario(){
-        $senha = $this->encriptador($this->senha);
-        $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
-        $consulta = $this->conexao()->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":dataNasc", $this->dataNasc);
-        $consulta->bindParam(":documento", $this->documento);
-        $consulta->bindParam(":idTipo", $this->idTipo);
-        $consulta->bindParam(":login", $this->login);
-        $consulta->bindParam(":senha", $senha);
+        if($this->validarLogin()=="A"){
+            $senha = $this->encriptador($this->senha);
+            $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
+            $consulta = $this->conexao()->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":dataNasc", $this->dataNasc);
+            $consulta->bindParam(":documento", $this->documento);
+            $consulta->bindParam(":idTipo", $this->idTipo);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":senha", $senha);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "NA";//não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
         }
+
+        
 
         return $resultado;
     }
@@ -184,6 +190,22 @@ class Usuario {
             $resultado = "S";//sucesso
         } else {
             $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function validarLogin(){
+        $sql = "select login from usuario where login=:login";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":login", $this->login);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        if(empty($resultado)){
+            $resultado = "A"; //autorizado
+        } else {
+            $resultado = "NA"; //não autorizado
         }
 
         return $resultado;

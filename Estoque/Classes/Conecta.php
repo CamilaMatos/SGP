@@ -4,7 +4,6 @@ class Conecta {
     private $banco = "sgp";
     private $usuario = "root";
     private $senha = "";
-    private $base = "http://localhost/SGP/";
 
     public function conectar(){
         try {
