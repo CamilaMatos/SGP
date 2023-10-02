@@ -4,8 +4,8 @@
     <form action="home">
         <div class="formulario">
 
-            <input type="text" placeholder="Login">
-            <input type="text" placeholder="Senha">
+            <input type="text" placeholder="Login" id="login">
+            <input type="text" placeholder="Senha" id="password">
             <br>
             <a href="pages/home">Enviar</a>
 
