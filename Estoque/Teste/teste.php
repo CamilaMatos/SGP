@@ -7,8 +7,9 @@ include "../Classes/Usuario.php";
 include "../Classes/Movimentacao.php";
 include "../../Classes/Funcao.php";
 
-// fazer função de transferencia de lote de um estoque para o outro
+// se solicitar mais do que tem no lote
 
 
-$F = new Usuario(null, 'teste', 'teste', 'teste', 1, 'camila.mato', '123');
-print($F->cadastrarUsuario());
+$F = new Movimentacao(null, 1, 1, 1, '2023-10-02');
+$F->verificarQuantidade(1);
+print($F->realizarTransferencia());

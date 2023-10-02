@@ -111,6 +111,37 @@ class Movimentacao {
         return $resultado;
     }
 
+    public function realizarTransferencia(){
+        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->bindParam(":idUsuario", $this->idUsuario);
+        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":data", $this->data);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->execute();
+        
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+            $lote = $this->buscarLote($dados->idLote);
+            $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
+            $loteNovo = new Lote(null, $lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario);
+            $loteNovo->inserirLote();
+            $this->baixarItem($dados->idLote);
+        };
+        
+        return $resultado;
+
+    }
+
     public function baixarItem($idLote) {
         $qtdSolicitada = $this->verificarQuantidade($idLote);
         $consultar = new Consultar($idLote, NULL);
@@ -135,6 +166,26 @@ class Movimentacao {
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idLote", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function buscarLote($idLote) {
+        $sql = "select * from lote where idLote=:idLote";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idLote", $idLote);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function buscarSolicitacao($idSolicitacao) {
+        $sql = "select * from solicitacaoMovimentacao where idSolicitacaoMovimentacao=:idSolicitacao";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $idSolicitacao);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 

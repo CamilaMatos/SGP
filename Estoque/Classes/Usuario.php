@@ -112,17 +112,17 @@ class Usuario {
         return $pdo;
     }
 
-    public function logar($login, $senha){
-        $consulta= new Consultar($login, NULL);
+    public function logar(){
+        $consulta= new Consultar($this->login, NULL);
         $dados = $consulta->usuarioPorLogin();
         if(!empty($dados)){
-            if(password_verify($dados->senha, $this->encriptador($senha))){
-                $resultado= "S";//sucesso
+            if(password_verify($dados->senha, $this->encriptador($this->senha))){
+                $resultado= true;//sucesso
             } else {
-                $resultado= "SI";//senha inválida
+                $resultado= false;//senha inválida
             }
         } else{
-            $resultado="LI";//login inválido
+            $resultado= false;//login inválido
         }
 
         return $resultado;
