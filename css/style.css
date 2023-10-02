@@ -37,7 +37,7 @@ header{
     padding-top:0;
     padding-bottom: 0;
 
-    line-height: 100%;
+    line-height: 10vh;
     border-bottom: 4px;
     background-color: grey;
 }
@@ -48,7 +48,11 @@ footer{
     margin: 0;
     padding-left: 2vh;
     padding-right: 2vh;
+
+    line-height: 10vh;
     background-color: darkgrey;
+
+    vertical-align: middle;
 }
 
 main{
@@ -177,4 +181,53 @@ a{
     background-color: darkgrey;
     height: 5.5vh;
     margin: 0;
+}
+
+.middleAlign{
+    line-height: 5.5vh;
+    vertical-align: middle;
+}
+
+td{
+    border: 1px solid black;
+    margin: 0;
+}
+
+table{
+    border-spacing: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70vw;
+}
+
+.contentDiv{
+    width: 100vw;
+}
+
+.return{
+    background-color: transparent;
+    border: none;
+
+}
+
+.return:hover{
+    cursor: pointer;
+}
+
+.searchBar{
+    width: 25vw;
+    max-width: 25vw;
+    border-radius: 15px;
+    background-color: lightgrey;
+    border: 2px;
+    height: 5vh;
+    padding-left: 1.5vw;
+}
+
+.construct{
+    width: 50vw;
+}
+
+.listinha{
+    border-radius: 150px;
 }

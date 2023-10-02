@@ -1,31 +1,15 @@
 <ul class="headBar">
     <li>
-        <a href="pages/produtos" class="middleAlign">Produtos</a>
+        <a href="pages/produto" class="middleAlign">Produto</a>
     </li>
     <li>
-        <a href="pages/solicitacoes" class="middleAlign">Solicitações</a>
-    </li>
-    <li>
-        <a href="pages/movimentacoes" class="middleAlign">Movimentações</a>
-    </li>
-    <li>
-        <a href="pages/entradas" class="middleAlign">Entrada</a>
-    </li>
-    <li>
-        <a href="pages/manutencao" class="middleAlign">Manutenção</a>
+        <a href="pages/novo" class="middleAlign">Novo Produto</a>
     </li>
 </ul>
-
 <br>
-
-<h1>
-    Estoque
-</h1>
-
+<h1>Produtos mais utilizados</h1>
 <br>
-<br>
-
-<div class="historico">
+<div class="contentDiv">
 
     <table>
         <thead>
@@ -101,6 +85,4 @@
             </tr>
         </tbody>
     </table>
-
-
 </div>

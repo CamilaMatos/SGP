@@ -1,22 +1,4 @@
-
-
-
-<?php
-    include "../Estoque/Classes/Usuario.php";
-    $U = new Usuario(null, null, null, null, null, $_POST("login"), $_POST("password"));
-
-    if($U->logar() != "S")
-
-
-?>
-
-
-
 <br>
-
-
-<h1>Menu</h1>
-
 <br>
 <br>
 
@@ -25,31 +7,38 @@
         <a href="pages/estoque">
             <div class="mainMenuItem" id="i1">
                 <p>
-                    Estoque
+                    Unidade de medida
                 </p>
             </div>
         </a>
-        <a href="pages/construct">
+        <a href="pages/producao">
             <div class="mainMenuItem" id="i2">
                 <p>
-                    Produção
+                    Categoria
                 </p>
             </div>
         </a>
 
     </div>
     <div class="flex-row">
-        <a href="pages/construct">
+        <a href="pages/salao">
             <div class="mainMenuItem" id="i3">
                 <p>
-                    Salão
+                    Centro de Custo
                 </p>
             </div>
         </a>
-        <a href="pages/construct">
+        <a href="pages/pdv">
             <div class="mainMenuItem" id="i4">
                 <p>
-                    Venda
+                    Estoque
+                </p>
+            </div>
+        </a>
+        <a href="pages/pdv">
+            <div class="mainMenuItem" id="i4">
+                <p>
+                    Marca
                 </p>
             </div>
         </a>
