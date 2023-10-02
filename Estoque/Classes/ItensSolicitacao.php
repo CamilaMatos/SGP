@@ -48,11 +48,16 @@ class ItensSolicitacao{
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function inserirItemSolicitacao(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into itensSolicitacao values (:idSolicitacao, :idLote, :quantidade)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idLote", $this->idLote);
         $consulta->bindParam(":quantidade", $this->quantidade);
@@ -67,12 +72,10 @@ class ItensSolicitacao{
     }
 
     public function editarItemSolicitacao($id, $idLote){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "update itensSolicitacao SET quantidade=:quantidade where idSolicitacao=:idSolicitacao and idLote=:idLote";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":quantidade", $this->quantidade);
             $consulta->bindParam(":idSolicitacao", $id);
             $consulta->bindParam(":idLote", $idLote);
@@ -90,12 +93,10 @@ class ItensSolicitacao{
     }
 
     public function excluirItemSolicitacao($id, $idLote){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from itensSolicitacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);
             $consulta->bindParam(":idLote", $idLote);
 
@@ -112,10 +113,8 @@ class ItensSolicitacao{
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

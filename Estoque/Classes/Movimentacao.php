@@ -1,6 +1,7 @@
 <?php
 require_once "Conecta.php";
 require_once "Consultar.php";
+require_once "Lote.php";
 class Movimentacao {
     private $idMovimentacao;
     private $idSolicitacao;
@@ -77,11 +78,16 @@ class Movimentacao {
         return $this;
     }
 
-    public function registrarMovimentacao(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
+    public function realizarMovimentacao(){
         $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -93,18 +99,25 @@ class Movimentacao {
             $resultado = "E";//erro
         }
 
+        $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->execute();
+        
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+            $this->baixarItem($dados->idLote);
+        };
+        
         return $resultado;
     }
 
     public function baixarItem($idLote) {
         $qtdSolicitada = $this->verificarQuantidade($idLote);
-        $consulta = new Consultar($idLote, NULL);
-        $qtdLote = $consulta->quantidadeLote();
+        $consultar = new Consultar($idLote, NULL);
+        $qtdLote = $consultar->quantidadeLote();
         $quantidade = $qtdLote->quantidadeAtual - $qtdSolicitada->quantidade;
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":quantidadeAtual", $quantidade);
         $consulta->bindParam(":idLote", $idLote);
 
@@ -118,10 +131,8 @@ class Movimentacao {
     }
 
     public function verificarQuantidade($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select quantidade from itensSolicitacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idLote", $id);
         $consulta->execute();

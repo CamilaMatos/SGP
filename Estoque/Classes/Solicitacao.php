@@ -119,11 +119,16 @@ class Solicitacao {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function solicitarRequisicao(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into solicitacao values (NULL, 2, :idCentroCusto, NULL, :idStatus, :idSolicitante, :data, :necessidade)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitante", $this->idSolicitante);
@@ -140,10 +145,8 @@ class Solicitacao {
     }
 
     public function solicitarTransferencia(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into solicitacao values (NULL, 3, NULL, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitante", $this->idSolicitante);
@@ -160,12 +163,10 @@ class Solicitacao {
     }
 
     public function alterarNecessidade($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "update solicitacaoMovimentacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idSolicitacao", $id);
 
@@ -182,12 +183,10 @@ class Solicitacao {
     }
 
     public function excluirSolicitacao($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from solicitacaoMovimentacao where idSolicitacao=:idSolicitacao";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);
 
             if ($consulta->execute()) {
@@ -203,10 +202,8 @@ class Solicitacao {
     }
 
     public function alterarStatusSolicitacao($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update solicitacaoMovimentacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitacao", $id);
 
@@ -220,10 +217,8 @@ class Solicitacao {
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

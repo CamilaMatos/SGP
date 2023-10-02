@@ -34,12 +34,16 @@ class Categoria {
         return $this;
     }
 
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
 
     public function cadastrarCategoria(){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "insert into categoria values (NULL, :nome)";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
 
         if ($consulta->execute()) {
@@ -52,10 +56,8 @@ class Categoria {
     }
 
     public function editarCategoria($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idCategoria", $id);
 
@@ -69,12 +71,10 @@ class Categoria {
     }
 
     public function excluirCategoria($id){
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         //verificar se não há itens cadastrados com essa categoria
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from categoria where idCategoria=:idCategoria";
-            $consulta = $pdo->prepare($sql);
+            $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idCategoria", $id);
 
             if ($consulta->execute()) {
@@ -90,10 +90,8 @@ class Categoria {
     }
 
     public function verificarRegistros($id) {
-        $conectar = new Conecta();
-        $pdo = $conectar->conectar();
         $sql = "select idCategoria from item where idCategoria=:idCategoria";
-        $consulta = $pdo->prepare($sql);
+        $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idCategoria", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
