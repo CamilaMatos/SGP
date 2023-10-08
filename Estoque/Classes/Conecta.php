@@ -10,7 +10,7 @@ class Conecta {
             $pdo = new PDO ("mysql:host={$this->server};dbname={$this->banco};charset=utf8;",
             $this->usuario,$this->senha);
         } catch (Exception $e){
-            echo "Erro ao conectar ao banco: ". $e->getMessage();
+            $pdo = false;//erro
         }
         return $pdo;
     }

@@ -127,9 +127,11 @@ class Solicitacao {
     }
 
     public function solicitarRequisicao(){
-        $sql = "insert into solicitacao values (NULL, 2, :idCentroCusto, NULL, :idStatus, :idSolicitante, :data, :necessidade)";
+        $sql = "insert into solicitacao values (NULL, :idTipo, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
         $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+        $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitante", $this->idSolicitante);
         $consulta->bindParam(":data", $this->data);
