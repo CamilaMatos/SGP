@@ -1,13 +1,35 @@
 <link rel="stylesheet" href="css/style.css">
+<?php
+
+if ($_POST) {
+
+
+    include "./Estoque/Classes/Usuario.php";
+    $login =  trim($_POST['login']);
+    $password = trim($_POST['password']);
+    $U = new Usuario(null, null, null, null, null, $login, $password);
+
+    if (!$U->logar()) {
+        echo "<script>alert('Credenciais erradas, tente novamente!');</script>";
+    } else {
+
+        $_SESSION['login'] = $login;
+
+        echo "<script>location.href='pages/home'</script>";
+    }
+}
+
+?>
 <div class="mainForm">
 
-    <form action="home">
+    <form action="pages/login" method="POST">
         <div class="formulario">
 
-            <input type="text" placeholder="Login" id="login">
-            <input type="text" placeholder="Senha" id="password">
+            <input type="text" placeholder="Login" id="login" name="login">
+            <input type="password" placeholder="Senha" id="password" name="password">
             <br>
-            <a href="pages/home">Enviar</a>
+            <br>
+            <button type="submit">Enviar</button>
 
         </div>
     </form>
