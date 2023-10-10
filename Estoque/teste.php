@@ -6,6 +6,7 @@ require_once "../Classes/Funcao.php";
 
 
 // ver sobre os retornos das funções e sobre os ids começar null
+// ver sobre status aparecendo para todos
 
 
 //$F = new Movimentacao(null, 1, 1, 1, '2023-10-02');
