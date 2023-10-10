@@ -19,6 +19,18 @@ class Item{
         $this->idUnidadeMedida = $idUnidadeMedida;
         $this->idStatus = $idStatus;
     }
+
+    public function getIdItem()
+    {
+        return $this->idItem;
+    }
+
+    public function setIdItem($idItem)
+    {
+        $this->idItem = $idItem;
+
+        return $this;
+    }
  
     public function getNome()
     {
@@ -188,4 +200,5 @@ class Item{
         return $resultado;
     }
 
+    
 }

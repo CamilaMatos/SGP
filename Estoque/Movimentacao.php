@@ -15,7 +15,7 @@ class Movimentacao {
         $this->idSolicitacao = $idSolicitacao;
         $this->idUsuario = $idUsuario;
         $this->idStatus = $idStatus;
-        $this->data = $data;
+        $this->data = date('Y-m-d');
     }
  
     public function getIdMovimentacao()
