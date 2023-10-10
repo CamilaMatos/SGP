@@ -4,7 +4,7 @@
     $param = trim($_GET["param"]);
     $param = explode("/", $param);
     $page = $param[1];
-    
+
     ?>
 
     <button type="button" onclick="history.back()" class="return"> <- </button>
@@ -29,7 +29,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="pages/login">
+                                <a href="pages/admin">
+                                    Administração
+                                </a>
+                            </li>
+                            <li>
+                                <a href='pages/login'>
                                     Sair
                                 </a>
                             </li>

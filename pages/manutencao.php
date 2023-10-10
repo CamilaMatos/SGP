@@ -18,7 +18,6 @@
                 </p>
             </div>
         </a>
-
     </div>
     <div class="flex-row">
         <a href="pages/salao">
@@ -35,13 +34,13 @@
                 </p>
             </div>
         </a>
-        <a href="pages/pdv">
+        <!-- <a href="pages/pdv">
             <div class="mainMenuItem" id="i4">
                 <p>
                     Marca
                 </p>
             </div>
-        </a>
+        </a> -->
     </div>
 
 </div>

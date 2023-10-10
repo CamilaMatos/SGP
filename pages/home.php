@@ -1,17 +1,5 @@
 
 
-
-<?php
-    include "../Estoque/Classes/Usuario.php";
-    $U = new Usuario(null, null, null, null, null, $_POST("login"), $_POST("password"));
-
-    if($U->logar() != "S")
-
-
-?>
-
-
-
 <br>
 
 
