@@ -1,5 +1,5 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 require_once "Consultar.php";
 require_once "Lote.php";
 class Movimentacao {
@@ -8,6 +8,7 @@ class Movimentacao {
     private $idUsuario;
     private $idStatus;
     private $data;
+    private $pdo;
 
     public function __construct($idMovimentacao, $idSolicitacao, $idUsuario, $idStatus, $data)
     {
@@ -16,6 +17,7 @@ class Movimentacao {
         $this->idUsuario = $idUsuario;
         $this->idStatus = $idStatus;
         $this->data = date('Y-m-d');
+        $this->pdo = $this->conexao();
     }
  
     public function getIdMovimentacao()
@@ -87,20 +89,20 @@ class Movimentacao {
 
     public function realizarMovimentacao(){
         $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":data", $this->data);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
 
         $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->execute();
         
@@ -113,7 +115,7 @@ class Movimentacao {
 
     public function realizarTransferencia(){
         $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -126,7 +128,7 @@ class Movimentacao {
         }
 
         $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->execute();
         
@@ -148,7 +150,7 @@ class Movimentacao {
         $qtdLote = $consultar->quantidadeLote();
         $quantidade = $qtdLote->quantidadeAtual - $qtdSolicitada->quantidade;
         $sql = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":quantidadeAtual", $quantidade);
         $consulta->bindParam(":idLote", $idLote);
 
@@ -163,7 +165,7 @@ class Movimentacao {
 
     public function verificarQuantidade($id) {
         $sql = "select quantidade from itensSolicitacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idLote", $id);
         $consulta->execute();
@@ -174,7 +176,7 @@ class Movimentacao {
 
     public function buscarLote($idLote) {
         $sql = "select * from lote where idLote=:idLote";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idLote", $idLote);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
@@ -184,7 +186,7 @@ class Movimentacao {
 
     public function buscarSolicitacao($idSolicitacao) {
         $sql = "select * from solicitacaoMovimentacao where idSolicitacaoMovimentacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $idSolicitacao);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

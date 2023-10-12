@@ -1,5 +1,5 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class Solicitacao {
     private $idSolicitacaoMovimentacao;
     private $idTipo;
@@ -9,6 +9,7 @@ class Solicitacao {
     private $idEstoque;
     private $data;
     private $necessidade;
+    private $pdo;
 
     public function __construct($idSolicitacaoMovimentacao, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade)
     {
@@ -20,6 +21,7 @@ class Solicitacao {
         $this->idEstoque = $idEstoque;
         $this->data = $data;
         $this->necessidade = $necessidade;
+        $this->pdo = $this->conexao();
     }
 
  
@@ -128,7 +130,7 @@ class Solicitacao {
 
     public function solicitarRequisicao(){
         $sql = "insert into solicitacao values (NULL, :idTipo, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
@@ -138,7 +140,7 @@ class Solicitacao {
         $consulta->bindParam(":necessidade", $this->necessidade);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -148,7 +150,7 @@ class Solicitacao {
 
     public function solicitarTransferencia(){
         $sql = "insert into solicitacao values (NULL, 3, NULL, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitante", $this->idSolicitante);
@@ -156,7 +158,7 @@ class Solicitacao {
         $consulta->bindParam(":necessidade", $this->necessidade);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -168,7 +170,7 @@ class Solicitacao {
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "update solicitacaoMovimentacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idSolicitacao", $id);
 
@@ -188,7 +190,7 @@ class Solicitacao {
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from solicitacaoMovimentacao where idSolicitacao=:idSolicitacao";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);
 
             if ($consulta->execute()) {
@@ -205,7 +207,7 @@ class Solicitacao {
 
     public function alterarStatusSolicitacao($id){
         $sql = "update solicitacaoMovimentacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitacao", $id);
 
@@ -220,7 +222,7 @@ class Solicitacao {
 
     public function verificarRegistros($id) {
         $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

@@ -1,24 +1,34 @@
 <?php
+
+require_once "../Producao/OrdemServico.php";
+require_once "../Producao/ReceitaParametrizacao.php";
+require_once "Categoria.php";
 require_once "CentroCusto.php";
-require_once "Usuario.php";
-require_once "Movimentacao.php";
-require_once "../Classes/Funcao.php";
 
 
 // ver sobre os retornos das funções e sobre os ids começar null
 // ver sobre status aparecendo para todos
 
 
-//$F = new Movimentacao(null, 1, 1, 1, '2023-10-02');
-// $F->verificarQuantidade(1);
-// print($F->realizarTransferencia());
+$R = new ReceitaParametrizacao(null, 'Teste 2', 1, "01:00", null, null);
+print(".".$R->cadastrarReceita());
+//$R->setNome('Testando de novo');
+//print($R->editarReceita(1));
+//print($R->excluirReceita(2));
 
+//$O = new OrdemParametrizacao(1, 2, 1, 1);
+//$O->setIdItem(1);
+//$O->setQuantidade(3);
+//$O->cadastrarIngrediente();
+//$O->editarIngrediente();
+//print_r($O);
+//$O->excluirIngrediente();
 
-//$I = new ItensSolicitacao(1, null, 8, 1, 1);
-//$I->quebrarLotes();
-//$I->setQuantidade(9);
-//print($I->editarItemSolicitacao(1, 1));
-//$I->excluirItem(1, 1);
+$OS = new OrdemServico(null, 2, 1, '2023-10-19', 11, null, null, 1, null, null);
+print(".".$OS->gerarOS());
 
-$C = new CentroCusto(null, 'Teste', 'Teste Conecta', 1);
-print($C->cadastrarCentroCusto());
+$C = new Categoria(null, "Teste Conecta");
+print(".".$C->cadastrarCategoria());
+
+$CC = new CentroCusto(null, "Teste Conecta", "Teste Conecta", 1);
+print(".".$CC->cadastrarCentroCusto());

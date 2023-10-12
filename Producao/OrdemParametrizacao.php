@@ -1,13 +1,11 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class OrdemParametrizacao {
     private $idReceita;
-
     private $idItem;
-
     private $quantidade;
-
     private $idUnidadeMedida;
+    private $pdo;
 
     public function __construct($idReceita, $idItem, $quantidade, $idUnidadeMedida)
     {
@@ -15,6 +13,7 @@ class OrdemParametrizacao {
         $this->idItem = $idItem;
         $this->quantidade = $quantidade;
         $this->idUnidadeMedida = $idUnidadeMedida;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdReceita()
@@ -65,16 +64,60 @@ class OrdemParametrizacao {
         return $this;
     }
 
-    public function cadastrarIngrediente(){
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
 
+        return $pdo;
+    }
+
+    public function cadastrarIngrediente(){
+        $sql = "insert into ordemParametrizacao values (:idReceita, :idItem, :quantidade, :idUnidadeMedida)";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idReceita", $this->idReceita);
+        $consulta->bindParam(":idItem", $this->idItem);
+        $consulta->bindParam(":quantidade", $this->quantidade);
+        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
     public function editarIngrediente(){
+        $sql = "update ordemParametrizacao SET quantidade=:quantidade, idUnidadeMedida=:idUnidadeMedida where idReceita=:idReceita and idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":quantidade", $this->quantidade);
+        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+        $consulta->bindParam(":idReceita", $this->idReceita);
+        $consulta->bindParam(":idItem", $this->idItem);
 
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
     public function excluirIngrediente(){
-        
+        $sql = "delete from ordemParametrizacao where idReceita=:idReceita and idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idReceita", $this->idReceita);
+        $consulta->bindParam(":idItem", $this->idItem);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 }
 ?>

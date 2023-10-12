@@ -1,10 +1,11 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class Estoque {
     private $idEstoque;
     private $nome;
     private $descricao;
     private $idStatus;
+    private $pdo;
 
     public function __construct($idEstoque, $nome, $descricao, $idStatus)
     {
@@ -12,6 +13,7 @@ class Estoque {
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdEstoque()
@@ -71,13 +73,13 @@ class Estoque {
 
     public function cadastrarEstoque(){
         $sql = "insert into estoque values (NULL, :nome, :descricao, :idStatus)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
         $consulta->bindParam(":idStatus", $this->idStatus);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -87,7 +89,7 @@ class Estoque {
 
     public function editarEstoque($id){
         $sql = "update estoque SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idEstoque=:idEstoque";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -106,7 +108,7 @@ class Estoque {
         //verificar se não há lotes cadastrados com esse estoque
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from estoque where idEstoque=:idEstoque";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idEstoque", $id);
 
             if ($consulta->execute()) {
@@ -123,7 +125,7 @@ class Estoque {
 
     public function alterarStatusEstoque($id){
         $sql = "update estoque SET idStatus=:idStatus where idEstoque=:idEstoque";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idEstoqueStatus", $id);
 
@@ -138,7 +140,7 @@ class Estoque {
 
     public function verificarRegistros($id) {
         $sql = "select idEstoque from lote where idEstoque=:idEstoque";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idEstoque", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

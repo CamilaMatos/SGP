@@ -1,10 +1,11 @@
 <link rel="stylesheet" href="css/style.css">
 <header>
     <?php
-    $param = trim($_GET["param"]);
-    $param = explode("/", $param);
-    $page = $param[1];
-
+    if (isset($_GET["param"])) {
+        $param = trim($_GET["param"]);
+        $param = explode("/", $param);
+        $page = $param[1];
+    }
     ?>
 
     <button type="button" onclick="history.back()" class="return"> <- </button>

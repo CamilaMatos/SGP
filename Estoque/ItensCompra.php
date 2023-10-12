@@ -1,15 +1,17 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idItem;
     private $quantidade;
+    private $pdo;
 
     public function __construct($idSolicitacao, $idItem, $quantidade)
     {
         $this->idSolicitacao = $idSolicitacao;
         $this->idItem = $idItem;
         $this->quantidade = $quantidade;
+        $this->pdo = $this->conexao();
     }
  
     public function getIdSolicitacao()
@@ -57,7 +59,7 @@ class ItensSolicitacao{
 
     public function inserirItemCompra(){
         $sql = "insert into itensCompra values (:idSolicitacao, :idItem, :quantidade)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":quantidade", $this->quantidade);
@@ -75,7 +77,7 @@ class ItensSolicitacao{
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "update itensCompra SET quantidade=:quantidade where idSolicitacao=:idSolicitacao and idItem=:idItem";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":quantidade", $this->quantidade);
             $consulta->bindParam(":idSolicitacao", $id);
             $consulta->bindParam(":idItem", $idItem);
@@ -96,7 +98,7 @@ class ItensSolicitacao{
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from itensCompra where idSolicitacao=:idSolicitacao and idItem=:idItem";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);
             $consulta->bindParam(":idItem", $idItem);
 
@@ -114,7 +116,7 @@ class ItensSolicitacao{
 
     public function verificarRegistros($id) {
         $sql = "select * from movimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

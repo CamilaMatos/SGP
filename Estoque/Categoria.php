@@ -1,13 +1,15 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class Categoria {
     private $idCategoria;
     private $nome;
+    private $pdo;
 
     public function __construct($idCategoria, $nome)
     {
         $this->idCategoria = $idCategoria;
         $this->nome = $nome;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdCategoria()
@@ -43,11 +45,11 @@ class Categoria {
 
     public function cadastrarCategoria(){
         $sql = "insert into categoria values (NULL, :nome)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -57,7 +59,7 @@ class Categoria {
 
     public function editarCategoria($id){
         $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idCategoria", $id);
 
@@ -74,7 +76,7 @@ class Categoria {
         //verificar se não há itens cadastrados com essa categoria
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from categoria where idCategoria=:idCategoria";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idCategoria", $id);
 
             if ($consulta->execute()) {
@@ -91,7 +93,7 @@ class Categoria {
 
     public function verificarRegistros($id) {
         $sql = "select idCategoria from item where idCategoria=:idCategoria";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idCategoria", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

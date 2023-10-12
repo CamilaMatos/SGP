@@ -1,5 +1,5 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 require_once "Consultar.php";
 class Usuario {
     private $idUsuario;
@@ -9,6 +9,7 @@ class Usuario {
     private $idTipo;
     private $login;
     private $senha;
+    private $pdo;
 
     public function __construct($idUsuario, $nome, $dataNasc, $documento, $idTipo, $login, $senha)
     {
@@ -19,6 +20,7 @@ class Usuario {
         $this->idTipo = $idTipo;
         $this->login = $login;
         $this->senha = $senha;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdUsuario()
@@ -138,7 +140,7 @@ class Usuario {
         if($this->validarLogin()=="A"){
             $senha = $this->encriptador($this->senha);
             $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":dataNasc", $this->dataNasc);
             $consulta->bindParam(":documento", $this->documento);
@@ -147,7 +149,7 @@ class Usuario {
             $consulta->bindParam(":senha", $senha);
 
             if ($consulta->execute()) {
-                $resultado = "S";//sucesso
+                $resultado = $this->pdo->lastInsertId();//sucesso
             } else {
                 $resultado = "E";//erro
             }
@@ -162,7 +164,7 @@ class Usuario {
 
     public function editarUsuario($id){
         $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login, senha=:senha where idUsuario=:idUsuario";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":dataNasc", $this->dataNasc);
         $consulta->bindParam(":documento", $this->documento);
@@ -182,7 +184,7 @@ class Usuario {
 
     public function alterarTipoUsuario($idUsuario){
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idUsuario", $idUsuario);
 
@@ -197,7 +199,7 @@ class Usuario {
 
     public function validarLogin(){
         $sql = "select login from usuario where login=:login";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":login", $this->login);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

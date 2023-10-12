@@ -1,13 +1,15 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class Marca {
     private $idMarca;
     private $nome;
+    private $pdo;
 
     public function __construct($idMarca, $nome)
     {
         $this->idMarca = $idMarca;
         $this->nome = $nome;
+        $this->pdo = $this->conexao();
     }
      
     public function getIdMarca()
@@ -43,11 +45,11 @@ class Marca {
 
     public function cadastrarMarca(){
         $sql = "insert into marca values (NULL, :nome)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -57,7 +59,7 @@ class Marca {
 
     public function editarMarca($id){
         $sql = "update marca SET nome=:nome where idMarca=:idMarca";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idMarca", $id);
 
@@ -74,7 +76,7 @@ class Marca {
         //verificar se não há itens cadastrados com essa marca
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from marca where idMarca=:idMarca";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idMarca", $id);
 
             if ($consulta->execute()) {
@@ -91,7 +93,7 @@ class Marca {
 
     public function verificarRegistros($id) {
         $sql = "select * from item where idMarca=:idMarca";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idMarca", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

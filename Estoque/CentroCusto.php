@@ -1,11 +1,12 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 
 class CentroCusto {
     private $idCentroCusto;
     private $nome;
     private $descricao;
     private $idStatus;
+    private $pdo;
 
     public function __construct($idCentroCusto, $nome, $descricao, $idStatus)
     {
@@ -13,6 +14,7 @@ class CentroCusto {
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdCentroCusto()
@@ -72,13 +74,13 @@ class CentroCusto {
 
     public function cadastrarCentroCusto(){
         $sql = "insert into centroCusto values (NULL, :nome, :descricao, :idStatus)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
         $consulta->bindParam(":idStatus", $this->idStatus);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -88,7 +90,7 @@ class CentroCusto {
 
     public function editarCentroCusto($id){
         $sql = "update centroCusto SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idCentroCusto=:idCentroCusto";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -107,7 +109,7 @@ class CentroCusto {
         //verificar se não há itens cadastrados com essa categoria
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from centroCusto where idCentroCusto=:idCentroCusto";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idCentroCusto", $id);
 
             if ($consulta->execute()) {
@@ -124,7 +126,7 @@ class CentroCusto {
 
     public function alterarStatusCentroCusto($id){
         $sql = "update centroCusto SET idStatus=:idStatus where idCentroCusto=:idCentroCusto";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idCentroCusto", $id);
 
@@ -139,7 +141,7 @@ class CentroCusto {
 
     public function verificarRegistros($id) {
         $sql = "select * from solicitacaomovimentacao where idCentroCusto=:centroCusto";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":centroCusto", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

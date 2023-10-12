@@ -1,5 +1,5 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class Item{
     private $idItem;
     private $nome;
@@ -8,6 +8,7 @@ class Item{
     private $idMarca;
     private $idUnidadeMedida;
     private $idStatus;
+    private $pdo;
 
     public function __construct($idItem, $nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus)
     {
@@ -18,6 +19,7 @@ class Item{
         $this->idMarca = $idMarca;
         $this->idUnidadeMedida = $idUnidadeMedida;
         $this->idStatus = $idStatus;
+        $this->pdo = $this->conexao();
     }
 
     public function getIdItem()
@@ -119,7 +121,7 @@ class Item{
 
     public function cadastrarItem(){
         $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
         $consulta->bindParam(":idCategoria", $this->idCategoria);
@@ -128,7 +130,7 @@ class Item{
         $consulta->bindParam(":idStatus", $this->idStatus);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
         }
@@ -138,7 +140,7 @@ class Item{
 
     public function editarItem($id){
         $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
         $consulta->bindParam(":idCategoria", $this->idCategoria);
@@ -160,7 +162,7 @@ class Item{
         //verificar se não há lotes cadastrados com esse item
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from item where idItem=:idItem";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idItem", $id);
 
             if ($consulta->execute()) {
@@ -177,7 +179,7 @@ class Item{
 
     public function alterarStatusItem($id){
         $sql = "update item SET idStatus=:idStatus where idItem=:idItem";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idItem", $id);
 
@@ -192,7 +194,7 @@ class Item{
 
     public function verificarRegistros($id) {
         $sql = "select * from lote where idItem=:idItem";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idItem", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
