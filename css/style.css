@@ -8,7 +8,7 @@
     position: absolute;
     background-color: #f9f9f9;
     min-width: 80px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     padding: 12px 16px;
     z-index: 1;
     right: 0.25vw;
@@ -28,13 +28,13 @@ ul {
     float: right;
 }
 
-header{
+header {
     min-height: 10vh;
     max-height: 10vh;
     margin: 0;
     padding-left: 2vh;
     padding-right: 2vh;
-    padding-top:0;
+    padding-top: 0;
     padding-bottom: 0;
 
     line-height: 10vh;
@@ -42,7 +42,7 @@ header{
     background-color: grey;
 }
 
-footer{
+footer {
     min-height: 10vh;
     max-height: 10vh;
     margin: 0;
@@ -55,22 +55,22 @@ footer{
     vertical-align: middle;
 }
 
-main{
+main {
     margin: 0;
     padding: 0;
     min-height: 80vh;
     text-align: center;
 }
 
-h1{
+h1 {
     margin: 0;
 }
 
-body{
+body {
     margin: 0;
 }
 
-.formulario{
+.formulario {
     border-radius: 25px;
     border-width: 3px;
     border-color: red;
@@ -83,17 +83,17 @@ body{
     margin-left: 40vw;
 }
 
-.mainForm{
+.mainForm {
     height: 100%;
     width: 100%;
     padding-top: 15vh;
 }
 
-footer{
+footer {
     text-align: center;
 }
 
-.mainMenu{
+.mainMenu {
     border-width: 2px;
     border-color: black;
     background-color: lightgray;
@@ -109,72 +109,72 @@ footer{
     border-radius: 25px;
 }
 
-.mainMenuItem{
+.mainMenuItem {
     height: 22.5vh;
     width: 22.5vw;
     margin: 0;
     line-height: 22.5vh;
 }
 
-.mainMenuItem p{
+.mainMenuItem p {
     vertical-align: middle;
 }
 
-#i1{
+#i1 {
     background-color: grey;
     color: black;
 }
 
-#i1:hover{
-    background-color: darkgrey;
-    color: white;
-}   
-
-#i2{
-    background-color: grey;
-    color: black;
-}
-
-#i2:hover{
-    background-color: darkgrey;
-    color:white
-}
-
-#i3{
-    background-color: grey;
-    color: black;
-}
-
-#i3:hover{
+#i1:hover {
     background-color: darkgrey;
     color: white;
 }
 
-#i4{
+#i2 {
     background-color: grey;
     color: black;
 }
 
-#i4:hover{
+#i2:hover {
+    background-color: darkgrey;
+    color: white
+}
+
+#i3 {
+    background-color: grey;
+    color: black;
+}
+
+#i3:hover {
     background-color: darkgrey;
     color: white;
 }
 
-.flex-row{
+#i4 {
+    background-color: grey;
+    color: black;
+}
+
+#i4:hover {
+    background-color: darkgrey;
+    color: white;
+}
+
+.flex-row {
     display: flex;
     justify-content: center;
 }
 
-p{
+p {
     margin: 0;
     padding: 0;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-.headBar{
+.headBar {
     display: flex;
     justify-content: space-evenly;
     padding: 0;
@@ -183,38 +183,38 @@ a{
     margin: 0;
 }
 
-.middleAlign{
+.middleAlign {
     line-height: 5.5vh;
     vertical-align: middle;
 }
 
-td{
+td {
     border: 1px solid black;
     margin: 0;
 }
 
-table{
+table {
     border-spacing: 0px;
     margin-left: auto;
     margin-right: auto;
     width: 70vw;
 }
 
-.contentDiv{
+.contentDiv {
     width: 100vw;
 }
 
-.return{
+.return {
     background-color: transparent;
     border: none;
 
 }
 
-.return:hover{
+.return:hover {
     cursor: pointer;
 }
 
-.searchBar{
+.searchBar {
     width: 25vw;
     max-width: 25vw;
     border-radius: 15px;
@@ -224,10 +224,31 @@ table{
     padding-left: 1.5vw;
 }
 
-.construct{
+.construct {
     width: 50vw;
 }
 
-.listinha{
-    border-radius: 150px;
+.listinha {
+    width: 25vw;
+}
+
+.formNewProd {
+    padding: 5vh;
+    background-color: grey;
+    width: 75vw;
+    max-width: 75vw !important;
+    border-radius: 25px;
+    height: 45vh;
+    min-height: 45vh;
+    display: inline-block;
+}
+
+.formRow {
+    max-height: 15vh;
+    margin: 1vh;
+}
+
+.areaDeTexto {
+    width: 54.6vw;
+    height: 20vh;
 }

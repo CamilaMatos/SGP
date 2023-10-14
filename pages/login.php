@@ -4,7 +4,7 @@
 if ($_POST) {
 
 
-    include "./Estoque/Classes/Usuario.php";
+    include "./Estoque/Usuario.php";
     $login =  trim($_POST['login']);
     $password = trim($_POST['password']);
     $U = new Usuario(null, null, null, null, null, $login, $password);

@@ -3,7 +3,7 @@
         <a href="pages/produto" class="middleAlign">Produto</a>
     </li>
     <li>
-        <a href="pages/novo" class="middleAlign">Novo Produto</a>
+        <a href="pages/newProduto" class="middleAlign">Novo Produto</a>
     </li>
 </ul>
 <br>
