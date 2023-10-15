@@ -8,8 +8,9 @@
 <br>
 <br>
 <?php
-if ($_POST) {
+if ($_POST && ($_POST['pesquisa'] != NULL)) {
 ?>
+
     <table>
         <thead>
             <tr>

@@ -21,7 +21,7 @@ if ($_POST) {
 ?>
     <br>
     <br>
-    <h1>Cadastrar</h1>
+    <h1>Cadastrar Produto</h1>
     <br>
     <br>
     <form action="" method="post">

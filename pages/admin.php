@@ -5,7 +5,7 @@
 
 <div class="mainMenu">
     <div class="flex-row">
-        <a href="pages/estoque">
+        <a href="pages/usuarios">
             <div class="mainMenuItem" id="i1">
                 <p>
                     Usuários
