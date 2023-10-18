@@ -1,7 +1,8 @@
 <?php
 require_once "Conecta.php";
 require_once "Consultar.php";
-class Usuario {
+class Usuario
+{
     private $idUsuario;
     private $nome;
     private $dataNasc;
@@ -32,7 +33,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getNome()
     {
         return $this->nome;
@@ -44,7 +45,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getDataNasc()
     {
         return $this->dataNasc;
@@ -56,7 +57,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getDocumento()
     {
         return $this->documento;
@@ -68,7 +69,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getIdTipo()
     {
         return $this->idTipo;
@@ -80,7 +81,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getLogin()
     {
         return $this->login;
@@ -92,7 +93,7 @@ class Usuario {
 
         return $this;
     }
- 
+
     public function getSenha()
     {
         return $this->senha;
@@ -105,37 +106,41 @@ class Usuario {
         return $this;
     }
 
-    public function conexao(){
-        $conectar= new Conecta();
-        $pdo= $conectar->conectar();
+    public function conexao()
+    {
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
 
         return $pdo;
     }
 
-    public function logar(){
-        $consulta= new Consultar($this->login, NULL);
+    public function logar()
+    {
+        $consulta = new Consultar($this->login, NULL);
         $dados = $consulta->usuarioPorLogin();
-        if(!empty($dados)){
-            if(password_verify($dados->senha, $this->encriptador($this->senha))){
-                $resultado= true;//sucesso
+        if (!empty($dados)) {
+            if (password_verify($this->senha, $dados->senha)) {
+                $resultado = true; //sucesso
             } else {
-                $resultado= false;//senha inválida
+                $resultado = false; //senha inválida
             }
-        } else{
-            $resultado= false;//login inválido
+        } else {
+            $resultado = false; //login inválido
         }
 
         return $resultado;
     }
 
-    function encriptador($senha){
-		$hash = password_hash($senha, PASSWORD_BCRYPT);
+    function encriptador($senha)
+    {
+        $hash = password_hash($senha, PASSWORD_BCRYPT);
 
-		return $hash;
-	}
+        return $hash;
+    }
 
-    public function cadastrarUsuario(){
-        if($this->validarLogin()=="A"){
+    public function cadastrarUsuario()
+    {
+        if ($this->validarLogin() == "A") {
             $senha = $this->encriptador($this->senha);
             $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
             $consulta = $this->conexao()->prepare($sql);
@@ -147,20 +152,22 @@ class Usuario {
             $consulta->bindParam(":senha", $senha);
 
             if ($consulta->execute()) {
-                $resultado = "S";//sucesso
+                $resultado = "S"; //sucesso
             } else {
-                $resultado = "E";//erro
+                $resultado = "E"; //erro
             }
         } else {
-            $resultado = "NA";//não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
+            $resultado = "NA"; //não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
         }
 
-        
+
 
         return $resultado;
     }
 
-    public function editarUsuario($id){
+    public function editarUsuario($id)
+    {
+        $senha = $this->encriptador($this->senha);
         $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login, senha=:senha where idUsuario=:idUsuario";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
@@ -168,41 +175,43 @@ class Usuario {
         $consulta->bindParam(":documento", $this->documento);
         $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":login", $this->login);
-        $consulta->bindParam(":senha", $this->senha);
+        $consulta->bindParam(":senha", $senha);
         $consulta->bindParam(":idUsuario", $id);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = "S"; //sucesso
         } else {
-            $resultado = "E";//erro
+            $resultado = "E"; //erro
         }
 
         return $resultado;
     }
 
-    public function alterarTipoUsuario($idUsuario){
+    public function alterarTipoUsuario($idUsuario)
+    {
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idUsuario", $idUsuario);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = "S"; //sucesso
         } else {
-            $resultado = "E";//erro
+            $resultado = "E"; //erro
         }
 
         return $resultado;
     }
 
-    public function validarLogin(){
+    public function validarLogin()
+    {
         $sql = "select login from usuario where login=:login";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":login", $this->login);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
-        if(empty($resultado)){
+        if (empty($resultado)) {
             $resultado = "A"; //autorizado
         } else {
             $resultado = "NA"; //não autorizado
@@ -210,5 +219,4 @@ class Usuario {
 
         return $resultado;
     }
-
 }

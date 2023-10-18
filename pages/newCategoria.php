@@ -1,13 +1,28 @@
 <?php
-if ($_POST) {
+include './Estoque/Categoria.php';
+
+if ($_POST && ($_POST['nome'] != '')) {
     $nome = trim($_POST['nome']);
+
+    $Um = new Categoria(NULL, $nome);
+
+    if (!$Um->cadastrarCategoria()) {
+        echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
+    } else {
+        echo "<script>alert('Cadastro realizado com sucesso!!!');</script>";
+    }
 }
 ?>
 <div>
-    
+
 </div>
 <form action="" method="post">
-    <input type="text" name="nome" id="nome" placeholder="Nova Categoria">
+    <div class="formNewProd">
+        <input type="text" name="nome" id="nome" placeholder="Nova Categoria" required>
+        <button type="submit">
+            Cadastrar
+        </button>
+    </div>
 </form>
 
 <br>
@@ -44,8 +59,6 @@ if ($_POST) {
         ?>
     </tbody>
 </table>
+
 <br>
 <br>
-<button>
-    Nova Categoria
-</button>

@@ -5,9 +5,9 @@ if ($_POST) {
 
     $nome =  trim($_POST['nome']);
     $unMedia =  trim($_POST['unMedia']);
-    $categoria = 1;
+    $categoria = trim($_POST['categoria']);
     $marca =  trim($_POST['marca']);
-    $unMedida = 1;
+    $unMedida = trim($_POST['unMedida']);
     $Status = 1;
     $P = new Item(null, $nome, $unMedia, $categoria, $marca, $unMedida, $Status);
 
@@ -61,7 +61,7 @@ if ($_POST) {
                 </select>
                 <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média">
             </div>
-            <select class="listinha">
+            <select name="categoria" id="categoria" class="listinha">
                 <option value="">Selecione uma categoria</option>
                 <?php
                 $sql = "select * from categoria";

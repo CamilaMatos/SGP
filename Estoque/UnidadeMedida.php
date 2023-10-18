@@ -1,15 +1,18 @@
 <?php
 require_once "Conecta.php";
-class UnidadeMedida {
+class UnidadeMedida
+{
     private $idUnidadeMedida;
     private $nome;
+    private $descricao;
 
-    public function __construct($idUnidadeMedida, $nome)
+    public function __construct($idUnidadeMedida, $nome, $descricao)
     {
         $this->idUnidadeMedida = $idUnidadeMedida;
         $this->nome = $nome;
+        $this->descricao = $descricao;
     }
- 
+
     public function getIdUnidadeMedida()
     {
         return $this->idUnidadeMedida;
@@ -21,7 +24,7 @@ class UnidadeMedida {
 
         return $this;
     }
- 
+
     public function getNome()
     {
         return $this->nome;
@@ -34,62 +37,81 @@ class UnidadeMedida {
         return $this;
     }
 
-    public function conexao(){
-        $conectar= new Conecta();
-        $pdo= $conectar->conectar();
+    public function getDescricao()
+    {
+        return $this->descricao;
+    }
+
+    public function setDescricao($descricao)
+    {
+        $this->descricao = $descricao;
+
+        return $this;
+    }
+
+    public function conexao()
+    {
+        $conectar = new Conecta();
+        $pdo = $conectar->conectar();
 
         return $pdo;
     }
 
-    public function cadastrarUnidadeMedida(){
-        $sql = "insert into unidadeMedida values (NULL, :nome)";
+    public function cadastrarUnidadeMedida()
+    {
+        $sql = "insert into unidadeMedida values (NULL, :nome, :descricao)";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
+        $consulta->bindParam(":descricao", $this->descricao);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = "S"; //sucesso
         } else {
-            $resultado = "E";//erro
+            $resultado = "E"; //erro
         }
 
         return $resultado;
     }
 
-    public function editarUnidadeMedida($id){
-        $sql = "update unidadeMedida SET nome=:nome where idUnidadeMedida=:idUnidadeMedida";
+    public function editarUnidadeMedida($id)
+    {
+        $sql = "update unidadeMedida SET nome=:nome, descricao=:descricao where idUnidadeMedida=:idUnidadeMedida";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idUnidadeMedida", $id);
+        $consulta->bindParam(":descricao", $descricao);
 
         if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            $resultado = "S"; //sucesso
         } else {
-            $resultado = "E";//erro
+            $resultado = "E"; //erro
         }
 
         return $resultado;
     }
 
-    public function excluirUnidadeMedida($id){
+    public function excluirUnidadeMedida($id)
+    {
         //verificar se não há itens cadastrados com essa unidade de medida
-        if(empty($this->verificarRegistros($id))){
+        if (empty($this->verificarRegistros($id))) {
             $sql = "delete from unidadeMedida where idUnidadeMedida=:idUnidadeMedida";
             $consulta = $this->conexao()->prepare($sql);
             $consulta->bindParam(":idUnidadeMedida", $id);
 
             if ($consulta->execute()) {
-                $resultado = "S";//sucesso
+                $resultado = "S"; //sucesso
             } else {
-                $resultado = "E";//erro
+                $resultado = "E"; //erro
             }
         } else {
-            $resultado = "R";//operação recusada
+            $resultado = "R"; //operação recusada
         }
 
         return $resultado;
     }
 
-    public function verificarRegistros($id) {
+    public function verificarRegistros($id)
+    {
         $sql = "select * from item where idUnidadeMedida=:idUnidadeMedida";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idUnidadeMedida", $id);
@@ -98,5 +120,4 @@ class UnidadeMedida {
 
         return $resultado;
     }
-
 }
