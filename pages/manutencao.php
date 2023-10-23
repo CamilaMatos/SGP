@@ -27,20 +27,20 @@
                 </p>
             </div>
         </a>
-        <a href="pages/pdv">
+        <a href="pages/newEstoque">
             <div class="mainMenuItem" id="i4">
                 <p>
                     Estoque
                 </p>
             </div>
         </a>
-        <!-- <a href="pages/pdv">
+        <a href="pages/newMarca">
             <div class="mainMenuItem" id="i4">
                 <p>
                     Marca
                 </p>
             </div>
-        </a> -->
+        </a>
     </div>
 
 </div>
