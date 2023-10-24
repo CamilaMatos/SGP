@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="css/style.css">
 <header>
     <?php
-    if (isset($_GET["param"])) {
+    if (isset($_GET['param'])) {
         $param = trim($_GET["param"]);
         $param = explode("/", $param);
         $page = $param[1];

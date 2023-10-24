@@ -9,7 +9,7 @@
         <a href="pages/movimentacoes" class="middleAlign">Movimentações</a>
     </li>
     <li>
-        <a href="pages/entradas" class="middleAlign">Entrada</a>
+        <a href="pages/newEntrada" class="middleAlign">Entrada</a>
     </li>
     <li>
         <a href="pages/manutencao" class="middleAlign">Manutenção</a>

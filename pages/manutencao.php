@@ -4,14 +4,14 @@
 
 <div class="mainMenu">
     <div class="flex-row">
-        <a href="pages/estoque">
+        <a href="pages/newUnidadeMedida">
             <div class="mainMenuItem" id="i1">
                 <p>
                     Unidade de medida
                 </p>
             </div>
         </a>
-        <a href="pages/producao">
+        <a href="pages/newCategoria">
             <div class="mainMenuItem" id="i2">
                 <p>
                     Categoria
@@ -20,27 +20,27 @@
         </a>
     </div>
     <div class="flex-row">
-        <a href="pages/salao">
+        <a href="pages/newCentroCusto">
             <div class="mainMenuItem" id="i3">
                 <p>
                     Centro de Custo
                 </p>
             </div>
         </a>
-        <a href="pages/pdv">
+        <a href="pages/newEstoque">
             <div class="mainMenuItem" id="i4">
                 <p>
                     Estoque
                 </p>
             </div>
         </a>
-        <!-- <a href="pages/pdv">
+        <a href="pages/newMarca">
             <div class="mainMenuItem" id="i4">
                 <p>
                     Marca
                 </p>
             </div>
-        </a> -->
+        </a>
     </div>
 
 </div>
