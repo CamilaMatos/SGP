@@ -39,7 +39,8 @@ header {
 
     line-height: 10vh;
     border-bottom: 4px;
-    background-color: grey;
+    background-color: #1C5D99;
+
 }
 
 footer {
@@ -50,9 +51,13 @@ footer {
     padding-right: 2vh;
 
     line-height: 10vh;
-    background-color: darkgrey;
+    background-color: #1C5D99;
 
     vertical-align: middle;
+
+    color: white;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 12px;
 }
 
 main {
@@ -74,13 +79,15 @@ body {
     border-radius: 25px;
     border-width: 3px;
     border-color: red;
-    background-color: violet;
+    background-color: #8bb1e4;
     text-align: center;
     justify-content: center;
-    height: 32vh;
-    width: 20vw;
-    padding-top: 15vh;
-    margin-left: 40vw;
+    height: fit-content;
+    width: 45vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5vw;
+    padding-bottom: 5vw;
 }
 
 .mainForm {
@@ -251,4 +258,42 @@ table {
 .areaDeTexto {
     width: 54.6vw;
     height: 20vh;
+}
+
+.loginInput {
+    line-height: 25px;
+    border-radius: 2vh;
+    width: 25vw;
+    padding-left: 15px;
+    border-style: solid;
+    border-color: lightgray;
+    border-width: 2px;
+    margin: 2px;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.submitButton {
+    border-radius: 10px;
+    border-width: 0;
+    width: 100px;
+    height: 25px;
+    background-color: #407EA2;
+    color: white;
+    transition: 20ms;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.submitButton:hover {
+    border-radius: 10px;
+    width: 100px;
+    height: 25px;
+    background-color: #124372;
+    cursor: pointer;
+    transform: scale(1.10);
+    transition: 20ms;
+}
+
+.loginIcon {
+    font-size: 90px;
+    font-weight: lighter;
 }

@@ -21,6 +21,11 @@ include "configs/conecta.php";
     <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" href="css/datatables.min.css">
     <link rel="stylesheet" href="css/summernote-lite.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
 
     <link rel="shortcut icon" href="images/icone.png">
 
@@ -33,6 +38,8 @@ include "configs/conecta.php";
     <script src="js/parsley.min.js"></script>
     <script src="js/summernote-lite.min.js"></script>
     <script src="js/summernote-pt-BR.js"></script>
+    <script src="https://kit.fontawesome.com/4af1129b29.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>

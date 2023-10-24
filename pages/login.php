@@ -7,9 +7,9 @@ if ($_POST) {
     include "./Estoque/Usuario.php";
     $login =  trim($_POST['login']);
     $password = trim($_POST['password']);
-    
+
     $U = new Usuario(null, null, null, null, null, $login, $password);
-    
+
 
     if (!$U->logar()) {
         echo "<script>alert('Credenciais erradas, tente novamente!');</script>";
@@ -25,12 +25,15 @@ if ($_POST) {
 
     <form action="pages/login" method="POST">
         <div class="formulario">
-
-            <input type="text" placeholder="Login" id="login" name="login">
-            <input type="password" placeholder="Senha" id="password" name="password">
+            <i class="fa-regular fa-circle-user loginIcon"></i>
             <br>
             <br>
-            <button type="submit">Enviar</button>
+            <input type="text" placeholder="Login" id="login" name="login" class="loginInput">
+            <br>
+            <input type="password" placeholder="Senha" id="password" name="password" class="loginInput">
+            <br>
+            <br>
+            <button type="submit" class="submitButton">Enviar</button>
 
         </div>
     </form>
