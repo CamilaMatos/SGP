@@ -1,15 +1,16 @@
 <?php
-require_once "Conecta.php";
-class UnidadeMedida
-{
+require_once "../Classes/Conecta.php";
+class UnidadeMedida {
     private $idUnidadeMedida;
     private $nome;
+    private $pdo;
     private $descricao;
 
     public function __construct($idUnidadeMedida, $nome, $descricao)
     {
         $this->idUnidadeMedida = $idUnidadeMedida;
         $this->nome = $nome;
+        $this->pdo = $this->conexao();
         $this->descricao = $descricao;
     }
 
@@ -57,15 +58,14 @@ class UnidadeMedida
         return $pdo;
     }
 
-    public function cadastrarUnidadeMedida()
-    {
+    public function cadastrarUnidadeMedida(){
         $sql = "insert into unidadeMedida values (NULL, :nome, :descricao)";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":descricao", $this->descricao);
 
         if ($consulta->execute()) {
-            $resultado = "S"; //sucesso
+            $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E"; //erro
         }
@@ -73,10 +73,9 @@ class UnidadeMedida
         return $resultado;
     }
 
-    public function editarUnidadeMedida($id)
-    {
+    public function editarUnidadeMedida($id){
         $sql = "update unidadeMedida SET nome=:nome, descricao=:descricao where idUnidadeMedida=:idUnidadeMedida";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":nome", $this->nome);
         $consulta->bindParam(":idUnidadeMedida", $id);
         $consulta->bindParam(":descricao", $descricao);
@@ -95,7 +94,7 @@ class UnidadeMedida
         //verificar se não há itens cadastrados com essa unidade de medida
         if (empty($this->verificarRegistros($id))) {
             $sql = "delete from unidadeMedida where idUnidadeMedida=:idUnidadeMedida";
-            $consulta = $this->conexao()->prepare($sql);
+            $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idUnidadeMedida", $id);
 
             if ($consulta->execute()) {
@@ -113,7 +112,7 @@ class UnidadeMedida
     public function verificarRegistros($id)
     {
         $sql = "select * from item where idUnidadeMedida=:idUnidadeMedida";
-        $consulta = $this->conexao()->prepare($sql);
+        $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idUnidadeMedida", $id);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);

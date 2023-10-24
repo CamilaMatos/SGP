@@ -6,7 +6,6 @@
         $param = explode("/", $param);
         $page = $param[1];
     }
-
     ?>
 
     <button type="button" onclick="history.back()" class="return"> <- </button>

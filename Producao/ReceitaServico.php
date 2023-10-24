@@ -1,10 +1,11 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
 class ReceitaServico {
     private $idOrdem;
     private $idReceita;
     private $idItem;
     private $quantidade;
+    private $pdo;
 
     public function __construct($idOrdem, $idReceita, $idItem, $quantidade)
     {
@@ -12,6 +13,7 @@ class ReceitaServico {
         $this->idReceita = $idReceita;
         $this->idItem = $idItem;
         $this->quantidade = $quantidade;
+        $this->pdo = $this->conexao();
     }
 
 
@@ -62,6 +64,13 @@ class ReceitaServico {
         $this->quantidade = $quantidade;
 
         return $this;
+    }
+    
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
     }
 
     public function editarIngrediente(){

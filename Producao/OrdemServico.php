@@ -1,30 +1,34 @@
 <?php
-require_once "Conecta.php";
+require_once "../Classes/Conecta.php";
+require_once "../Estoque/Lote.php";
 class OrdemServico {
     private $idOrdem;
     private $idReceita;
     private $idUsuario;
-    private $entrada;
+    private $entrega;
     private $rendimentoEsperado;
     private $rendimentoReal;
     private $observacao;
     private $status;
     private $horarioInicio;
     private $horarioFim;
+    private $pdo;
 
-    public function __construct($idOrdem, $idReceita, $idUsuario, $entrada, $rendimentoEsperado, $rendimentoReal, $observacao, $status, $horarioInicio, $horarioFim)
+    public function __construct($idOrdem, $idReceita, $idUsuario, $entrega, $rendimentoEsperado, $rendimentoReal, $observacao, $status, $horarioInicio, $horarioFim)
     {
         $this->idOrdem = $idOrdem;
         $this->idReceita = $idReceita;
         $this->idUsuario = $idUsuario;
-        $this->entrada = $entrada;
+        $this->entrega = $entrega;
         $this->rendimentoEsperado = $rendimentoEsperado;
         $this->rendimentoReal = $rendimentoReal;
         $this->observacao = $observacao;
         $this->status = $status;
         $this->horarioInicio = $horarioInicio;
         $this->horarioFim = $horarioFim;
+        $this->pdo = $this->conexao();
     }
+
  
     public function getIdOrdem()
     {
@@ -62,14 +66,14 @@ class OrdemServico {
         return $this;
     }
  
-    public function getEntrada()
+    public function getEntrega()
     {
-        return $this->entrada;
+        return $this->entrega;
     }
 
-    public function setEntrada($entrada)
+    public function setEntrega($entrega)
     {
-        $this->entrada = $entrada;
+        $this->entrega = $entrega;
 
         return $this;
     }
@@ -146,15 +150,46 @@ class OrdemServico {
         return $this;
     }
 
+
+    public function conexao(){
+        $conectar= new Conecta();
+        $pdo= $conectar->conectar();
+
+        return $pdo;
+    }
+
     public function gerarOS(){
+        $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, :idStatus, :horarioInicio, :horarioFim);";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idReceita", $this->idReceita);
+        $consulta->bindParam(":idUsuario", $this->idUsuario);
+        $consulta->bindParam(":entrega", $this->entrega);
+        $consulta->bindParam(":rendimentoEsperado", $this->rendimentoEsperado);
+        $consulta->bindParam(":rendimentoReal", $this->rendimentoReal);
+        $consulta->bindParam(":observacao", $this->observacao);
+        $consulta->bindParam(":idStatus", $this->status);
+        $consulta->bindParam(":horarioInicio", $this->horarioInicio);
+        $consulta->bindParam(":horarioFim", $this->horarioFim);
+        $consulta->execute();
+        $id = $this->pdo->lastInsertId();
 
+        
+        $this->buscarOrdem($this->idReceita, $id);
+
+
+        return $id;
     }
 
-    public function editarOS(){
-
+    public function inserirReceitaOS($id, $idItem, $qtdAjustada) {
+        $sql = "insert into receitaServico values (:idOrdemServico, :idItem, :quantidade, null);";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idOrdemServico", $id);
+        $consulta->bindParam(":idItem", $idItem);
+        $consulta->bindParam(":quantidade", $qtdAjustada);
+        $consulta->execute();
     }
 
-    public function excluirOS(){
+    public function cancelarOS(){
 
     }
 
@@ -167,7 +202,43 @@ class OrdemServico {
     }
 
     public function reservarIngredientes(){
-        
+        //pensar nisso
     }
+
+    public function buscarOrdem($idReceita, $idOrdem) {
+        $sql = "select * from ordemParametrizacao where idReceita=:idReceita";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idReceita", $idReceita);
+        $consulta->execute();
+        $rendimentoParametrizado = $this->buscarReceita($this->idReceita)->rendimento;
+        while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
+            $qtdAjustada = $this->ajustarQuantidade($resultado->quantidade, $rendimentoParametrizado);
+            print($resultado->idItem);
+            $this->inserirReceitaOS($idOrdem, $resultado->idItem, $qtdAjustada);
+        }
+        
+
+        return $resultado;
+    }
+
+    public function buscarReceita($idReceita) {
+        $sql = "select * from receitaParametrizacao where idReceita=:idReceita";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idReceita", $idReceita);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function ajustarQuantidade($quantidade, $rendimento){
+        $qtdAjustada = ($this->rendimentoEsperado*$quantidade)/$rendimento;
+
+        return $qtdAjustada;
+    }
+
+
 }
+
+// (rendimentoEsperado * qtdPadronizada) / rendimentoPadrão
 ?>

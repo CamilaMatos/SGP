@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12-Set-2023 às 03:21
+-- Tempo de geração: 24-Out-2023 às 03:41
 -- Versão do servidor: 10.4.20-MariaDB
 -- versão do PHP: 8.0.9
 
@@ -39,7 +39,8 @@ CREATE TABLE `categoria` (
 INSERT INTO `categoria` (`idCategoria`, `nome`) VALUES
 (1, 'Bebidas'),
 (2, 'Limpeza'),
-(3, 'Tecnologia');
+(3, 'Tecnologia'),
+(4, 'Teste Conecta');
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,10 @@ CREATE TABLE `centrocusto` (
 
 INSERT INTO `centrocusto` (`idCentroCusto`, `nome`, `descricao`, `idStatus`) VALUES
 (2, 'Administrativo', 'Escritórios', 1),
-(3, 'Gerencia', 'Dono/Gerente', 2);
+(3, 'Gerencia', 'Dono/Gerente', 2),
+(8, 'Teste', 'Teste Conecta', 1),
+(9, 'Teste', 'Teste Conecta', 1),
+(10, 'Teste Conecta', 'Teste Conecta', 1);
 
 -- --------------------------------------------------------
 
@@ -100,7 +104,8 @@ CREATE TABLE `estoque` (
 --
 
 INSERT INTO `estoque` (`idEstoque`, `nome`, `descricao`, `idStatus`) VALUES
-(1, 'Cozinha', 'Cozinha quente e de finalização', 1);
+(1, 'Cozinha', 'Cozinha quente e de finalização', 1),
+(2, 'Restaurante', 'Restaurante principal', 1);
 
 -- --------------------------------------------------------
 
@@ -123,7 +128,40 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`idItem`, `nome`, `unidadeMedia`, `idCategoria`, `idMarca`, `idUnidadeMedida`, `idStatus`) VALUES
-(1, 'Chocolate Quente', 1, 1, 1, 2, 1);
+(1, 'Chocolate Quente', 1, 1, 1, 2, 1),
+(2, 'Leite', 1, 1, 1, 2, 1),
+(3, 'Detergente', 1, 2, 2, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `itenscompra`
+--
+
+CREATE TABLE `itenscompra` (
+  `idSolicitacao` int(11) NOT NULL,
+  `idItem` int(11) NOT NULL,
+  `quantidade` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `itensmovimentacao`
+--
+
+CREATE TABLE `itensmovimentacao` (
+  `idSolicitacao` int(11) NOT NULL,
+  `idLote` int(11) NOT NULL,
+  `quantidade` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `itensmovimentacao`
+--
+
+INSERT INTO `itensmovimentacao` (`idSolicitacao`, `idLote`, `quantidade`) VALUES
+(1, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -133,16 +171,9 @@ INSERT INTO `item` (`idItem`, `nome`, `unidadeMedia`, `idCategoria`, `idMarca`, 
 
 CREATE TABLE `itenssolicitacao` (
   `idSolicitacao` int(11) NOT NULL,
-  `idLote` int(11) NOT NULL,
+  `idItem` int(11) NOT NULL,
   `quantidade` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Extraindo dados da tabela `itenssolicitacao`
---
-
-INSERT INTO `itenssolicitacao` (`idSolicitacao`, `idLote`, `quantidade`) VALUES
-(1, 1, 9);
 
 -- --------------------------------------------------------
 
@@ -165,7 +196,15 @@ CREATE TABLE `lote` (
 --
 
 INSERT INTO `lote` (`idLote`, `idItem`, `idEstoque`, `quantidadeInicial`, `quantidadeAtual`, `validade`, `valorUnitario`) VALUES
-(1, 1, 1, 10, 10, '2023-11-12', '15');
+(1, 1, 1, 10, 7, '2023-11-10', '15'),
+(2, 2, 1, 10, 6, '2023-11-12', '15'),
+(3, 3, 1, 30, 21, '2023-11-12', '15'),
+(4, 1, 1, 1, 2, '2023-11-10', '15'),
+(5, 2, 1, 1, 1, '2023-11-12', '15'),
+(6, 3, 1, 1, 1, '2023-11-12', '15'),
+(7, 1, 2, 1, 2, '2023-11-10', '15'),
+(8, 2, 2, 1, 1, '2023-11-12', '15'),
+(9, 3, 2, 1, 1, '2023-11-12', '15');
 
 -- --------------------------------------------------------
 
@@ -201,12 +240,104 @@ CREATE TABLE `movimentacao` (
   `data` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Extraindo dados da tabela `movimentacao`
+-- Estrutura da tabela `ordemparametrizacao`
 --
 
-INSERT INTO `movimentacao` (`idMovimentacao`, `idSolicitacao`, `idUsuario`, `idStatus`, `data`) VALUES
-(1, 1, 1, 1, '2023-09-11');
+CREATE TABLE `ordemparametrizacao` (
+  `idReceita` int(11) NOT NULL,
+  `idItem` int(11) NOT NULL,
+  `quantidade` float NOT NULL,
+  `idUnidadeMedida` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `ordemparametrizacao`
+--
+
+INSERT INTO `ordemparametrizacao` (`idReceita`, `idItem`, `quantidade`, `idUnidadeMedida`) VALUES
+(2, 1, 3, 1),
+(2, 2, 9, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `ordemservico`
+--
+
+CREATE TABLE `ordemservico` (
+  `idOrdemServico` int(11) NOT NULL,
+  `idReceita` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `entrega` date NOT NULL,
+  `rendimentoEsperado` float NOT NULL,
+  `rendimentoReal` float DEFAULT NULL,
+  `observacao` varchar(200) DEFAULT NULL,
+  `idStatus` int(11) NOT NULL,
+  `horarioInicio` time DEFAULT NULL,
+  `horarioFim` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `ordemservico`
+--
+
+INSERT INTO `ordemservico` (`idOrdemServico`, `idReceita`, `idUsuario`, `entrega`, `rendimentoEsperado`, `rendimentoReal`, `observacao`, `idStatus`, `horarioInicio`, `horarioFim`) VALUES
+(27, 2, 1, '2023-11-10', 2000, NULL, NULL, 1, NULL, NULL),
+(28, 2, 1, '2023-11-10', 2000, NULL, NULL, 1, NULL, NULL),
+(29, 2, 1, '2023-11-10', 500, NULL, NULL, 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `receitaparametrizacao`
+--
+
+CREATE TABLE `receitaparametrizacao` (
+  `idReceita` int(11) NOT NULL,
+  `nome` varchar(45) NOT NULL,
+  `idCategoria` int(11) NOT NULL,
+  `tempo` time DEFAULT NULL,
+  `modo` varchar(300) DEFAULT NULL,
+  `rendimento` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `receitaparametrizacao`
+--
+
+INSERT INTO `receitaparametrizacao` (`idReceita`, `nome`, `idCategoria`, `tempo`, `modo`, `rendimento`) VALUES
+(2, 'Teste', 1, '01:00:00', NULL, 1000),
+(3, 'Teste 2', 1, '01:00:00', NULL, NULL),
+(4, 'Teste 2', 1, '01:00:00', NULL, NULL),
+(5, 'Teste 2', 1, '01:00:00', NULL, NULL),
+(6, 'Teste 2', 1, '01:00:00', NULL, NULL),
+(7, 'Teste 2', 1, '01:00:00', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `receitaservico`
+--
+
+CREATE TABLE `receitaservico` (
+  `idOrdemServico` int(11) NOT NULL,
+  `idItem` int(11) NOT NULL,
+  `quantidadeCalculada` float NOT NULL,
+  `quantidadeRealizada` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `receitaservico`
+--
+
+INSERT INTO `receitaservico` (`idOrdemServico`, `idItem`, `quantidadeCalculada`, `quantidadeRealizada`) VALUES
+(28, 1, 6, NULL),
+(28, 2, 18, NULL),
+(29, 1, 1.5, NULL),
+(29, 2, 4.5, NULL);
 
 -- --------------------------------------------------------
 
@@ -219,6 +350,7 @@ CREATE TABLE `solicitacaomovimentacao` (
   `idTipo` int(11) NOT NULL,
   `idCentroCusto` int(11) NOT NULL,
   `idEstoque` int(11) NOT NULL,
+  `idOrdem` int(11) DEFAULT NULL,
   `idStatus` int(11) NOT NULL,
   `idSolicitante` int(11) NOT NULL,
   `data` date NOT NULL,
@@ -229,8 +361,8 @@ CREATE TABLE `solicitacaomovimentacao` (
 -- Extraindo dados da tabela `solicitacaomovimentacao`
 --
 
-INSERT INTO `solicitacaomovimentacao` (`idSolicitacaoMovimentacao`, `idTipo`, `idCentroCusto`, `idEstoque`, `idStatus`, `idSolicitante`, `data`, `necessidade`) VALUES
-(1, 2, 2, 1, 1, 1, '2023-09-11', '2023-09-12');
+INSERT INTO `solicitacaomovimentacao` (`idSolicitacaoMovimentacao`, `idTipo`, `idCentroCusto`, `idEstoque`, `idOrdem`, `idStatus`, `idSolicitante`, `data`, `necessidade`) VALUES
+(1, 2, 2, 2, NULL, 1, 1, '2023-09-11', '2023-09-12');
 
 -- --------------------------------------------------------
 
@@ -268,7 +400,10 @@ CREATE TABLE `tipo` (
 
 INSERT INTO `tipo` (`idTipo`, `nome`) VALUES
 (1, 'Administrativo'),
-(2, 'Requisição');
+(2, 'Requisição'),
+(3, 'Transferência de estoque'),
+(4, 'Perda'),
+(5, 'Ordem de Serviço');
 
 -- --------------------------------------------------------
 
@@ -311,7 +446,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `nome`, `dataNasc`, `documento`, `idTipo`, `login`, `senha`) VALUES
-(1, 'Camila Matos de Souza', '2002-10-19', '10503326950', 1, 'camila.matos', '123');
+(1, 'Camila Matos de Souza', '2002-10-19', '10503326950', 1, 'camila.matos', '123'),
+(2, 'Camila Matos de Souza', '2002-10-19', '10503326950', 1, 'camila.matos', '$2y$10$Fh0W13sW6dfjry187nkK4.NyGavNZQEfe1m9M7bE6KSuJ2QTOkQXy');
 
 --
 -- Índices para tabelas despejadas
@@ -356,12 +492,26 @@ ALTER TABLE `item`
   ADD KEY `idStatus` (`idStatus`);
 
 --
+-- Índices para tabela `itenscompra`
+--
+ALTER TABLE `itenscompra`
+  ADD PRIMARY KEY (`idSolicitacao`,`idItem`),
+  ADD KEY `idItem` (`idItem`);
+
+--
+-- Índices para tabela `itensmovimentacao`
+--
+ALTER TABLE `itensmovimentacao`
+  ADD PRIMARY KEY (`idSolicitacao`,`idLote`),
+  ADD KEY `idLote` (`idLote`);
+
+--
 -- Índices para tabela `itenssolicitacao`
 --
 ALTER TABLE `itenssolicitacao`
-  ADD PRIMARY KEY (`idSolicitacao`,`idLote`),
+  ADD PRIMARY KEY (`idSolicitacao`,`idItem`),
   ADD KEY `idSolicitacao` (`idSolicitacao`),
-  ADD KEY `idLote` (`idLote`);
+  ADD KEY `idLote` (`idItem`);
 
 --
 -- Índices para tabela `lote`
@@ -387,6 +537,37 @@ ALTER TABLE `movimentacao`
   ADD KEY `idStatus` (`idStatus`);
 
 --
+-- Índices para tabela `ordemparametrizacao`
+--
+ALTER TABLE `ordemparametrizacao`
+  ADD PRIMARY KEY (`idReceita`,`idItem`),
+  ADD KEY `idItem` (`idItem`),
+  ADD KEY `idUnidadeMedida` (`idUnidadeMedida`);
+
+--
+-- Índices para tabela `ordemservico`
+--
+ALTER TABLE `ordemservico`
+  ADD PRIMARY KEY (`idOrdemServico`),
+  ADD KEY `idReceita` (`idReceita`),
+  ADD KEY `idStatus` (`idStatus`),
+  ADD KEY `idUsuario` (`idUsuario`);
+
+--
+-- Índices para tabela `receitaparametrizacao`
+--
+ALTER TABLE `receitaparametrizacao`
+  ADD PRIMARY KEY (`idReceita`),
+  ADD KEY `idCategoria` (`idCategoria`);
+
+--
+-- Índices para tabela `receitaservico`
+--
+ALTER TABLE `receitaservico`
+  ADD PRIMARY KEY (`idOrdemServico`,`idItem`),
+  ADD KEY `idItem` (`idItem`);
+
+--
 -- Índices para tabela `solicitacaomovimentacao`
 --
 ALTER TABLE `solicitacaomovimentacao`
@@ -395,7 +576,8 @@ ALTER TABLE `solicitacaomovimentacao`
   ADD KEY `idCentroCusto` (`idCentroCusto`),
   ADD KEY `idEstoque` (`idEstoque`),
   ADD KEY `idStatus` (`idStatus`),
-  ADD KEY `idSolicitante` (`idSolicitante`);
+  ADD KEY `idSolicitante` (`idSolicitante`),
+  ADD KEY `idOrdem` (`idOrdem`);
 
 --
 -- Índices para tabela `status`
@@ -430,13 +612,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `centrocusto`
 --
 ALTER TABLE `centrocusto`
-  MODIFY `idCentroCusto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idCentroCusto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `entrada`
@@ -448,19 +630,19 @@ ALTER TABLE `entrada`
 -- AUTO_INCREMENT de tabela `estoque`
 --
 ALTER TABLE `estoque`
-  MODIFY `idEstoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idEstoque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `item`
 --
 ALTER TABLE `item`
-  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `lote`
 --
 ALTER TABLE `lote`
-  MODIFY `idLote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idLote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `marca`
@@ -472,7 +654,19 @@ ALTER TABLE `marca`
 -- AUTO_INCREMENT de tabela `movimentacao`
 --
 ALTER TABLE `movimentacao`
-  MODIFY `idMovimentacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idMovimentacao` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `ordemservico`
+--
+ALTER TABLE `ordemservico`
+  MODIFY `idOrdemServico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT de tabela `receitaparametrizacao`
+--
+ALTER TABLE `receitaparametrizacao`
+  MODIFY `idReceita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `solicitacaomovimentacao`
@@ -490,7 +684,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT de tabela `tipo`
 --
 ALTER TABLE `tipo`
-  MODIFY `idTipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idTipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `unidademedida`
@@ -502,7 +696,7 @@ ALTER TABLE `unidademedida`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para despejos de tabelas
@@ -537,10 +731,23 @@ ALTER TABLE `item`
   ADD CONSTRAINT `item_ibfk_4` FOREIGN KEY (`idUnidadeMedida`) REFERENCES `unidademedida` (`idUnidadeMedida`);
 
 --
+-- Limitadores para a tabela `itenscompra`
+--
+ALTER TABLE `itenscompra`
+  ADD CONSTRAINT `itenscompra_ibfk_1` FOREIGN KEY (`idItem`) REFERENCES `item` (`idItem`);
+
+--
+-- Limitadores para a tabela `itensmovimentacao`
+--
+ALTER TABLE `itensmovimentacao`
+  ADD CONSTRAINT `itensmovimentacao_ibfk_1` FOREIGN KEY (`idLote`) REFERENCES `lote` (`idLote`),
+  ADD CONSTRAINT `itensmovimentacao_ibfk_2` FOREIGN KEY (`idSolicitacao`) REFERENCES `solicitacaomovimentacao` (`idSolicitacaoMovimentacao`);
+
+--
 -- Limitadores para a tabela `itenssolicitacao`
 --
 ALTER TABLE `itenssolicitacao`
-  ADD CONSTRAINT `itenssolicitacao_ibfk_1` FOREIGN KEY (`idLote`) REFERENCES `lote` (`idLote`),
+  ADD CONSTRAINT `itenssolicitacao_ibfk_1` FOREIGN KEY (`idItem`) REFERENCES `item` (`idItem`),
   ADD CONSTRAINT `itenssolicitacao_ibfk_2` FOREIGN KEY (`idSolicitacao`) REFERENCES `solicitacaomovimentacao` (`idSolicitacaoMovimentacao`);
 
 --
@@ -559,6 +766,35 @@ ALTER TABLE `movimentacao`
   ADD CONSTRAINT `movimentacao_ibfk_3` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`);
 
 --
+-- Limitadores para a tabela `ordemparametrizacao`
+--
+ALTER TABLE `ordemparametrizacao`
+  ADD CONSTRAINT `ordemparametrizacao_ibfk_1` FOREIGN KEY (`idItem`) REFERENCES `item` (`idItem`),
+  ADD CONSTRAINT `ordemparametrizacao_ibfk_2` FOREIGN KEY (`idReceita`) REFERENCES `receitaparametrizacao` (`idReceita`),
+  ADD CONSTRAINT `ordemparametrizacao_ibfk_3` FOREIGN KEY (`idUnidadeMedida`) REFERENCES `unidademedida` (`idUnidadeMedida`);
+
+--
+-- Limitadores para a tabela `ordemservico`
+--
+ALTER TABLE `ordemservico`
+  ADD CONSTRAINT `ordemservico_ibfk_1` FOREIGN KEY (`idReceita`) REFERENCES `receitaparametrizacao` (`idReceita`),
+  ADD CONSTRAINT `ordemservico_ibfk_2` FOREIGN KEY (`idStatus`) REFERENCES `status` (`idStatus`),
+  ADD CONSTRAINT `ordemservico_ibfk_3` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`);
+
+--
+-- Limitadores para a tabela `receitaparametrizacao`
+--
+ALTER TABLE `receitaparametrizacao`
+  ADD CONSTRAINT `receitaparametrizacao_ibfk_1` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`);
+
+--
+-- Limitadores para a tabela `receitaservico`
+--
+ALTER TABLE `receitaservico`
+  ADD CONSTRAINT `receitaservico_ibfk_1` FOREIGN KEY (`idOrdemServico`) REFERENCES `ordemservico` (`idOrdemServico`),
+  ADD CONSTRAINT `receitaservico_ibfk_2` FOREIGN KEY (`idItem`) REFERENCES `item` (`idItem`);
+
+--
 -- Limitadores para a tabela `solicitacaomovimentacao`
 --
 ALTER TABLE `solicitacaomovimentacao`
@@ -566,7 +802,8 @@ ALTER TABLE `solicitacaomovimentacao`
   ADD CONSTRAINT `solicitacaomovimentacao_ibfk_2` FOREIGN KEY (`idEstoque`) REFERENCES `estoque` (`idEstoque`),
   ADD CONSTRAINT `solicitacaomovimentacao_ibfk_3` FOREIGN KEY (`idSolicitante`) REFERENCES `usuario` (`idUsuario`),
   ADD CONSTRAINT `solicitacaomovimentacao_ibfk_4` FOREIGN KEY (`idStatus`) REFERENCES `status` (`idStatus`),
-  ADD CONSTRAINT `solicitacaomovimentacao_ibfk_5` FOREIGN KEY (`idTipo`) REFERENCES `tipo` (`idTipo`);
+  ADD CONSTRAINT `solicitacaomovimentacao_ibfk_5` FOREIGN KEY (`idTipo`) REFERENCES `tipo` (`idTipo`),
+  ADD CONSTRAINT `solicitacaomovimentacao_ibfk_6` FOREIGN KEY (`idOrdem`) REFERENCES `ordemservico` (`idOrdemServico`);
 
 --
 -- Limitadores para a tabela `usuario`
