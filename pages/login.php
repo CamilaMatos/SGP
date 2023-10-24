@@ -21,21 +21,26 @@ if ($_POST) {
 }
 
 ?>
-<div class="mainForm">
-
-    <form action="pages/login" method="POST">
-        <div class="formulario">
-            <i class="fa-regular fa-circle-user loginIcon"></i>
-            <br>
-            <br>
-            <input type="text" placeholder="Login" id="login" name="login" class="loginInput">
-            <br>
-            <input type="password" placeholder="Senha" id="password" name="password" class="loginInput">
-            <br>
-            <br>
-            <button type="submit" class="submitButton">Enviar</button>
-
-        </div>
-    </form>
-
+<div class="loginContainer">
+    <div class="bgContainer">
+        <img src="https://mundo.gimbastore.com.br/wp-content/uploads/2019/01/ESTOQUE-min.jpg" class="loginBg" alt="Login BackGround">
+    </div>
+    <div class="mainForm">
+        
+        <form action="pages/login" method="POST">
+            <div class="formulario">
+                <i class="fa-regular fa-circle-user loginIcon"></i>
+                <br>
+                <br>
+                <input type="text" placeholder="Login" id="login" name="login" class="loginInput">
+                <br>
+                <input type="password" placeholder="Senha" id="password" name="password" class="loginInput">
+                <br>
+                <br>
+                <button type="submit" class="submitButton">Enviar</button>
+                
+            </div>
+        </form>
+        
+    </div>
 </div>
