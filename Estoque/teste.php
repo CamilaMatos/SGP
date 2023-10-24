@@ -10,8 +10,8 @@ require_once "CentroCusto.php";
 // ver sobre status aparecendo para todos
 
 
-$R = new ReceitaParametrizacao(null, 'Teste 2', 1, "01:00", null, null);
-print(".".$R->cadastrarReceita());
+//$R = new ReceitaParametrizacao(null, 'Teste 2', 1, "01:00", null, null);
+//print(".".$R->cadastrarReceita());
 //$R->setNome('Testando de novo');
 //print($R->editarReceita(1));
 //print($R->excluirReceita(2));
@@ -24,11 +24,12 @@ print(".".$R->cadastrarReceita());
 //print_r($O);
 //$O->excluirIngrediente();
 
-$OS = new OrdemServico(null, 2, 1, '2023-10-19', 11, null, null, 1, null, null);
+$OS = new OrdemServico(null, 2, 1, '2023-11-10', 500, null, null, 1, null, null);
 print(".".$OS->gerarOS());
+//$OS->buscarOrdem(2);
 
-$C = new Categoria(null, "Teste Conecta");
-print(".".$C->cadastrarCategoria());
+//$C = new Categoria(null, "Teste Conecta");
+//print(".".$C->cadastrarCategoria());
 
-$CC = new CentroCusto(null, "Teste Conecta", "Teste Conecta", 1);
-print(".".$CC->cadastrarCentroCusto());
+//$CC = new CentroCusto(null, "Teste Conecta", "Teste Conecta", 1);
+//print(".".$CC->cadastrarCentroCusto());
