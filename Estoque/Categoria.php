@@ -1,5 +1,5 @@
 <?php
-require_once "../Classes/Conecta.php";
+require_once "./Classes/Conecta.php";
 class Categoria {
     private $idCategoria;
     private $nome;
@@ -52,8 +52,7 @@ class Categoria {
             $resultado = $this->pdo->lastInsertId();//sucesso
         } else {
             $resultado = "E";//erro
-        }
-
+        };
         return $resultado;
     }
 

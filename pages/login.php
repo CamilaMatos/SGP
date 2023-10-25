@@ -1,7 +1,11 @@
 <link rel="stylesheet" href="css/style.css">
+
+<header class="">
+
+</header>
 <?php
 
-if ($_POST) {
+if (!empty($_POST)) {
 
 
     include "./Estoque/Usuario.php";
@@ -26,21 +30,25 @@ if ($_POST) {
         <img src="https://mundo.gimbastore.com.br/wp-content/uploads/2019/01/ESTOQUE-min.jpg" class="loginBg" alt="Login BackGround">
     </div>
     <div class="mainForm">
-        
         <form action="pages/login" method="POST">
             <div class="formulario">
                 <i class="fa-regular fa-circle-user loginIcon"></i>
                 <br>
                 <br>
+                <label for="login">Usuário:</label>
+                <br>
                 <input type="text" placeholder="Login" id="login" name="login" class="loginInput">
+                <br>
+                <label for="password">Senha:</label>
                 <br>
                 <input type="password" placeholder="Senha" id="password" name="password" class="loginInput">
                 <br>
                 <br>
-                <button type="submit" class="submitButton">Enviar</button>
-                
+                <button type="submit" class="submitButton">Login</button>               
             </div>
-        </form>
-        
+        </form> 
     </div>
 </div>
+<?php
+    require "footer.php"
+?>

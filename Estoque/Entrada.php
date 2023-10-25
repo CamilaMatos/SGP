@@ -1,5 +1,5 @@
 <?php
-require_once "Conecta.php";
+require_once "./Classes/Conecta.php";
 class Item{
     private $idItem;
     private $nome;

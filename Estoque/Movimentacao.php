@@ -1,5 +1,5 @@
 <?php
-require_once "../Classes/Conecta.php";
+require_once "./Classes/Conecta.php";
 require_once "Consultar.php";
 require_once "Lote.php";
 class Movimentacao {

@@ -22,10 +22,8 @@ include "configs/conecta.php";
     <link rel="stylesheet" href="css/datatables.min.css">
     <link rel="stylesheet" href="css/summernote-lite.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
 
     <link rel="shortcut icon" href="images/icone.png">
 
@@ -43,32 +41,42 @@ include "configs/conecta.php";
 </head>
 
 <body>
-
+    
     <?php
-    require "header.php";
-    ?>
-    <main>
-        <?php
-        $page = "login";
+    if(!isset($_SESSION['login'])){
+        require "pages/login.php";
+    }else{
 
-        if (isset($_GET["param"])) {
-            $param = trim($_GET["param"]);
-            $param = explode("/", $param);
-            $page = $param[1];
-        }
-
-        $page = "pages/{$page}.php";
-
-        if (file_exists($page)) {
-            require $page;
-        } else {
-            require "pages/404.php";
-        }
-
+        require "header.php";
         ?>
-    </main>
-    <?php
+            <main>
+                <?php
+                $page = "home";
+                if (isset($_GET["param"])) {
+                    $param = trim($_GET["param"]);
+                    $param = explode("/", $param);
+                    $pasta = $param[0] ?? NULL;
+                    $arquivo = $param[1] ?? NULL;
+                    $id = $param[2] ?? NULL;
+                }
+
+                if (($pasta == "home") OR ($pasta == "index.php")) {
+                    $page = "pages/home.php";
+                } else {
+                    $page = "{$pasta}/{$arquivo}.php";
+                }
+    
+                //echo $pagina;
+                if (file_exists($page)) {
+                    require $page;
+                } else {
+                    require "pages/404.php";
+                }
+                ?>
+            </main>
+        <?php
     require "footer.php";
+    }
     ?>
 
 </body>

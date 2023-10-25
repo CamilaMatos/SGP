@@ -1,4 +1,5 @@
 <?php
-
-session_destroy();
-echo "<script>location.href = 'pages/login';</script>";
+    session_start();
+    session_destroy();
+    header("Location: index.php");
+?>
