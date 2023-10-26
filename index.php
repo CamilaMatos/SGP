@@ -51,12 +51,34 @@ include "configs/conecta.php";
                 Nome do Cidadão
             </div>
         </div>
-        <a href="pages/perfil" class="w3-bar-item w3-button">Perfil</a>
-        <a href="pages/permissoes" class="w3-bar-item w3-button">Permissões</a>
-        <a href="pages/usuarios" class="w3-bar-item w3-button">Usuários</a> 
-        <a href="pages/manutencao" class="w3-bar-item w3-button">Parâmetros</a>
-        <div>
-            <a href="pages/sair" class="w3-bar-item w3-button">
+        <a href="pages/perfil" class="w3-bar-item w3-button">
+            <div stye="direction: row">
+                <div>
+                    <i class="fa-solid fa-user optionsIcon"></i>
+                </div>
+                <div>
+                    Perfil
+                </div>
+            </div>
+        </a>
+        <a href="pages/perfil" class="w3-bar-item w3-button">
+            <i class="fa-solid fa-user optionsIcon"></i>
+            Perfil
+        </a>
+        <a href="pages/permissoes" class="w3-bar-item w3-button">
+            <i class="fa-solid fa-user-lock optionsIcon"></i>
+            Permissões
+        </a>
+        <a href="pages/usuarios" class="w3-bar-item w3-button">
+            <i class="fa-solid fa-users optionsIcon"></i>
+            Usuários
+        </a> 
+        <a href="pages/manutencao" class="w3-bar-item w3-button">
+            <i class="fa-solid fa-filter optionsIcon"></i>
+            Parâmetros
+        </a>
+        <div class="logOutDiv">
+            <a href="pages/sair">
                 <i class="fa-solid fa-person-through-window optionsIcon"></i>
                 Sair
             </a>    
@@ -131,6 +153,7 @@ include "configs/conecta.php";
 
         document.getElementById("sideBarIcon").value = "aberto";
 
+        document.getElementById("myOverlay").style.transition = "500ms";
         document.getElementById("myOverlay").style.display = "block";
     }
 </script>

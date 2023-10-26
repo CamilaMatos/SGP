@@ -365,5 +365,10 @@ table {
 }
 
 .logOutDiv{
-    bottom: 0;
+    position: absolute;
+    bottom: 0%;
+    width: 100%;
+    text-align: center;
+    height: 15vh;
+    font-size: 25px;
 }
