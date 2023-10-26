@@ -11,14 +11,14 @@
 <div class="mainMenu">
     <div class="flex-row">
         <a href="pages/estoque">
-            <div class="mainMenuItem" id="i1">
+            <div class="mainMenuItem">
                 <p>
                     Estoque
                 </p>
             </div>
         </a>
         <a href="pages/construct">
-            <div class="mainMenuItem" id="i2">
+            <div class="mainMenuItem">
                 <p>
                     Produção
                 </p>
@@ -26,21 +26,4 @@
         </a>
 
     </div>
-    <div class="flex-row">
-        <a href="pages/construct">
-            <div class="mainMenuItem" id="i3">
-                <p>
-                    Salão
-                </p>
-            </div>
-        </a>
-        <a href="pages/construct">
-            <div class="mainMenuItem" id="i4">
-                <p>
-                    Venda
-                </p>
-            </div>
-        </a>
-    </div>
-
 </div>

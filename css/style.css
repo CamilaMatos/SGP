@@ -38,7 +38,7 @@ header {
     min-height: 10vh;
     max-height: 10vh;
     margin: 0;
-    padding-left: 2vh;
+    
     padding-right: 2vh;
     padding-top: 0;
     padding-bottom: 0;
@@ -85,7 +85,7 @@ body {
 .mainForm {
     border-width: 3px;
     border-color: red;
-    background-color: #8bb1e4;
+    background-color: #d8e3f1;
     text-align: center;
     justify-content: center;
     width: 39.08vw;
@@ -260,6 +260,7 @@ table {
 
 .loginInput {
     line-height: 25px;
+    height: 35px;
     border-radius: 5px;
     width: 20vw;
     padding-left: 15px;
@@ -268,6 +269,7 @@ table {
     border-width: 2px;
     margin: 2px;
     font-family: 'PT Sans', sans-serif;
+    background-color: white;
 }
 
 .submitButton {
@@ -319,4 +321,49 @@ table {
 .formulario{
     margin-top: 50%;
     transform: translateY(-50%);
+}
+
+.loginLabel{
+    margin-right: 40%;
+}
+
+.hamburguerMenu{
+    border: none;
+    color: white;
+    background-color: transparent;
+    font-weight: bold;
+    height: 10vh;
+    text-align: center;
+    width: 10vh;
+    z-index: 5 !important;
+}
+.hamburguerMenu:hover {
+    color: white;
+    background-color: #072f55;
+    font-weight: bold;
+    cursor: pointer;
+    
+}
+
+.sideBar{
+    display: block;
+    left: -25%;
+    width: 25%;
+    z-index: 5;
+}
+
+.sideBarTop{
+    width: 100%;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    text-align: center;
+}
+
+.optionsIcon{
+    margin-right: 1vw;
+    /* margin-top: 10px; */
+}
+
+.logOutDiv{
+    bottom: 0;
 }

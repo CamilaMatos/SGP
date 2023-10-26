@@ -35,11 +35,12 @@ if (!empty($_POST)) {
                 <i class="fa-regular fa-circle-user loginIcon"></i>
                 <br>
                 <br>
-                <label for="login">Usuário:</label>
+                <br>
+                <label for="login" class="loginLabel">Usuário:</label>
                 <br>
                 <input type="text" placeholder="Login" id="login" name="login" class="loginInput">
                 <br>
-                <label for="password">Senha:</label>
+                <label for="password"class="loginLabel">Senha:</label>
                 <br>
                 <input type="password" placeholder="Senha" id="password" name="password" class="loginInput">
                 <br>

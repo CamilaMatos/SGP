@@ -11,37 +11,11 @@
         $stilo = "hidden";
     }else{$stilo = "";};
     ?>
+    <button class="hamburguerMenu" id="sideBarIcon" type="button" value="fechado" onclick="sideBar(this)">☰</button>
     <a href="pages/home" class="headerIcon" <?=$stilo?>>
         home
     </a>
 
     <ul class="headerUl">
-        <li>
-            <div class="dropdown">
-                <span>Perfil</span>
-                <ul class="dropdown-content">
-                    <li>
-                        <a href="pages/perfil">
-                            Perfil
-                        </a>
-                    </li>
-                    <li>
-                        <a href="pages/permissoes">
-                            Permissões
-                        </a>
-                    </li>
-                    <li>
-                        <a href="pages/admin">
-                            Administração
-                        </a>
-                    </li>
-                    <li>
-                        <a href='pages/sair'>
-                            Sair
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
     </ul>
 </header>
