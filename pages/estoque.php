@@ -26,13 +26,9 @@
 <br>
 
 <div class="historico">
-
     <table>
         <thead>
             <tr>
-                <td>
-                    <p>Código</p>
-                </td>
                 <td>
                     <p>Produto</p>
                 </td>
@@ -43,60 +39,77 @@
                     <p>Un. Medida</p>
                 </td>
                 <td>
-                    <p>Ult. Entrada</p>
+                    <p>Lote</p>
+                </td>
+                <td>
+                    <p>Validade</p>
+                </td>
+                <td>
+                    <p>Opções</p>
                 </td>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    <p>1</p>
+                    <p>Leite</p>
                 </td>
-                <td>
-                    <p>Prego</p>
-                </td>
-                <td>
-                    <p>150</p>
-                </td>
-                <td>
-                    <p>Pc</p>
-                </td>
-                <td>
-                    <p>06/06/2008</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p>2</p>
-                </td>
-                <td>
-                    <p>Telha</p>
-                </td>
-                <td>
-                    <p>65</p>
-                </td>
-                <td>
-                    <p>Cx</p>
-                </td>
-                <td>
-                    <p>06/06/2010</p>
-                </td>
-            </tr>
-            <tr>
                 <td>
                     <p>3</p>
                 </td>
                 <td>
-                    <p>Cimento</p>
+                    <p>Caixa</p>
                 </td>
                 <td>
-                    <p>45</p>
+                    <p>
+                        116
+                    </p>
                 </td>
                 <td>
-                    <p>Pc</p>
+                    <p>26/08/2023</p>
                 </td>
                 <td>
-                    <p>06/10/2008</p>
+                    <p>Movimentar</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Fermento</p>
+                </td>
+                <td>
+                    <p>1</p>
+                </td>
+                <td>
+                    <p>Pote</p>
+                </td>
+                <td>
+                    <p>120</p>
+                </td>
+                <td>
+                    <p>02/09/2023</p>
+                </td>
+                <td>
+                    <p>Movimentar</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Milho</p>
+                </td>
+                <td>
+                    <p>3</p>
+                </td>
+                <td>
+                    <p>Lata</p>
+                </td>
+                <td>
+                    <p>123</p>
+                </td>
+                <td>
+                    <p>29/09/2023</p>
+                </td>
+                <td>
+                    <p>Movimentar</p>
                 </td>
             </tr>
         </tbody>

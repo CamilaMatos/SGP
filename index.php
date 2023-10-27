@@ -42,6 +42,36 @@ include "configs/conecta.php";
 </head>
 
 <body>
+    <?php
+        if (isset($_GET['param'])) {
+            $param = trim($_GET["param"]);
+            $param = explode("/", $param);
+            $page = $param[1];
+        };
+
+        if($page == "home"){
+            $stilo = "hidden !important";
+        }else{$stilo = "";}; 
+        
+        if($page == "permissoes"){
+            $sPermissoes = "linkActive";
+        }else{$sPermissoes = "";};
+
+        if($page == "perfil"){
+            $sPerfil = "linkActive";
+        }else{$sPerfil = "";}; 
+
+        if($page == "usuarios"){
+            $sUsuarios = "linkActive";
+        }else{$sUsuarios = "";}; 
+        
+        if($page == "manutencao"){
+            $sPerfil = "linkActive";
+        }else{$sPerfil = "";}; 
+        
+         
+        
+    ?>
     <div class="w3-sidebar w3-bar-block sideBar" id="mySidebar">
         <div class="sideBarTop">
             <div>
@@ -52,9 +82,23 @@ include "configs/conecta.php";
                 Nome do Cidadão
             </div>
         </div>
-        <a href="pages/perfil">
+        <a href="pages/home" <?=$stilo?> class="butao">
             <div class="optionContainer">
                 <div class="itemIconContainer">
+                    <div class="itemIcon">
+                        <i class="fa-solid fa-house optionsIcon"></i>
+                    </div>
+                </div>
+                <div class="itemNameContainer">
+                    <div class="itemName">
+                        Home
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="pages/perfil" class="butao">
+            <div class="optionContainer">
+                <div class="itemIconContainer <?=$sPerfil?>">
                     <div class="itemIcon">
                         <i class="fa-solid fa-user optionsIcon"></i>
                     </div>
@@ -66,9 +110,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/permissoes">
+        <a href="pages/permissoes" class="butao">
             <div class="optionContainer">
-                <div class="itemIconContainer">
+                <div class="itemIconContainer <?=$sPermissoes?>">
                     <div class="itemIcon">
                         <i class="fa-solid fa-user-lock optionsIcon"></i>
                     </div>
@@ -80,9 +124,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/usuarios">
+        <a href="pages/usuarios" class="butao">
             <div class="optionContainer">
-                <div class="itemIconContainer">
+                <div class="itemIconContainer <?=$sUsuarios?>">
                     <div class="itemIcon">
                         <i class="fa-solid fa-users optionsIcon"></i>
                     </div>
@@ -94,9 +138,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/manutencao">
+        <a href="pages/manutencao" class="butao">
             <div class="optionContainer">
-                <div class="itemIconContainer">
+                <div class="itemIconContainer <?=$sParametro?>">
                     <div class="itemIcon">
                         <i class="fa-solid fa-filter optionsIcon"></i>
                     </div>
@@ -187,6 +231,24 @@ include "configs/conecta.php";
         document.getElementById("myOverlay").style.transition = "500ms";
         document.getElementById("myOverlay").style.display = "block";
     }
+
+    var header = document.getElementById("mySidebar");
+    var btns = header.getElementsByClassName("butao");
+    console.log(btns);
+    for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+        var current = document.getElementsByClassName("activeLink");
+
+        console.log(current);
+
+        if (current.length > 0) {
+        current[0].className = current[0].className.replace(" activeLink", "");
+        }
+
+        this.className += " activeLink";
+    });
+    }
+    
 </script>
 </body>
 
