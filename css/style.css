@@ -360,8 +360,12 @@ table {
 }
 
 .optionsIcon{
-    margin-right: 1vw;
-    /* margin-top: 10px; */
+    transform: translateY(75%);
+}
+
+.optionsIconLogOut{
+    margin-right: 1vh;
+    transform: translateY(10%);
 }
 
 .logOutDiv{
@@ -371,4 +375,27 @@ table {
     text-align: center;
     height: 15vh;
     font-size: 25px;
+}
+
+.itemIconContainer{
+    width: 15%;
+    height: 5vh;
+    background-color: red;
+    text-align: center;
+}
+
+.itemName{
+    width: 2vh;
+    transform: translateY(50%);
+}
+
+.optionContainer{
+    display: flex; 
+    width:100%;
+    height: 5vh;
+}
+
+.itemNameContainer{
+    width: 85%;
+    padding-left: 1vh;
 }

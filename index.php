@@ -47,39 +47,70 @@ include "configs/conecta.php";
             <div>
                 <i class="fa-regular fa-circle-user loginIcon"></i>
             </div>
+            <br>
             <div>
                 Nome do Cidadão
             </div>
         </div>
-        <a href="pages/perfil" class="w3-bar-item w3-button">
-            <div stye="direction: row">
-                <div>
-                    <i class="fa-solid fa-user optionsIcon"></i>
+        <a href="pages/perfil">
+            <div class="optionContainer">
+                <div class="itemIconContainer">
+                    <div class="itemIcon">
+                        <i class="fa-solid fa-user optionsIcon"></i>
+                    </div>
                 </div>
-                <div>
-                    Perfil
+                <div class="itemNameContainer">
+                    <div class="itemName">
+                        Perfil
+                    </div>
                 </div>
             </div>
         </a>
-        <a href="pages/perfil" class="w3-bar-item w3-button">
-            <i class="fa-solid fa-user optionsIcon"></i>
-            Perfil
+        <a href="pages/permissoes">
+            <div class="optionContainer">
+                <div class="itemIconContainer">
+                    <div class="itemIcon">
+                        <i class="fa-solid fa-user-lock optionsIcon"></i>
+                    </div>
+                </div>
+                <div class="itemNameContainer">
+                    <div class="itemName">
+                        Permissões
+                    </div>
+                </div>
+            </div>
         </a>
-        <a href="pages/permissoes" class="w3-bar-item w3-button">
-            <i class="fa-solid fa-user-lock optionsIcon"></i>
-            Permissões
+        <a href="pages/usuarios">
+            <div class="optionContainer">
+                <div class="itemIconContainer">
+                    <div class="itemIcon">
+                        <i class="fa-solid fa-users optionsIcon"></i>
+                    </div>
+                </div>
+                <div class="itemNameContainer">
+                    <div class="itemName">
+                        Usuários
+                    </div>
+                </div>
+            </div>
         </a>
-        <a href="pages/usuarios" class="w3-bar-item w3-button">
-            <i class="fa-solid fa-users optionsIcon"></i>
-            Usuários
-        </a> 
-        <a href="pages/manutencao" class="w3-bar-item w3-button">
-            <i class="fa-solid fa-filter optionsIcon"></i>
-            Parâmetros
+        <a href="pages/manutencao">
+            <div class="optionContainer">
+                <div class="itemIconContainer">
+                    <div class="itemIcon">
+                        <i class="fa-solid fa-filter optionsIcon"></i>
+                    </div>
+                </div>
+                <div class="itemNameContainer">
+                    <div class="itemName">
+                        Parâmetros
+                    </div>
+                </div>
+            </div>
         </a>
         <div class="logOutDiv">
             <a href="pages/sair">
-                <i class="fa-solid fa-person-through-window optionsIcon"></i>
+                <i class="fa-solid fa-person-through-window optionsIconLogOut"></i>
                 Sair
             </a>    
         </div>
