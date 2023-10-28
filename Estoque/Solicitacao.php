@@ -230,4 +230,15 @@ class Solicitacao {
         return $resultado;
     }
 
+    public function consultarEstoqueItem($idItem, $idEstoque){
+        $sql = "select SUM(quantidadeAtual) from lote where idItem=:idItem and idEstoque=:idEstoque";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idItem", $idItem);
+        $consulta->bindParam(":idEstoque", $idEstoque);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
 }

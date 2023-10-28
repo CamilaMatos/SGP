@@ -193,4 +193,6 @@ class Movimentacao {
 
         return $resultado;
     }
+
+    
 }

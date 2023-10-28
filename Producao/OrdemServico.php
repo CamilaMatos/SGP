@@ -1,6 +1,7 @@
 <?php
 require_once "../Classes/Conecta.php";
 require_once "../Estoque/Lote.php";
+require_once "../Estoque/Movimentacao.php";
 class OrdemServico {
     private $idOrdem;
     private $idReceita;
@@ -173,7 +174,7 @@ class OrdemServico {
         $consulta->execute();
         $id = $this->pdo->lastInsertId();
 
-        
+        $this->assinar($id, 3, $this->idUsuario);
         $this->buscarOrdem($this->idReceita, $id);
 
 
@@ -189,16 +190,30 @@ class OrdemServico {
         $consulta->execute();
     }
 
-    public function cancelarOS(){
+    public function assinar($idOrdem, $idStatus, $idUsuario){
+        $data = date('Y-m-d');
+        $hora = date('H:i:s');
 
+        $sql = "insert into assinatura values (:idOrdemServico,:idUsuario, :idStatus, :data, :hora);";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idOrdemServico", $idOrdem);
+        $consulta->bindParam(":idStatus", $idStatus);
+        $consulta->bindParam(":idUsuario", $idUsuario);
+        $consulta->bindParam(":data", $data);
+        $consulta->bindParam(":hora", $hora);
+        $consulta->execute();
     }
 
-    public function assinar($idStatus, $data, $idUsuario){
-
-    }
-
-    public function concluirOS(){
-
+    public function concluirOS($idOrdem){
+        $data = date('Y-m-d');
+        $sql = "select * from receitaServico where idOrdem=:idOrdem";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idOrdem", $idOrdem);
+        $consulta->execute();
+        
+        while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
+            
+        }
     }
 
     public function reservarIngredientes(){
@@ -217,7 +232,6 @@ class OrdemServico {
             $this->inserirReceitaOS($idOrdem, $resultado->idItem, $qtdAjustada);
         }
         
-
         return $resultado;
     }
 
