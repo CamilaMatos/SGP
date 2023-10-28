@@ -1,17 +1,19 @@
 
 <?php
 
-    include "./Estoque/Lote.php";
+    include "./Estoque/Solicitacao.php";
 
     if ($_POST) {
-        $idItem = $_POST['item'];
+        $idTipo = $_POST['tipo'];
+        $idCentroCusto = $_POST['centroCusto'];
+        $idStatus = $_POST['status'];
+        $idSolicitante = $_POST['solicitante'];
         $idEstoque = $_POST['estoque'];
-        $qtdInicial = $_POST['qtdInicial'];
-        $qtdAtual = $_POST['qtdAtual'];
-        $validade = $_POST['validade'];
-        $vlUnitario=  $_POST['vlUnitario'];
-        $L = new Lote (NULL, $idItem, $idEstoque, $qtdInicial, $qtdAtual, $validade, $vlUnitario);
-        if($L->inserirLote()){
+        $data =  $_POST['data'];
+        $necessidade = $_POST['necessidade'];
+
+        $R = new Solicitacao (NULL, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade);
+        if($R->solicitarRequisicao()){
             echo "<script>alert('Lote inserido com sucesso!!');</script>";
         } else{
             echo "<script>alert('A inserção do lote falhou, por que algo deu errado!!');</script>";
@@ -22,7 +24,7 @@
 
 
 <form action="" method="post">
-    <select name="item" id="item" required>
+    <select name="tipo" id="tipo" required>
         <option value="">Selecione um item:</option>
         <?php
             $sql = "select i.idItem item, i.nome nome from item i order by nome";

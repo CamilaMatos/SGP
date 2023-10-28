@@ -54,20 +54,20 @@ include "configs/conecta.php";
         }else{$stilo = "";}; 
         
         if($page == "permissoes"){
-            $sPermissoes = "linkActive";
+            $sPermissoes = "activeLink";
         }else{$sPermissoes = "";};
 
         if($page == "perfil"){
-            $sPerfil = "linkActive";
+            $sPerfil = "activeLink";
         }else{$sPerfil = "";}; 
 
         if($page == "usuarios"){
-            $sUsuarios = "linkActive";
+            $sUsuarios = "activeLink";
         }else{$sUsuarios = "";}; 
         
         if($page == "manutencao"){
-            $sPerfil = "linkActive";
-        }else{$sPerfil = "";}; 
+            $sManutencao = "activeLink";
+        }else{$smanutencao = "";}; 
         
          
         
@@ -96,9 +96,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/perfil" class="butao">
+        <a href="pages/perfil" class="butao <?=$sPerfil?>">
             <div class="optionContainer">
-                <div class="itemIconContainer <?=$sPerfil?>">
+                <div class="itemIconContainer">
                     <div class="itemIcon">
                         <i class="fa-solid fa-user optionsIcon"></i>
                     </div>
@@ -110,9 +110,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/permissoes" class="butao">
+        <a href="pages/permissoes" class="butao <?=$sPermissoes?>">
             <div class="optionContainer">
-                <div class="itemIconContainer <?=$sPermissoes?>">
+                <div class="itemIconContainer">
                     <div class="itemIcon">
                         <i class="fa-solid fa-user-lock optionsIcon"></i>
                     </div>
@@ -124,9 +124,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/usuarios" class="butao">
+        <a href="pages/usuarios" class="butao <?=$sUsuarios?>">
             <div class="optionContainer">
-                <div class="itemIconContainer <?=$sUsuarios?>">
+                <div class="itemIconContainer">
                     <div class="itemIcon">
                         <i class="fa-solid fa-users optionsIcon"></i>
                     </div>
@@ -138,9 +138,9 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/manutencao" class="butao">
+        <a href="pages/manutencao" class="butao <?=$sManutencao?>">
             <div class="optionContainer">
-                <div class="itemIconContainer <?=$sParametro?>">
+                <div class="itemIconContainer">
                     <div class="itemIcon">
                         <i class="fa-solid fa-filter optionsIcon"></i>
                     </div>
@@ -218,7 +218,7 @@ include "configs/conecta.php";
         document.getElementById("sideBarIcon").value = "fechado";
 
         document.getElementById("myOverlay").style.display = "none";
-    }
+    };
 
     function w3_open() {
         document.getElementById("mySidebar").style.transition = "500ms";
@@ -230,25 +230,8 @@ include "configs/conecta.php";
 
         document.getElementById("myOverlay").style.transition = "500ms";
         document.getElementById("myOverlay").style.display = "block";
-    }
+    };
 
-    var header = document.getElementById("mySidebar");
-    var btns = header.getElementsByClassName("butao");
-    console.log(btns);
-    for (var i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function() {
-        var current = document.getElementsByClassName("activeLink");
-
-        console.log(current);
-
-        if (current.length > 0) {
-        current[0].className = current[0].className.replace(" activeLink", "");
-        }
-
-        this.className += " activeLink";
-    });
-    }
-    
 </script>
 </body>
 
