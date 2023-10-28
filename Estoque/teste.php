@@ -1,9 +1,9 @@
 <?php
 
 require_once "../Producao/OrdemServico.php";
-require_once "../Producao/ReceitaParametrizacao.php";
-require_once "Categoria.php";
-require_once "CentroCusto.php";
+//require_once "../Producao/ReceitaParametrizacao.php";
+//require_once "Categoria.php";
+//require_once "CentroCusto.php";
 
 
 // ver sobre os retornos das funções e sobre os ids começar null
@@ -33,3 +33,4 @@ print(".".$OS->gerarOS());
 
 //$CC = new CentroCusto(null, "Teste Conecta", "Teste Conecta", 1);
 //print(".".$CC->cadastrarCentroCusto());
+
