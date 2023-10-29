@@ -1,7 +1,6 @@
 <?php
 require_once "./Classes/Conecta.php";
 class Lote {
-    private $idLote;
     private $idItem;
     private $idEstoque;
     private $quantidadeInicial;
@@ -10,9 +9,8 @@ class Lote {
     private $valorUnitario;
     private $pdo;
 
-    public function __construct($idLote, $idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
+    public function __construct($idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
     {
-        $this->idLote = $idLote;
         $this->idItem = $idItem;
         $this->idEstoque = $idEstoque;
         $this->quantidadeInicial = $quantidadeInicial;
@@ -20,18 +18,6 @@ class Lote {
         $this->validade = $validade;
         $this->valorUnitario = $valorUnitario;
         $this->pdo = $this->conexao();
-    }
- 
-    public function getIdLote()
-    {
-        return $this->idLote;
-    }
-
-    public function setIdLote($idLote)
-    {
-        $this->idLote = $idLote;
-
-        return $this;
     }
  
     public function getIdItem()
@@ -113,7 +99,7 @@ class Lote {
         return $pdo;
     }
 
-    public function inserirLote(){
+    public function inserirLote($idUsuario){
         $sql = "insert into lote values (NULL, :idItem, :idEstoque, :quantidadeInicial, :quantidadeAtual, :validade, :valorUnitario)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idItem", $this->idItem);
@@ -122,6 +108,24 @@ class Lote {
         $consulta->bindParam(":quantidadeAtual", $this->quantidadeAtual);
         $consulta->bindParam(":validade", $this->validade);
         $consulta->bindParam(":valorUnitario", $this->valorUnitario);
+
+        if ($consulta->execute()) {
+            $resultado = $this->pdo->lastInsertId();//sucesso
+            $this->entrada($resultado, $idUsuario);
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
+    public function entrada($idLote, $idUsuario){
+        $data = date('Y-m-d');
+        $sql = "insert into entrada values (NULL, :data, :idLote, :quantidadeInicial, :idUsuario, :validade, :valorUnitario)";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":data", $data);
+        $consulta->bindParam(":idLote", $idLote);
+        $consulta->bindParam(":idUsuario", $idUsuario);
 
         if ($consulta->execute()) {
             $resultado = $this->pdo->lastInsertId();//sucesso
@@ -180,7 +184,6 @@ class Lote {
 
         return $resultado;
     }
-
 
     
 }

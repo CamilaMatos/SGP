@@ -1,31 +1,17 @@
 <?php
 require_once "./Classes/Conecta.php";
 class Estoque {
-    private $idEstoque;
     private $nome;
     private $descricao;
     private $idStatus;
     private $pdo;
 
-    public function __construct($idEstoque, $nome, $descricao, $idStatus)
+    public function __construct($nome, $descricao, $idStatus)
     {
-        $this->idEstoque = $idEstoque;
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->idStatus = $idStatus;
         $this->pdo = $this->conexao();
-    }
-
-    public function getIdEstoque()
-    {
-        return $this->idEstoque;
-    }
-
-    public function setIdEstoque($idEstoque)
-    {
-        $this->idEstoque = $idEstoque;
-
-        return $this;
     }
 
     public function getNome()
@@ -72,33 +58,41 @@ class Estoque {
     }
 
     public function cadastrarEstoque(){
-        $sql = "insert into estoque values (NULL, :nome, :descricao, :idStatus)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":descricao", $this->descricao);
-        $consulta->bindParam(":idStatus", $this->idStatus);
+        if(empty($this->estoquePorNome())){
+            $sql = "insert into estoque values (NULL, :nome, :descricao, :idStatus)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":descricao", $this->descricao);
+            $consulta->bindParam(":idStatus", $this->idStatus);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro desse estoque
         }
-
+        
         return $resultado;
     }
 
     public function editarEstoque($id){
-        $sql = "update estoque SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idEstoque=:idEstoque";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":descricao", $this->descricao);
-        $consulta->bindParam(":idStatus", $this->idStatus);
-        $consulta->bindParam(":idEstoque", $id);
+        if(empty($this->estoquePorNome())){
+            $sql = "update estoque SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idEstoque=:idEstoque";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":descricao", $this->descricao);
+            $consulta->bindParam(":idStatus", $this->idStatus);
+            $consulta->bindParam(":idEstoque", $id);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro desse estoque
         }
 
         return $resultado;
@@ -142,6 +136,16 @@ class Estoque {
         $sql = "select idEstoque from lote where idEstoque=:idEstoque";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idEstoque", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function estoquePorNome(){
+        $sql = "select * from estoque where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 

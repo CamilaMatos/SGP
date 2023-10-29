@@ -1,12 +1,11 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idLote;
     private $quantidade;
     private $idItem;
     private $idEstoque;
-    private $lotesUsados;
     private $pdo;
 
     public function __construct($idSolicitacao, $idLote, $quantidade, $idItem, $idEstoque)
@@ -16,11 +15,9 @@ class ItensSolicitacao{
         $this->quantidade = $quantidade;
         $this->idItem = $idItem;
         $this->idEstoque = $idEstoque;
-        $this->lotesUsados = [0];
         $this->pdo = $this->conexao();
     }
 
- 
     public function getIdSolicitacao()
     {
         return $this->idSolicitacao;
@@ -77,18 +74,6 @@ class ItensSolicitacao{
     public function setIdEstoque($idEstoque)
     {
         $this->idEstoque = $idEstoque;
-
-        return $this;
-    }
-
-    public function getLotesUsados()
-    {
-        return $this->lotesUsados;
-    }
-
-    public function setLotesUsados($lotesUsados)
-    {
-        $this->lotesUsados= $lotesUsados;
 
         return $this;
     }
@@ -174,7 +159,7 @@ class ItensSolicitacao{
         return $resultado;
     }
 
-    public function excluirItem($idSolicitacao, $idItem){
+    public function excluirItemMovimentacao($idSolicitacao, $idItem){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($idSolicitacao))){
             $sql = "select i.idSolicitacao, i.idLote, l.idItem from itenssolicitacao i 
@@ -246,11 +231,11 @@ class ItensSolicitacao{
     }
 
     public function selecionarLote(){
-        $sql = "select idLote, quantidadeAtual, Min(validade) from lote where idItem=:idItem and quantidadeAtual>0 and idEstoque=:idEstoque and idLote not in (:lotes)";
+        $sql = "select idLote, quantidadeAtual, Min(validade) from lote where idItem=:idItem and quantidadeAtual>0 and idEstoque=:idEstoque and idLote not in (select idLote from itensMovimentacao where idSolicitacao=:idSolicitacao)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
-        $consulta->bindParam(":lotes", $this->lotesUsados);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
@@ -258,19 +243,39 @@ class ItensSolicitacao{
     }
 
     public function quebrarLotes(){
-        while($this->quantidade>0){
-            $lote = $this->selecionarLote();
-            $this->setIdLote($lote->idLote);
-            $this->setLotesUsados($lote->idLote);
-            if($lote->quantidadeAtual>=$this->quantidade){
-                $this->inserirItemMovimentacao($this->quantidade);
-                $this->setQuantidade(0);
-            } else{
-                $this->inserirItemMovimentacao($lote->quantidadeAtual);
-                $quantidade= $this->quantidade-$lote->quantidadeAtual;
-                $this->setQuantidade($quantidade);
+        $qtd = $this->consultarEstoqueItem();
+        print("qtd=".$this->quantidade."-");
+        print("pedido=".$qtd."-");
+        if($qtd>=$this->quantidade){
+            while($this->quantidade>0){
+                $lote = $this->selecionarLote();
+                $this->setIdLote($lote->idLote);
+                if($lote->quantidadeAtual>=$this->quantidade){
+                    $this->inserirItemMovimentacao($this->quantidade);
+                    $this->setQuantidade(0);
+                } else{
+                    $this->inserirItemMovimentacao($lote->quantidadeAtual);
+                    $quantidade= $this->quantidade-$lote->quantidadeAtual;
+                    $this->setQuantidade($quantidade);
+                }
+            $resultado = "S";//sucesso
             }
+        } else {
+            $resultado = "I";//saldo insuficiente
         }
+
+        return $resultado;
     }
-    
+
+    public function consultarEstoqueItem(){
+        $sql = "select SUM(quantidadeAtual) as qtd from lote where idItem=:idItem and idEstoque=:idEstoque";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idItem", $this->idItem);
+        $consulta->bindParam(":idEstoque", $this->idEstoque);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        $resultado = $resultado->qtd;
+
+        return $resultado;
+    }    
 }

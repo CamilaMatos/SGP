@@ -1,27 +1,13 @@
 <?php
 require_once "./Classes/Conecta.php";
 class Marca {
-    private $idMarca;
     private $nome;
     private $pdo;
 
-    public function __construct($idMarca, $nome)
+    public function __construct($nome)
     {
-        $this->idMarca = $idMarca;
         $this->nome = $nome;
         $this->pdo = $this->conexao();
-    }
-     
-    public function getIdMarca()
-    {
-        return $this->idMarca;
-    }
-
-    public function setIdMarca($idMarca)
-    {
-        $this->idMarca = $idMarca;
-
-        return $this;
     }
  
     public function getNome()
@@ -44,32 +30,40 @@ class Marca {
     }
 
     public function cadastrarMarca(){
-        $sql = "insert into marca values (NULL, :nome)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
+        if(empty($this->marcaPorNome())) {
+            $sql = "insert into marca values (NULL, :nome)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro dessa marca
         }
 
         return $resultado;
     }
 
     public function editarMarca($id){
-        $sql = "update marca SET nome=:nome where idMarca=:idMarca";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idMarca", $id);
+        if(empty($this->marcaPorNome())) {
+            $sql = "update marca SET nome=:nome where idMarca=:idMarca";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idMarca", $id);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro dessa marca
         }
 
-        return $resultado;
+            return $resultado;
     }
 
     public function excluirMarca($id){
@@ -101,4 +95,13 @@ class Marca {
         return $resultado;
     }
 
+    public function marcaPorNome(){
+        $sql = "select * from marca where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
 }

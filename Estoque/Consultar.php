@@ -42,17 +42,6 @@ class Consultar {
         return $resultado;
     }
 
-    public function centroCustoPorNome(){
-        $parametro1 = "%{$this->parametro1}%";
-        $sql = "select * from centroCusto where nome like :parametro1";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $parametro1);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-
-        return $resultado;
-    }
-
     public function usuarioPorId(){
         $sql = "select * from usuario where idUsuario=:parametro1";
         $consulta = $this->pdo->prepare($sql);
@@ -147,16 +136,7 @@ class Consultar {
         return $resultado;
     }
 
-    public function categoriaPorNome(){
-        $parametro1 = "%{$this->parametro1}%";
-        $sql = "select * from categoria where nome like :parametro1";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":parametro1", $parametro1);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-
-        return $resultado;
-    }
+    
 
     public function marcaPorId(){
         $sql = "select * from marca where idMarca=:parametro1";

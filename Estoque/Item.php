@@ -1,7 +1,6 @@
 <?php
 require_once "./Classes/Conecta.php";
 class Item{
-    private $idItem;
     private $nome;
     private $unidadeMedia;
     private $idCategoria;
@@ -10,9 +9,8 @@ class Item{
     private $idStatus;
     private $pdo;
 
-    public function __construct($idItem, $nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus)
+    public function __construct($nome, $unidadeMedia, $idCategoria, $idMarca, $idUnidadeMedida, $idStatus)
     {
-        $this->idItem = $idItem;
         $this->nome = $nome;
         $this->unidadeMedia = $unidadeMedia;
         $this->idCategoria = $idCategoria;
@@ -20,18 +18,6 @@ class Item{
         $this->idUnidadeMedida = $idUnidadeMedida;
         $this->idStatus = $idStatus;
         $this->pdo = $this->conexao();
-    }
-
-    public function getIdItem()
-    {
-        return $this->idItem;
-    }
-
-    public function setIdItem($idItem)
-    {
-        $this->idItem = $idItem;
-
-        return $this;
     }
  
     public function getNome()
@@ -120,39 +106,47 @@ class Item{
     }
 
     public function cadastrarItem(){
-        $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
-        $consulta->bindParam(":idCategoria", $this->idCategoria);
-        $consulta->bindParam(":idMarca", $this->idMarca);
-        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
-        $consulta->bindParam(":idStatus", $this->idStatus);
+        if(empty($this->itemPorNome())) {
+            $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
+            $consulta->bindParam(":idCategoria", $this->idCategoria);
+            $consulta->bindParam(":idMarca", $this->idMarca);
+            $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+            $consulta->bindParam(":idStatus", $this->idStatus);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro desse item
         }
 
         return $resultado;
     }
 
     public function editarItem($id){
-        $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
-        $consulta->bindParam(":idCategoria", $this->idCategoria);
-        $consulta->bindParam(":idMarca", $this->idMarca);
-        $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
-        $consulta->bindParam(":idStatus", $this->idStatus);
-        $consulta->bindParam(":idItem", $id);
+        if(empty($this->itemPorNome())) {
+            $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
+            $consulta->bindParam(":idCategoria", $this->idCategoria);
+            $consulta->bindParam(":idMarca", $this->idMarca);
+            $consulta->bindParam(":idUnidadeMedida", $this->idUnidadeMedida);
+            $consulta->bindParam(":idStatus", $this->idStatus);
+            $consulta->bindParam(":idItem", $id);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro desse item
         }
 
         return $resultado;
@@ -202,5 +196,13 @@ class Item{
         return $resultado;
     }
 
-    
+    public function itemPorNome(){
+        $sql = "select * from item where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
 }

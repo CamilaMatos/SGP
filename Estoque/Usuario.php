@@ -1,9 +1,7 @@
 <?php
 require_once "./Classes/Conecta.php";
 require_once "Consultar.php";
-class Usuario
-{
-    private $idUsuario;
+class Usuario{
     private $nome;
     private $dataNasc;
     private $documento;
@@ -12,9 +10,7 @@ class Usuario
     private $senha;
     private $pdo;
 
-    public function __construct($idUsuario, $nome, $dataNasc, $documento, $idTipo, $login, $senha)
-    {
-        $this->idUsuario = $idUsuario;
+    public function __construct($nome, $dataNasc, $documento, $idTipo, $login, $senha){
         $this->nome = $nome;
         $this->dataNasc = $dataNasc;
         $this->documento = $documento;
@@ -22,18 +18,6 @@ class Usuario
         $this->login = $login;
         $this->senha = $senha;
         $this->pdo = $this->conexao();
-    }
-
-    public function getIdUsuario()
-    {
-        return $this->idUsuario;
-    }
-
-    public function setIdUsuario($idUsuario)
-    {
-        $this->idUsuario = $idUsuario;
-
-        return $this;
     }
 
     public function getNome()
@@ -116,8 +100,7 @@ class Usuario
         return $pdo;
     }
 
-    public function logar()
-    {
+    public function logar(){
         $consulta = new Consultar($this->login, NULL);
         $dados = $consulta->usuarioPorLogin();
         if (!empty($dados)) {
@@ -140,8 +123,7 @@ class Usuario
         return $hash;
     }
 
-    public function cadastrarUsuario()
-    {
+    public function cadastrarUsuario(){
         if ($this->validarLogin() == "A") {
             $senha = $this->encriptador($this->senha);
             $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
@@ -167,16 +149,33 @@ class Usuario
         return $resultado;
     }
 
-    public function editarUsuario($id)
-    {
+    public function editarUsuario($id){
+        if ($this->validarLogin() == "A") {
+            $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login where idUsuario=:idUsuario";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":dataNasc", $this->dataNasc);
+            $consulta->bindParam(":documento", $this->documento);
+            $consulta->bindParam(":idTipo", $this->idTipo);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":idUsuario", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S"; //sucesso
+            } else {
+                $resultado = "E"; //erro
+            }
+        } else {
+            $resultado = "NA"; //não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
+        }
+
+        return $resultado;
+    }
+
+    public function editarSenha($id){
         $senha = $this->encriptador($this->senha);
-        $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login, senha=:senha where idUsuario=:idUsuario";
+        $sql = "update usuario SET senha=:senha where idUsuario=:idUsuario";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":dataNasc", $this->dataNasc);
-        $consulta->bindParam(":documento", $this->documento);
-        $consulta->bindParam(":idTipo", $this->idTipo);
-        $consulta->bindParam(":login", $this->login);
         $consulta->bindParam(":senha", $senha);
         $consulta->bindParam(":idUsuario", $id);
 
@@ -189,8 +188,7 @@ class Usuario
         return $resultado;
     }
 
-    public function alterarTipoUsuario($idUsuario)
-    {
+    public function alterarTipoUsuario($idUsuario){
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idTipo", $this->idTipo);
@@ -205,8 +203,7 @@ class Usuario
         return $resultado;
     }
 
-    public function validarLogin()
-    {
+    public function validarLogin(){
         $sql = "select login from usuario where login=:login";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":login", $this->login);
