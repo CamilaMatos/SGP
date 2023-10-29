@@ -1,7 +1,6 @@
 <?php
 require_once "../Classes/Conecta.php";
 class ReceitaParametrizacao {
-    private $idReceita;
     private $nome;
     private $categoria;
     private $tempo;
@@ -9,27 +8,13 @@ class ReceitaParametrizacao {
     private $rendimento;
     private $pdo;
 
-    public function __construct($idReceita, $nome, $categoria, $tempo, $modo, $rendimento)
-    {
-        $this->idReceita = $idReceita;
+    public function __construct($nome, $categoria, $tempo, $modo, $rendimento){
         $this->nome = $nome;
         $this->categoria = $categoria;
         $this->tempo = $tempo;
         $this->modo = $modo;
         $this->rendimento = $rendimento;
         $this->pdo = $this->conexao();
-    }
- 
-    public function getIdReceita()
-    {
-        return $this->idReceita;
-    }
-
-    public function setIdReceita($idReceita)
-    {
-        $this->idReceita = $idReceita;
-
-        return $this;
     }
  
     public function getNome()
@@ -100,37 +85,45 @@ class ReceitaParametrizacao {
     }
 
     public function cadastrarReceita(){
-        $sql = "insert into receitaParametrizacao values (NULL, :nome, :idCategoria, :tempo, :modo, :rendimento)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idCategoria", $this->categoria);
-        $consulta->bindParam(":tempo", $this->tempo);
-        $consulta->bindParam(":modo", $this->modo);
-        $consulta->bindParam(":rendimento", $this->rendimento);
+        if(empty($this->receitaPorNome())) {
+            $sql = "insert into receitaParametrizacao values (NULL, :nome, :idCategoria, :tempo, :modo, :rendimento)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idCategoria", $this->categoria);
+            $consulta->bindParam(":tempo", $this->tempo);
+            $consulta->bindParam(":modo", $this->modo);
+            $consulta->bindParam(":rendimento", $this->rendimento);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro dessa receita
         }
 
         return $resultado;
     }
 
     public function editarReceita($id){
-        $sql = "update receitaParametrizacao SET nome=:nome, idCategoria=:idCategoria, tempo=:tempo, modo=:modo, rendimento=:rendimento where idReceita=:idReceita";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idCategoria", $this->categoria);
-        $consulta->bindParam(":tempo", $this->tempo);
-        $consulta->bindParam(":modo", $this->modo);
-        $consulta->bindParam(":rendimento", $this->rendimento);
-        $consulta->bindParam(":idReceita", $id);
+        if(empty($this->receitaPorNome())) {
+            $sql = "update receitaParametrizacao SET nome=:nome, idCategoria=:idCategoria, tempo=:tempo, modo=:modo, rendimento=:rendimento where idReceita=:idReceita";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idCategoria", $this->categoria);
+            $consulta->bindParam(":tempo", $this->tempo);
+            $consulta->bindParam(":modo", $this->modo);
+            $consulta->bindParam(":rendimento", $this->rendimento);
+            $consulta->bindParam(":idReceita", $id);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro dessa receita
         }
 
         return $resultado;
@@ -165,6 +158,16 @@ class ReceitaParametrizacao {
         $sql = "select * from ordemServico where idReceita=:idReceita";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idReceita", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function receitaPorNome(){
+        $sql = "select * from receita where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 

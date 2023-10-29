@@ -1,27 +1,15 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
+require_once "Consultar.php";
+
 class Categoria {
-    private $idCategoria;
     private $nome;
     private $pdo;
 
-    public function __construct($idCategoria, $nome)
+    public function __construct($nome)
     {
-        $this->idCategoria = $idCategoria;
         $this->nome = $nome;
         $this->pdo = $this->conexao();
-    }
-
-    public function getIdCategoria()
-    {
-        return $this->idCategoria;
-    }
-
-    public function setIdCategoria($idCategoria)
-    {
-        $this->idCategoria = $idCategoria;
-
-        return $this;
     }
 
     public function getNome()
@@ -44,28 +32,37 @@ class Categoria {
     }
 
     public function cadastrarCategoria(){
-        $sql = "insert into categoria values (NULL, :nome)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
+        if(empty($this->categoriaPorNome())) {
+            $sql = "insert into categoria values (NULL, :nome)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E";//erro
+            };
         } else {
-            $resultado = "E";//erro
-        };
+                $resultado = "R";//recusado pois já existe cadastro dessa categoria
+        }
+        
         return $resultado;
     }
 
     public function editarCategoria($id){
-        $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idCategoria", $id);
+        if(empty($this->categoriaPorNome())) {
+            $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idCategoria", $id);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "R";//recusado pois já existe cadastro dessa categoria
         }
 
         return $resultado;
@@ -100,5 +97,13 @@ class Categoria {
         return $resultado;
     }
 
-    
+    public function categoriaPorNome(){
+        $sql = "select * from categoria where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
 }

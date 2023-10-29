@@ -1,7 +1,6 @@
 <?php
 require_once "../Classes/Conecta.php";
 class Lote {
-    private $idLote;
     private $idItem;
     private $idEstoque;
     private $quantidadeInicial;
@@ -10,9 +9,8 @@ class Lote {
     private $valorUnitario;
     private $pdo;
 
-    public function __construct($idLote, $idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
+    public function __construct($idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
     {
-        $this->idLote = $idLote;
         $this->idItem = $idItem;
         $this->idEstoque = $idEstoque;
         $this->quantidadeInicial = $quantidadeInicial;
@@ -20,18 +18,6 @@ class Lote {
         $this->validade = $validade;
         $this->valorUnitario = $valorUnitario;
         $this->pdo = $this->conexao();
-    }
- 
-    public function getIdLote()
-    {
-        return $this->idLote;
-    }
-
-    public function setIdLote($idLote)
-    {
-        $this->idLote = $idLote;
-
-        return $this;
     }
  
     public function getIdItem()

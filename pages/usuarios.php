@@ -9,7 +9,7 @@ if ($_POST) {
     $tipo = $_POST['tipo'];
     $login = $_POST['login'];
     $senha =  $_POST['senha'];
-    $Ul = new Usuario(NULL, $nome, $nascimento, $cpf, $tipo, $login, $senha);
+    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha);
     $Ul->cadastrarUsuario();
     print_r($Ul);
 }

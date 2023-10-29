@@ -2,22 +2,18 @@
 require_once "../Classes/Conecta.php";
 class ReceitaServico {
     private $idOrdem;
-    private $idReceita;
     private $idItem;
     private $quantidade;
     private $pdo;
 
-    public function __construct($idOrdem, $idReceita, $idItem, $quantidade)
+    public function __construct($idOrdem, $idItem, $quantidade)
     {
         $this->idOrdem = $idOrdem;
-        $this->idReceita = $idReceita;
         $this->idItem = $idItem;
         $this->quantidade = $quantidade;
         $this->pdo = $this->conexao();
     }
 
-
- 
     public function getIdOrdem()
     {
         return $this->idOrdem;
@@ -26,18 +22,6 @@ class ReceitaServico {
     public function setIdOrdem($idOrdem)
     {
         $this->idOrdem = $idOrdem;
-
-        return $this;
-    }
- 
-    public function getIdReceita()
-    {
-        return $this->idReceita;
-    }
-
-    public function setIdReceita($idReceita)
-    {
-        $this->idReceita = $idReceita;
 
         return $this;
     }
@@ -74,7 +58,19 @@ class ReceitaServico {
     }
 
     public function editarIngrediente(){
+        $sql = "update receitaServico SET quantidadeRealizada=:quantidadeRealizada where idOrdem=:idOrdem and idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":quantidadeRealizada", $this->quantidade);
+        $consulta->bindParam(":idOrdem", $this->idOrdem);
+        $consulta->bindParam(":idItem", $this->idItem);
 
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 }
 ?>

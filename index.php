@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$page= "login";
 include "configs/conecta.php";
 
 ?>
@@ -172,7 +172,7 @@ include "configs/conecta.php";
                     <main>
                         
                         <?php
-                        $page = "home";
+                        $page = "login";
                         if (isset($_GET["param"])) {
                             $param = trim($_GET["param"]);
                             $param = explode("/", $param);

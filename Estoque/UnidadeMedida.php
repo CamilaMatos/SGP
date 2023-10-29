@@ -1,29 +1,15 @@
 <?php
 require_once "./Classes/Conecta.php";
 class UnidadeMedida {
-    private $idUnidadeMedida;
     private $nome;
     private $pdo;
     private $descricao;
 
-    public function __construct($idUnidadeMedida, $nome, $descricao)
+    public function __construct($nome, $descricao)
     {
-        $this->idUnidadeMedida = $idUnidadeMedida;
         $this->nome = $nome;
         $this->pdo = $this->conexao();
         $this->descricao = $descricao;
-    }
-
-    public function getIdUnidadeMedida()
-    {
-        return $this->idUnidadeMedida;
-    }
-
-    public function setIdUnidadeMedida($idUnidadeMedida)
-    {
-        $this->idUnidadeMedida = $idUnidadeMedida;
-
-        return $this;
     }
 
     public function getNome()
@@ -59,38 +45,45 @@ class UnidadeMedida {
     }
 
     public function cadastrarUnidadeMedida(){
-        $sql = "insert into unidadeMedida values (NULL, :nome, :descricao)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":descricao", $this->descricao);
+        if(empty($this->unidadeMedidaPorNome())) {
+            $sql = "insert into unidadeMedida values (NULL, :nome, :descricao)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":descricao", $this->descricao);
 
-        if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            if ($consulta->execute()) {
+                $resultado = $this->pdo->lastInsertId();//sucesso
+            } else {
+                $resultado = "E"; //erro
+            }
         } else {
-            $resultado = "E"; //erro
+            $resultado = "R";//recusado pois já existe cadastro dessa unidade de medida
         }
 
         return $resultado;
     }
 
     public function editarUnidadeMedida($id){
-        $sql = "update unidadeMedida SET nome=:nome, descricao=:descricao where idUnidadeMedida=:idUnidadeMedida";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->bindParam(":idUnidadeMedida", $id);
-        $consulta->bindParam(":descricao", $descricao);
+        if(empty($this->unidadeMedidaPorNome())) {
+            $sql = "update unidadeMedida SET nome=:nome, descricao=:descricao where idUnidadeMedida=:idUnidadeMedida";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idUnidadeMedida", $id);
+            $consulta->bindParam(":descricao", $descricao);
 
-        if ($consulta->execute()) {
-            $resultado = "S"; //sucesso
+            if ($consulta->execute()) {
+                $resultado = "S"; //sucesso
+            } else {
+                $resultado = "E"; //erro
+            }
         } else {
-            $resultado = "E"; //erro
+            $resultado = "R";//recusado pois já existe cadastro dessa unidade de medida
         }
 
         return $resultado;
     }
 
-    public function excluirUnidadeMedida($id)
-    {
+    public function excluirUnidadeMedida($id){
         //verificar se não há itens cadastrados com essa unidade de medida
         if (empty($this->verificarRegistros($id))) {
             $sql = "delete from unidadeMedida where idUnidadeMedida=:idUnidadeMedida";
@@ -109,11 +102,20 @@ class UnidadeMedida {
         return $resultado;
     }
 
-    public function verificarRegistros($id)
-    {
+    public function verificarRegistros($id){
         $sql = "select * from item where idUnidadeMedida=:idUnidadeMedida";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idUnidadeMedida", $id);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+
+        return $resultado;
+    }
+
+    public function unidadeMedidaPorNome(){
+        $sql = "select * from unidadeMedida where nome=:nome";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":nome", $this->nome);
         $consulta->execute();
         $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 

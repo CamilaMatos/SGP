@@ -1,4 +1,4 @@
 <?php
     session_destroy();
-    echo "<script>location.href='home'</script>"
+    echo "<script>location.href='pages/login'</script>"
 ?>

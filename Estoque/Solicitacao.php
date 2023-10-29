@@ -1,7 +1,6 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class Solicitacao {
-    private $idSolicitacaoMovimentacao;
     private $idTipo;
     private $idCentroCusto;
     private $idStatus;
@@ -11,30 +10,16 @@ class Solicitacao {
     private $necessidade;
     private $pdo;
 
-    public function __construct($idSolicitacaoMovimentacao, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade)
+    public function __construct($idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade)
     {
-        $this->idSolicitacaoMovimentacao = $idSolicitacaoMovimentacao;
         $this->idTipo = $idTipo;
         $this->idCentroCusto = $idCentroCusto;
         $this->idStatus = $idStatus;
         $this->idSolicitante = $idSolicitante;
         $this->idEstoque = $idEstoque;
-        $this->data = $data;
+        $this->data = date('Y-m-d');;
         $this->necessidade = $necessidade;
         $this->pdo = $this->conexao();
-    }
-
- 
-    public function getIdSolicitacaoMovimentacao()
-    {
-        return $this->idSolicitacaoMovimentacao;
-    }
-
-    public function setIdSolicitacaoMovimentacao($idSolicitacaoMovimentacao)
-    {
-        $this->idSolicitacaoMovimentacao = $idSolicitacaoMovimentacao;
-
-        return $this;
     }
  
     public function getIdTipo()
@@ -169,7 +154,7 @@ class Solicitacao {
     public function alterarNecessidade($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update solicitacaoMovimentacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
+            $sql = "update solicitacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idSolicitacao", $id);
@@ -189,7 +174,7 @@ class Solicitacao {
     public function excluirSolicitacao($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "delete from solicitacaoMovimentacao where idSolicitacao=:idSolicitacao";
+            $sql = "delete from solicitacao where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);
 
@@ -206,7 +191,7 @@ class Solicitacao {
     }
 
     public function alterarStatusSolicitacao($id){
-        $sql = "update solicitacaoMovimentacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
+        $sql = "update solicitacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitacao", $id);

@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idLote;
@@ -20,7 +20,6 @@ class ItensSolicitacao{
         $this->pdo = $this->conexao();
     }
 
- 
     public function getIdSolicitacao()
     {
         return $this->idSolicitacao;
@@ -174,7 +173,7 @@ class ItensSolicitacao{
         return $resultado;
     }
 
-    public function excluirItem($idSolicitacao, $idItem){
+    public function excluirItemMovimentacao($idSolicitacao, $idItem){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($idSolicitacao))){
             $sql = "select i.idSolicitacao, i.idLote, l.idItem from itenssolicitacao i 
