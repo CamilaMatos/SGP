@@ -3,16 +3,17 @@
 require_once "../Producao/OrdemServico.php";
 require_once "Categoria.php";
 require_once "ItensSolicitacao.php";
+require_once "Solicitacao.php";
+require_once "ItensSolicitacao.php";
+require_once "Movimentacao.php";
 //require_once "../Producao/ReceitaParametrizacao.php";
 //require_once "Categoria.php";
 //require_once "CentroCusto.php";
 
 
-// ver sobre os retornos das funções e sobre os ids começar null
 // ver sobre status aparecendo para todos
-// ver o array de lotes do ItensSolicitacao
 // posso criar um código para cada ação e registrar as o códico para os usuários que tem permissão
-// verificar movimentação para não baixar itens com quantidade superior a que possui em estoque
+
 
 
 //$R = new ReceitaParametrizacao(null, 'Teste 2', 1, "01:00", null, null);
@@ -40,7 +41,14 @@ require_once "ItensSolicitacao.php";
 //$CC = new CentroCusto(null, "Teste Conecta", "Teste Conecta", 1);
 //print(".".$CC->cadastrarCentroCusto());
 
-$C = new Categoria("Embalagem");
-print($C->cadastrarCategoria());
+//$C = new Categoria("Embalagem");
+//print($C->cadastrarCategoria());
 //$C->print();
 
+//$S = new Solicitacao(2, 2, 3, 1, 1, '2020-10-30');
+//print_r($S);
+//print($id = $S->solicitarRequisicao());
+
+//$I = new ItensSolicitacao($id, null, 50, 1, 1);
+//$I->inserirItemSolicitacao(50);
+//print($I->quebrarLotes());

@@ -122,7 +122,7 @@ class Movimentacao {
             $lote = $this->buscarLote($dados->idLote);
             $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
             $loteNovo = new Lote(null, $lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario);
-            $loteNovo->inserirLote();
+            $loteNovo->inserirLote($solicitacao->idUsuario);
             $this->baixarItem($dados->idLote);
         };
         
@@ -134,16 +134,20 @@ class Movimentacao {
         $qtdSolicitada = $this->verificarQuantidade($idLote);
         $consultar = new Consultar($idLote, NULL);
         $qtdLote = $consultar->quantidadeLote();
-        $quantidade = $qtdLote->quantidadeAtual - $qtdSolicitada->quantidade;
-        $sql = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":quantidadeAtual", $quantidade);
-        $consulta->bindParam(":idLote", $idLote);
+        if($qtdLote->quantidadeAtual>=$qtdSolicitada->quantidade){
+            $quantidade = $qtdLote->quantidadeAtual - $qtdSolicitada->quantidade;
+            $sql = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":quantidadeAtual", $quantidade);
+            $consulta->bindParam(":idLote", $idLote);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
         } else {
-            $resultado = "E";//erro
+            $resultado = "I";//saldo Insuficiente
         }
 
         return $resultado;
