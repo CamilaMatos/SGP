@@ -4,7 +4,7 @@ include './Estoque/Categoria.php';
 if ($_POST && ($_POST['nome'] != '')) {
     $nome = trim($_POST['nome']);
 
-    $Um = new Categoria(NULL, $nome);
+    $Um = new Categoria($nome);
 
     if (!$Um->cadastrarCategoria()) {
         echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
