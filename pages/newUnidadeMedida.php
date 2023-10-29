@@ -5,7 +5,7 @@ if ($_POST && ($_POST['nome'] != '')) {
     $nome = trim($_POST['nome']);
     $descricao = trim($_POST['descricao']);
 
-    $Um = new UnidadeMedida(NULL, $nome, $descricao);
+    $Um = new UnidadeMedida($nome, $descricao);
 
     if (!$Um->cadastrarUnidadeMedida()) {
         echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
