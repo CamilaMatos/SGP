@@ -160,7 +160,7 @@ include "configs/conecta.php";
         </div>
               
     </div>
-    <div class="w3-overlay" onclick="w3_close()" style="z-index: 0;" id="myOverlay"></div>
+    <div class="w3-overlay" onclick="w3_close()" style="z-index: 1;" id="myOverlay"></div>
     <div>
         <?php
             if(!isset($_SESSION['login'])){

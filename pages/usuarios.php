@@ -18,24 +18,47 @@ if ($_POST) {
 
 <form action="" method="post">
     <div class="formNewProd">
-        <input type="text" name="nome" id="nome" placeholder="nome">
-        <input type="date" name="nascimento" id="nascimento">
-        <input type="text" name="cpf" id="cpf" placeholder="CPF">
-        <select name="tipo" id="tipo">
-            <option value="">Selecione um tipo...</option>
-            <?php
-            $sql = "select * from tipo order by idTipo";
-            $consulta = $pdo->prepare($sql);
-            $consulta->execute();
-            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-            ?>
-                <option value="<?= $dados->idTipo ?>"><?= $dados->nome ?></option>
-            <?php
-            }
-            ?>
-        </select>
-        <input type="text" name="login" id="login" placeholder="Login">
-        <input type="text" name="senha" id="senha" placeholder="Senha">
+        <div class="flex-row">
+            <div>
+                <label for="nome" class="loginLabel">Nome</label>
+                <input type="text" name="nome" id="nome" placeholder="nome">
+            </div>
+            <div>
+                <label for="nascimento" class="loginLabel">Data de Nascimento:</label>
+                <input type="date" name="nascimento" id="nascimento">
+            </div>
+            
+            <div>
+                <label for="cpf" class="loginLabel">CPF:</label>
+                <input type="text" name="cpf" id="cpf" placeholder="CPF">
+            </div>
+        </div>
+        <div class="flex-row">
+            <div>
+                <label for="tipo" class="loginLabel">Tipo do Funcionario</label>
+                <select name="tipo" id="tipo">
+                    <option value="">Selecione um tipo...</option>
+                    <?php
+                    $sql = "select * from tipo order by idTipo";
+                    $consulta = $pdo->prepare($sql);
+                    $consulta->execute();
+                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                    ?>
+                        <option value="<?= $dados->idTipo ?>"><?= $dados->nome ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+            </div>
+            <div>
+                <label for="login" class="loginLabel">Login:</label>
+                <input type="text" name="login" id="login" placeholder="Login">
+            </div>
+            <div>
+                <label for="senha">Senha:</label>
+                <input type="text" name="senha" id="senha" placeholder="Senha">
+            </div>
+        </div>
         <button type="submit">Cadastrar Usuário</button>
     </div>
 </form>
