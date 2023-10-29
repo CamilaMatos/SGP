@@ -1,29 +1,16 @@
-
-
-<br>
-
-
-<h1>Menu</h1>
-
-<br>
-<br>
-
-<div class="mainMenu">
-    <div class="flex-row">
-        <a href="pages/estoque">
-            <div class="mainMenuItem">
-                <p>
-                    Estoque
-                </p>
-            </div>
-        </a>
-        <a href="pages/construct">
-            <div class="mainMenuItem">
-                <p>
-                    Produção
-                </p>
-            </div>
-        </a>
-
-    </div>
+<div class="mainMenu flex-row">
+    <a href="pages/estoque" class="mainMenuButton" id="i1">
+        <div class="mainMenuItem">
+            <p class="menuOption">
+                Estoque
+            </p>
+        </div>
+    </a>
+    <a href="pages/construct" class="mainMenuButton" id="i2">
+        <div class="mainMenuItem">
+            <p class="menuOption">
+                Produção
+            </p>
+        </div>
+    </a>
 </div>

@@ -99,26 +99,13 @@ footer {
 }
 
 .mainMenu {
-    border-width: 2px;
-    border-color: black;
-    background-color: lightgray;
-    width: 45vw;
-    height: 45vh;
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    vertical-align: middle;
-    overflow: hidden;
-    border-radius: 25px;
+    width: 100vw;
+
 }
 
 .mainMenuItem {
-    height: 22.5vh;
-    width: 22.5vw;
-    margin: 0;
-    line-height: 22.5vh;
+    width: 50vw;
+    height: 80vh;
 }
 
 .mainMenuItem p {
@@ -126,18 +113,17 @@ footer {
 }
 
 #i1 {
-    background-color: grey;
-    color: black;
+    background-image: url(../assets/backGroundEstoque.png);
+
 }
 
 #i1:hover {
-    background-color: darkgrey;
-    color: white;
+    transition: 300ms;
+    background-color: black;
 }
 
 #i2 {
-    background-color: grey;
-    color: black;
+    background-image: url(../assets/backGroundProducao.jpg);
 }
 
 #i2:hover {
@@ -410,4 +396,20 @@ table {
 
 .butao{
     border: none;
+}
+
+.menuOption{
+    margin-top: 70vh;
+    transform: translateY(-35vh);
+}
+
+.mainMenuButton{
+    width: 50vw !important;
+    height: 80vh !important;
+    background-color: red;
+}
+
+.mainMenuButton:hover{
+    background-color: #072f55;
+    color: white;
 }
