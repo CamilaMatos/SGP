@@ -50,20 +50,16 @@ header {
 }
 
 footer {
-    min-height: 10vh;
+    height: 10vh;
     max-height: 10vh;
     margin: 0;
-    padding-left: 2vh;
-    padding-right: 2vh;
-
-    line-height: 10vh;
+    padding-top: 5vh;
     background-color: #1C5D99;
-
-    vertical-align: middle;
 
     color: white;
     font-family: 'PT Sans', sans-serif;
     font-size: 12px;
+    text-align: center;
 }
 
 main {
@@ -94,9 +90,6 @@ body {
     /* justify-content:left; */
 }
 
-footer {
-    text-align: center;
-}
 
 .mainMenu {
     width: 100vw;
@@ -165,9 +158,8 @@ td {
 
 table {
     border-spacing: 0px;
-    margin-left: auto;
-    margin-right: auto;
     width: 70vw;
+    max-width: 70vw;
 }
 
 .contentDiv {
@@ -184,15 +176,6 @@ table {
     cursor: pointer;
 }
 
-.searchBar {
-    width: 25vw;
-    max-width: 25vw;
-    border-radius: 15px;
-    background-color: lightgrey;
-    border: 2px;
-    height: 5vh;
-    padding-left: 1.5vw;
-}
 
 .construct {
     width: 50vw;
@@ -204,13 +187,15 @@ table {
 
 .formNewProd {
     padding: 5vh;
-    background-color: grey;
-    width: 75vw;
-    max-width: 75vw !important;
+    background-color: rgb(243, 243, 243);
+    width: 50vw;
+    max-width: 50vw !important;
     border-radius: 25px;
-    height: 45vh;
+    height: 55vh;
     min-height: 45vh;
     display: inline-block;
+    border-style: solid;
+    border-color: rgb(221, 221, 221);
 }
 
 .formRow {
@@ -430,4 +415,136 @@ table {
     opacity: 0.4;
 }
 
+.formInput{
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: grey;
+    height: 5vh;
+    width: 15vw;
+    padding-left: 0.5vw;
+}
 
+.formCol{
+    max-width: 15vw;
+    text-align: left;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 2.5vh;
+}
+
+.formSubmitButton{
+    background-color: white;
+    color: black;
+    height: 5vh;
+    width: 10vw;
+    border-radius: 10px;
+    transition: 200ms;
+}
+
+.formSubmitButton:hover{
+    background-color: #072f55;
+    color: white;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.submitCol{
+    text-align: right;
+}
+
+.userModal{
+    width: 80vw !important;
+}
+
+
+.searchBar button{
+    border: none;
+    background-color: transparent;
+    float: right;
+    width: 3vw;
+}
+.searchBar button:hover{
+    cursor: pointer;
+}
+
+.searchBarInput{
+    background-color: transparent;
+    border: none;
+    float: left;
+    width: 21vw;
+}
+
+input:focus{
+    outline: none;
+}
+
+.searchBar {
+    width: 27vw;
+    max-width: 31vw;
+    border-radius: 15px;
+    background-color: lightgrey;
+    border: 2px;
+    height: 5vh;
+    line-height: 5vh;
+    padding-left: 1.5vw;
+    vertical-align: middle;
+}
+
+.newButton{
+    height: 5vh;
+    width: 26vw;
+    border-radius: 10px;
+    transition: 300ms;
+}
+
+.newButton:hover{
+    cursor: pointer;
+    background-color: #072f55;
+    color: white;
+    transform: scale(1.05);
+}
+
+.pageHeader{
+    background-color: lightgrey;
+}
+
+footer .footerLettering{
+    font-size: 25px;
+    transform: translateY(-2.5vh);
+}
+
+.optionScroll{
+    height: 45vh;
+    width: 20vw;
+    border-radius: 15px;
+    overflow: hidden;
+    border: solid 1px;
+    border-color: gray;
+    background-color: rgb(197, 201, 226);
+}
+
+.scrollOption{
+    width: 20vw;
+    height: 15vh;
+    padding-top: 7.5vh;
+}
+
+.scrollOption p{
+    transform: translateY(-50%);
+    transition: 500ms;
+}
+
+.scrollOption:hover{
+    background-color: #072f55;
+    color: white;
+    transform: scale(1.05);
+}
+
+.optionBorder{
+    height: 1px;
+    background-color: gray;
+    width: 18vw;
+}

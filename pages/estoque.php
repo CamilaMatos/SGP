@@ -1,23 +1,7 @@
-<ul class="headBar">
-    <li>
-        <a href="pages/produtos" class="middleAlign">Produtos</a>
-    </li>
-    <li>
-        <a href="pages/newRequisicao" class="middleAlign">Solicitações</a>
-    </li>
-    <li>
-        <a href="pages/movimentacoes" class="middleAlign">Movimentações</a>
-    </li>
-    <li>
-        <a href="pages/newEntrada" class="middleAlign">Entrada</a>
-    </li>
-    <li>
-        <a href="pages/manutencao" class="middleAlign">Manutenção</a>
-    </li>
-</ul>
-
 <br>
-
+<form>
+    <input type="button" value="<-" onclick="history.back()">
+</form>
 <h1>
     Estoque
 </h1>
@@ -25,7 +9,7 @@
 <br>
 <br>
 
-<div class="historico">
+<div class="flex-row">
     <table>
         <thead>
             <tr>
@@ -114,6 +98,27 @@
             </tr>
         </tbody>
     </table>
-
-
+    <div class="optionScroll">
+        <a href="pages/produtos">
+            <div class="scrollOption">
+                <p>Produtos</p>
+            </div>
+        </a>
+        <div class="flex-row">
+            <div class="optionBorder"></div>
+        </div>
+        <a href="pages/movimentacoes">
+            <div class="scrollOption">
+                <p>Movimentações</p>           
+            </div>
+        </a>
+        <div class="flex-row">
+            <div class="optionBorder"></div>
+        </div>
+        <a href="pages/solicitacoes">
+            <div class="scrollOption">
+                <p>Solicitações</p>
+            </div>
+        </a>
+    </div>
 </div>

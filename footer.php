@@ -1,3 +1,3 @@
 <footer>
-    <h1>Developed by Alexis F. & Camila M.<h1>
+    <p class="footerLettering">Developed by Alexis F. & Camila M.</p>
 </footer>

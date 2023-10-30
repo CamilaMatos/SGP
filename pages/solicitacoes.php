@@ -1,3 +1,7 @@
+<form>
+    <input type="button" value="<-" onclick="history.back()">
+</form>
+
 <form action="" method="post">
     <select name="centroOrigem" id="centroOrigem">
         <option value="">Selecione o Centro de Custo de Origem</option>

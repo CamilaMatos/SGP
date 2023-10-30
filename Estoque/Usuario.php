@@ -142,11 +142,9 @@ class Usuario{
             }
         } else {
             $resultado = "NA"; //não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
+            
         }
-
-
-
-        return $resultado;
+        return $resultado;     
     }
 
     public function editarUsuario($id){
