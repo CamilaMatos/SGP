@@ -9,7 +9,7 @@ if ($_POST) {
     $marca =  trim($_POST['marca']);
     $unMedida = trim($_POST['unMedida']);
     $Status = 1;
-    $P = new Item(null, $nome, $unMedia, $categoria, $marca, $unMedida, $Status);
+    $P = new Item($nome, $unMedia, $categoria, $marca, $unMedida, $Status);
 
     if (!$P->cadastrarItem()) {
         echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";

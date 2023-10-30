@@ -10,7 +10,7 @@
         $qtdAtual = $_POST['qtdAtual'];
         $validade = $_POST['validade'];
         $vlUnitario=  $_POST['vlUnitario'];
-        $L = new Lote (NULL, $idItem, $idEstoque, $qtdInicial, $qtdAtual, $validade, $vlUnitario);
+        $L = new Lote ($idItem, $idEstoque, $qtdInicial, $qtdAtual, $validade, $vlUnitario);
         if($L->inserirLote()){
             echo "<script>alert('Lote inserido com sucesso!!');</script>";
         } else{

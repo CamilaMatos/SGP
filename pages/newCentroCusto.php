@@ -6,7 +6,7 @@ if ($_POST && ($_POST['nome'] != '')) {
     $descricao = trim($_POST['descricao']);
     $status = trim($_POST['status']);
 
-    $Um = new CentroCusto(NULL, $nome, $descricao, $status);
+    $Um = new CentroCusto($nome, $descricao, $status);
 
     if (!$Um->cadastrarCentroCusto()) {
         echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";

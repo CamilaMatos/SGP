@@ -4,7 +4,7 @@ include './Estoque/Marca.php';
 if ($_POST && ($_POST['nome'] != '')) {
     $nome = trim($_POST['nome']);
 
-    $Um = new Marca(NULL, $nome);
+    $Um = new Marca($nome);
 
     if (!$Um->cadastrarMarca()) {
         echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";

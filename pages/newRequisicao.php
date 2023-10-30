@@ -12,7 +12,7 @@
         $data =  $_POST['data'];
         $necessidade = $_POST['necessidade'];
 
-        $R = new Solicitacao (NULL, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade);
+        $R = new Solicitacao ($idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $data, $necessidade);
         if($R->solicitarRequisicao()){
             echo "<script>alert('Lote inserido com sucesso!!');</script>";
         } else{

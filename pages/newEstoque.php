@@ -6,7 +6,7 @@ if ($_POST && ($_POST['nome'] != '')) {
     $descricao = trim($_POST['descricao']);
     $status = trim($_POST['status']);
 
-    $Um = new Estoque(NULL, $nome, $descricao, $status);
+    $Um = new Estoque($nome, $descricao, $status);
 
     if (!$Um->cadastrarEstoque()) {
         echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
