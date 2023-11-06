@@ -47,7 +47,8 @@ header {
     border-bottom: 4px;
     background-color: #1C5D99;
 
-}
+    max-width: 100vw;
+}   
 
 footer {
     height: 10vh;
@@ -60,6 +61,8 @@ footer {
     font-family: 'PT Sans', sans-serif;
     font-size: 12px;
     text-align: center;
+
+    max-width: 100vw;
 }
 
 main {
@@ -530,6 +533,7 @@ footer .footerLettering{
     width: 20vw;
     height: 15vh;
     padding-top: 7.5vh;
+    text-decoration: none;
 }
 
 .scrollOption p{
