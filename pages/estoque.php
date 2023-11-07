@@ -10,7 +10,7 @@
 <br>
 
 <div class="flex-row">
-    <table>
+    <table class="table-striped">
         <thead>
             <tr>
                 <td>
