@@ -146,7 +146,7 @@ class OrdemServico {
     }
 
     public function gerarOS($idCentroCusto, $idEstoque){
-        $S = new Solicitacao(null, 5, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
+        $S = new Solicitacao($idEstoque, 2, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
         print_r($S);
         $idSolicitacao = $S->solicitarRequisicao();
         $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :idSolicitacao, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, :idStatus, :horarioInicio, :horarioFim);";

@@ -1,6 +1,7 @@
 <?php
 require_once "../Classes/Conecta.php";
 class Solicitacao {
+    private $origem;
     private $idTipo;
     private $idCentroCusto;
     private $idStatus;
@@ -10,8 +11,9 @@ class Solicitacao {
     private $necessidade;
     private $pdo;
 
-    public function __construct($idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade)
+    public function __construct($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade)
     {
+        $this->origem = $origem;
         $this->idTipo = $idTipo;
         $this->idCentroCusto = $idCentroCusto;
         $this->idStatus = $idStatus;
@@ -21,7 +23,19 @@ class Solicitacao {
         $this->necessidade = $necessidade;
         $this->pdo = $this->conexao();
     }
- 
+
+    public function getOrigem()
+    {
+        return $this->origem;
+    }
+
+    public function setOrigem($origem)
+    {
+        $this->origem = $origem;
+
+        return $this;
+    }
+
     public function getIdTipo()
     {
         return $this->idTipo;
@@ -114,9 +128,9 @@ class Solicitacao {
     }
 
     public function solicitarRequisicao(){
-        $sql = "insert into solicitacao values (NULL, :idTipo, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
+        $sql = "insert into solicitacao values (NULL, :origem, 2, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idTipo", $this->idTipo);
+        $consulta->bindParam(":origem", $this->origem);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -134,8 +148,9 @@ class Solicitacao {
     }
 
     public function solicitarTransferencia(){
-        $sql = "insert into solicitacao values (NULL, 3, NULL, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
+        $sql = "insert into solicitacao values (NULL,:origem, 3, NULL, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
         $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":origem", $this->origem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":idSolicitante", $this->idSolicitante);
@@ -226,4 +241,6 @@ class Solicitacao {
         return $resultado;
     }
 
+
+    
 }

@@ -11,9 +11,11 @@ if ($_POST) {
     $senha =  $_POST['senha'];
     $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha);
 
-    if ($Ul->cadastrarUsuario() == "E") {
+    $cadastrar = $Ul->cadastrarUsuario();
+
+    if ($cadastrar == "E") {
         echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
-    } else if ($Ul->cadastrarUsuario() == "NA"){
+    } else if ($cadastrar == "NA"){
         echo "<script>alert('Erro, usuário já cadastrado');</script>";
     }
     else {

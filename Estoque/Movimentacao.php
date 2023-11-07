@@ -153,6 +153,18 @@ class Movimentacao {
         return $resultado;
     }
 
+    public function reverterBaixaPorItem($idSolicitacao, $idItem){
+        $sql = "select i.idLote from itensMovimentacao i 
+        inner join lote l on (i.idLote = l.idLote)
+        where i.idSolicitacao=:idSolicitacao and l.idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $idSolicitacao);
+        $consulta->bindParam(":idItem", $idItem);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        print_r($resultado);
+    }
+
     public function verificarQuantidade($id) {
         $sql = "select quantidade from itensMovimentacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
         $consulta = $this->pdo->prepare($sql);
