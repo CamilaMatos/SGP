@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class Solicitacao {
     private $origem;
     private $idTipo;
@@ -205,10 +205,10 @@ class Solicitacao {
         return $resultado;
     }
 
-    public function alterarStatusSolicitacao($id){
+    public function alterarStatusSolicitacao($id, $idStatus){
         $sql = "update solicitacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idStatus", $this->idStatus);
+        $consulta->bindParam(":idStatus", $idStatus);
         $consulta->bindParam(":idSolicitacao", $id);
 
         if ($consulta->execute()) {

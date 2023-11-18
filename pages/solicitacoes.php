@@ -62,8 +62,8 @@
     </thead>
     <tbody>
         <?php
-            $sql = "select s.idSolicitacaoMovimentacao numero, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
-                st.nome status from solicitacaomovimentacao s
+            $sql = "select s.idSolicitacao numero, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
+                st.nome status from solicitacao s
                 inner join centrocusto cc on s.idCentroCusto = cc.idCentroCusto
                 inner join tipo t on s.idTipo = t.idTipo
                 inner join status st on s.idStatus = st.idStatus order by numero desc limit 15";

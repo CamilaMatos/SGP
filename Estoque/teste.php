@@ -28,15 +28,27 @@
 
 
 
-//require_once "ItensSolicitacao.php";
-//require_once "Solicitacao.php";
+require_once "ItensSolicitacao.php";
+require_once "Solicitacao.php";
 //require_once "ItensSolicitacao.php";
 require_once "Movimentacao.php";
 //require_once "../Producao/ReceitaParametrizacao.php";
 //require_once "Categoria.php";
 //require_once "CentroCusto.php";
 
+//$S = new Solicitacao(1, 1, 2, 1, 1, null, '2023-11-20');
+//print($S->solicitarRequisicao());
+//$I = new ItensSolicitacao(28, null, 1, 1, 1);
+//print($I->inserirItemSolicitacao(2));
+//print($I->quebrarLotes());
+
+//$M = new Movimentacao(28, 1, 1, '2023-11-18');
+//print($M->realizarMovimentacao());
+//print($M->realizarTransferencia());
 //$M = new Movimentacao()
+
+//print($M->reverterBaixaPorItem(1, 3));
+//print($M->reverterBaixa(6));
 
 
 // ver sobre status aparecendo para todos
@@ -80,8 +92,5 @@ require_once "Movimentacao.php";
 //$I = new ItensSolicitacao($id, null, 50, 1, 1);
 //$I->inserirItemSolicitacao(50);
 //print($I->quebrarLotes());
-
-//mudar apendice 1 para metodologia - fazer introdução antes.
-//fazer texto sobre as imagens das documentações - falar um pouco sobre elas
-//fazer texto nas outras também.
 //arrumar origem da solicitação
+//validar senha

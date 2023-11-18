@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class Lote {
     private $idItem;
     private $idEstoque;
@@ -8,8 +8,9 @@ class Lote {
     private $validade;
     private $valorUnitario;
     private $pdo;
+    private $idLoteOrigem;
 
-    public function __construct($idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario)
+    public function __construct($idItem, $idEstoque, $quantidadeInicial, $quantidadeAtual, $validade, $valorUnitario, $idLoteOrigem)
     {
         $this->idItem = $idItem;
         $this->idEstoque = $idEstoque;
@@ -18,7 +19,9 @@ class Lote {
         $this->validade = $validade;
         $this->valorUnitario = $valorUnitario;
         $this->pdo = $this->conexao();
+        $this->idLoteOrigem = $idLoteOrigem;
     }
+
  
     public function getIdItem()
     {
@@ -92,6 +95,18 @@ class Lote {
         return $this;
     }
 
+    public function getIdLoteOrigem()
+    {
+        return $this->idLoteOrigem;
+    }
+
+    public function setIdLoteOrigem($idLoteOrigem)
+    {
+        $this->idLoteOrigem = $idLoteOrigem;
+
+        return $this;
+    }
+
     public function conexao(){
         $conectar= new Conecta();
         $pdo= $conectar->conectar();
@@ -121,11 +136,12 @@ class Lote {
 
     public function entrada($idLote, $idUsuario){
         $data = date('Y-m-d');
-        $sql = "insert into entrada values (NULL, :data, :idLote, :quantidadeInicial, :idUsuario, :validade, :valorUnitario)";
+        $sql = "insert into entrada values (NULL, :idLoteOrigem, :idLote, :idUsuario, :data)";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":data", $data);
+        $consulta->bindParam(":idLoteOrigem", $this->idLoteOrigem);
         $consulta->bindParam(":idLote", $idLote);
         $consulta->bindParam(":idUsuario", $idUsuario);
+        $consulta->bindParam(":data", $data);
 
         if ($consulta->execute()) {
             $resultado = $this->pdo->lastInsertId();//sucesso
@@ -135,6 +151,7 @@ class Lote {
 
         return $resultado;
     }
+
 
     public function editarLote($id){
         $sql = "update lote SET idEstoque=:idEstoque, quantidadeInicial=:quantidadeInicial, quantidadeAtual=:quantidadeAtual, validade=:validade, valorUnitario=:valorUnitario where idLote=:idLote";
@@ -175,8 +192,22 @@ class Lote {
         return $resultado;
     }
 
+    public function excluirEntrada($id){
+        $sql = "delete from entrada where idLote=:idLote";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idLote", $id);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
+
     public function verificarRegistros($id) {
-        $sql = "select * from itensSolicitacao where idLote=:idLote";
+        $sql = "select * from itensMovimentacao where idLote=:idLote";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idLote", $id);
         $consulta->execute();
@@ -184,6 +215,4 @@ class Lote {
 
         return $resultado;
     }
-
-    
 }
