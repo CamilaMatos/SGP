@@ -14,11 +14,14 @@ if (!empty($_POST)) {
 
     $U = new Usuario(null, null, null, null, $login, $password);
 
+    $dados = $U->logar();
 
-    if (!$U->logar()) {
+    if (!$dados) {
         echo "<script>alert('Credenciais erradas, tente novamente!');</script>";
     } else {
-        $_SESSION['login'] = $login;
+        $_SESSION['login'] = $dados->login;
+        $_SESSION['nome'] = $dados->nome;
+        $_SESSION['tipo'] = $dados->idTipo;
 
         echo "<script>location.href='pages/home'</script>";
     }

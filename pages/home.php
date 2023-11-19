@@ -6,7 +6,7 @@
         </p>
         <div class="mainMenuItem"  id="i1"></div>
     </a>
-    <a href="pages/construct" class="mainMenuButton">
+    <a href="pages/producao" class="mainMenuButton">
         <p class="menuOption">
             Produção
         </p>

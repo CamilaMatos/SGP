@@ -105,7 +105,7 @@ class Usuario{
         $dados = $consulta->usuarioPorLogin();
         if (!empty($dados)) {
             if (password_verify($this->senha, $dados->senha)) {
-                $resultado = true; //sucesso
+                $resultado = $dados; //sucesso
             } else {
                 $resultado = false; //senha inválida
             }

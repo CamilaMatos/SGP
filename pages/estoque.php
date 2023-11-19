@@ -1,36 +1,34 @@
-<br>
-<form>
-    <input type="button" value="<-" onclick="history.back()">
-</form>
-<h1>
-    Estoque
-</h1>
-
-<br>
-<br>
+<div class="col-12 pageHeader" style="display: flex">
+    <div class="col-2">
+        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+    </div>
+    <div class="col-8">
+        <h1>Estoque</h1>
+    </div>
+</div>
 
 <div class="flex-row">
     <table class="table-striped">
         <thead>
             <tr>
-                <td>
+                <th>
                     <p>Produto</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Qtd.</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Un. Medida</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Lote</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Validade</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Opções</p>
-                </td>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -99,7 +97,7 @@
         </tbody>
     </table>
     <div class="optionScroll">
-        <a href="pages/produtos">
+        <a href="listar/produtos">
             <div class="scrollOption">
                 <p>Produtos</p>
             </div>
@@ -107,7 +105,7 @@
         <div class="flex-row">
             <div class="optionBorder"></div>
         </div>
-        <a href="pages/movimentacoes">
+        <a href="listar/movimentacoes">
             <div class="scrollOption">
                 <p>Movimentações</p>           
             </div>
@@ -115,7 +113,7 @@
         <div class="flex-row">
             <div class="optionBorder"></div>
         </div>
-        <a href="pages/solicitacoes">
+        <a href="listar/solicitacoes">
             <div class="scrollOption">
                 <p>Solicitações</p>
             </div>

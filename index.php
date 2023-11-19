@@ -83,7 +83,11 @@ include "configs/conecta.php";
             </div>
             <br>
             <div>
-                Nome do Cidadão
+                <?php
+
+                    $nome = $_SESSION['nome'];
+                    echo "<p>$nome</p>";
+                ?>
             </div>
         </div>
         <a href="pages/home" <?=$stilo?> class="butao">
@@ -114,7 +118,7 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/permissoes" class="butao <?=$sPermissoes?>">
+        <a href="pages/permissoes" hidden class="butao <?=$sPermissoes?>">
             <div class="optionContainer">
                 <div class="itemIconContainer">
                     <div class="itemIcon">
@@ -128,7 +132,7 @@ include "configs/conecta.php";
                 </div>
             </div>
         </a>
-        <a href="pages/usuarios" class="butao <?=$sUsuarios?>">
+        <a href="listar/usuarios" class="butao <?=$sUsuarios?>">
             <div class="optionContainer">
                 <div class="itemIconContainer">
                     <div class="itemIcon">

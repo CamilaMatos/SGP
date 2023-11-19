@@ -1,42 +1,25 @@
-<?php
-
-include "./Estoque/Usuario.php";
-
-if ($_POST) {
-    $nome = $_POST['nome'];
-    $nascimento = $_POST['nascimento'];
-    $cpf = $_POST['cpf'];
-    $tipo = $_POST['tipo'];
-    $login = $_POST['login'];
-    $senha =  $_POST['senha'];
-    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha);
-
-    if ($Ul->cadastrarUsuario() == "E") {
-        echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
-    } else if ($Ul->cadastrarUsuario() == "NA"){
-        echo "<script>alert('Erro, usuário já cadastrado');</script>";
-    }
-    else {
-        echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
-    };
-}
-
-?>
-
+<div class="col-12 pageHeader" style="display: flex">
+    <div class="col-1">
+        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+    </div>
+    <div class="col-10">
+        <h1>Usuários</h1>
+    </div>
+</div>
 <!--Botão de ativação da Modal-->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCadUsuario">
     Adicionar Usuário
 </button>
 <div class="flex-row">
-    <table>
+    <table class="table-striped">
         <thead>
             <tr>
-                <td>
+                <th>
                     <p>Colaborador</p>
-                </td>
-                <td>
+                </th>
+                <th>
                     <p>Setor</p>
-                </td>
+                </th>
             </tr>
         </thead>
         <tbody>
