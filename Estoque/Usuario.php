@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 require_once "Consultar.php";
 class Usuario{
     private $nome;

@@ -146,7 +146,7 @@ class OrdemServico {
     }
 
     public function gerarOS($idCentroCusto, $idEstoque){
-        $S = new Solicitacao(null, 5, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
+        $S = new Solicitacao($idEstoque, 2, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
         print_r($S);
         $idSolicitacao = $S->solicitarRequisicao();
         $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :idSolicitacao, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, :idStatus, :horarioInicio, :horarioFim);";
@@ -200,19 +200,32 @@ class OrdemServico {
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idOrdem", $idOrdem);
         $consulta->execute();
+        $M = new Movimentacao($idSolicitacao, $idUsuario, 4, $data);
+        $M->reverterBaixa(6);
+        while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
+            $I = new ItensSolicitacao($idSolicitacao, null, $resultado->quantidadeRealizada, $resultado->idItem, $idEstoque);
+            $I->quebrarLotes();
+        }
+
+        $M->realizarMovimentacao();
+        $this->assinar($idOrdem, 4, $idUsuario);
+    }
+
+    public function reservarIngredientes($idOrdem, $idUsuario, $idSolicitacao, $idEstoque){
+        $data = date('Y-m-d');
+        $sql = "select * from receitaServico where idOrdemServico=:idOrdem";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idOrdem", $idOrdem);
+        $consulta->execute();
         
         while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
             $I = new ItensSolicitacao($idSolicitacao, null, $resultado->quantidadeRealizada, $resultado->idItem, $idEstoque);
             $I->quebrarLotes();
         }
 
-        $M = new Movimentacao(null, $idSolicitacao, $idUsuario, 4, $data);
+        $M = new Movimentacao($idSolicitacao, $idUsuario, 4, $data);
         $M->realizarMovimentacao();
-        $this->assinar($idOrdem, 4, $idUsuario);
-    }
-
-    public function reservarIngredientes(){
-        //pensar nisso
+        $this->assinar($idOrdem, 7, $idUsuario);
     }
 
     public function buscarOrdem($idSolicitacao, $idReceita, $idOrdem, $idEstoque) {

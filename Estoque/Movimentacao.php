@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 require_once "Consultar.php";
 require_once "Lote.php";
 class Movimentacao {
@@ -121,8 +121,8 @@ class Movimentacao {
         while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
             $lote = $this->buscarLote($dados->idLote);
             $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
-            $loteNovo = new Lote(null, $lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario);
-            $loteNovo->inserirLote($solicitacao->idUsuario);
+            $loteNovo = new Lote($lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario, $dados->idLote);
+            $loteNovo->inserirLote($solicitacao->idSolicitante);
             $this->baixarItem($dados->idLote);
         };
         
@@ -151,6 +151,57 @@ class Movimentacao {
         }
 
         return $resultado;
+    }
+
+    public function reverterBaixaPorItem($idItem, $idTipoMovimentacao){
+        $I = new ItensSolicitacao(null, null, null, null, null);
+        $S = new Solicitacao(null, null, null, null, null, null, null);
+        $sql = "select i.idLote, l.quantidadeAtual, i.quantidade from itensMovimentacao i 
+        inner join lote l on (i.idLote = l.idLote)
+        where i.idSolicitacao=:idSolicitacao and l.idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->bindParam(":idItem", $idItem);
+        $consulta->execute();
+        
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+            $quantidadeNova = $dados->quantidadeAtual + $dados->quantidade;
+            $sqlUpdate = "update lote SET quantidadeAtual=:quantidadeAtual where idLote=:idLote";
+            $consultaUpdate = $this->pdo->prepare($sqlUpdate);
+            $consultaUpdate->bindParam(":quantidadeAtual", $quantidadeNova);
+            $consultaUpdate->bindParam(":idLote", $dados->idLote);
+            if ($consultaUpdate->execute()) {
+                $resultado = "S";//sucesso
+                print($I->excluirItemMovimentacao($this->idSolicitacao, $idItem));
+                $S->alterarStatusSolicitacao($this->idSolicitacao, 5);
+                if($idTipoMovimentacao == 3) {
+                    $sql2 = "select e.idLote from entrada e 
+                    inner join lote l on (e.idLoteOrigem = l.idLote)
+                    where e.idLoteOrigem=:idLote";
+                    $consulta2 = $this->pdo->prepare($sql2);
+                    $consulta2->bindParam(":idLote", $dados->idLote);
+                    $consulta2->execute();
+                    $dados2 = $consulta2->fetch(PDO::FETCH_OBJ);
+                    $L = new Lote(null, null, null, null, null, null, null);
+                    $L->excluirEntrada($dados2->idLote);
+                    $L->excluirLote($dados2->idLote);
+                }
+            } else {
+                $resultado = "E";//erro
+            }
+        }
+        
+        return $resultado;
+    }
+
+    public function reverterBaixa($idTipoMovimentacao){
+        $sql = "select idItem from itensSolicitacao where idSolicitacao=:idSolicitacao";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->execute();
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+            $this->reverterBaixaPorItem($dados->idItem, $idTipoMovimentacao);
+        }
     }
 
     public function verificarQuantidade($id) {

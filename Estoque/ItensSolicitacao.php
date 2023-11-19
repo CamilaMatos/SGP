@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idLote;
@@ -160,9 +160,8 @@ class ItensSolicitacao{
     }
 
     public function excluirItemMovimentacao($idSolicitacao, $idItem){
-        //verificar se a solicitação ainda não foi atendida
-        if(empty($this->verificarRegistros($idSolicitacao))){
-            $sql = "select i.idSolicitacao, i.idLote, l.idItem from itenssolicitacao i 
+            $resultado= "Erro";
+            $sql = "select i.idLote from itensMovimentacao i 
             inner join lote l on (i.idLote = l.idLote)
             where l.idItem=:idItem and i.idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
@@ -170,31 +169,21 @@ class ItensSolicitacao{
             $consulta->bindParam(":idSolicitacao", $idSolicitacao);
             $consulta->execute();
             while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                $this->excluirItemLote($idSolicitacao, $dados->idLote);
+                $resultado = $this->excluirItemLote($idSolicitacao, $dados->idLote);
             }
-            $resultado = "S";//sucesso
-        } else {
-            $resultado = "R";//operação recusada
-        }
-
-        return $resultado;
+            return $resultado;
     }
 
     public function excluirItemLote($id, $idLote){
-        //verificar se a solicitação ainda não foi atendida
-        if(empty($this->verificarRegistros($id))){
-            $sql = "delete from itensMovimentacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":idSolicitacao", $id);
-            $consulta->bindParam(":idLote", $idLote);
+        $sql = "delete from itensMovimentacao where idSolicitacao=:idSolicitacao and idLote=:idLote";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $id);
+        $consulta->bindParam(":idLote", $idLote);
 
-            if ($consulta->execute()) {
-                $resultado = "S";//sucesso
-            } else {
-                $resultado = "E";//erro
-            }
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
         } else {
-            $resultado = "R";//operação recusada
+            $resultado = "E";//erro
         }
 
         return $resultado;
@@ -244,8 +233,6 @@ class ItensSolicitacao{
 
     public function quebrarLotes(){
         $qtd = $this->consultarEstoqueItem();
-        print("qtd=".$this->quantidade."-");
-        print("pedido=".$qtd."-");
         if($qtd>=$this->quantidade){
             while($this->quantidade>0){
                 $lote = $this->selecionarLote();

@@ -1,23 +1,23 @@
 <?php
 //requerindo a classe
-require_once "Categoria.php";
+//require_once "Categoria.php";
 
 //estanciando a classe
-$C = new Categoria("Embalagem");//nome da classe
+//$C = new Categoria("Embalagem");//nome da classe
 
 //chamando a função de cadastrar e printando o resultado 
 
-print("Resultado 1: ".$C->cadastrarCategoria());
+//print("Resultado 1: ".$C->cadastrarCategoria());
 //a categoria "Embalagem" ainda não foi cadastrada então a função irá cadastrá-la e retornar o id
 
-print("Resultado 2: ".$C->cadastrarCategoria());
+//print("Resultado 2: ".$C->cadastrarCategoria());
 //a categoria "Embalagem" já foi cadastrada entrão a função não deverá cadastrar novamente e retornará "R", o que signfica que o cadastro foi recusado
 
 
 
-require_once "../Producao/OrdemServico.php";
-$O = new OrdemParametrizacao(1, 2, 1, 1);
-$O->setIdItem(1);
+//require_once "../Producao/OrdemServico.php";
+//$O = new OrdemParametrizacao(1, 2, 1, 1);
+//$O->setIdItem(1);
 //$O->setQuantidade(3);
 //$O->cadastrarIngrediente();
 //$O->editarIngrediente();
@@ -30,13 +30,25 @@ $O->setIdItem(1);
 
 require_once "ItensSolicitacao.php";
 require_once "Solicitacao.php";
-require_once "ItensSolicitacao.php";
+//require_once "ItensSolicitacao.php";
 require_once "Movimentacao.php";
 //require_once "../Producao/ReceitaParametrizacao.php";
 //require_once "Categoria.php";
 //require_once "CentroCusto.php";
 
+//$S = new Solicitacao(1, 1, 2, 1, 1, null, '2023-11-20');
+//print($S->solicitarRequisicao());
+//$I = new ItensSolicitacao(28, null, 1, 1, 1);
+//print($I->inserirItemSolicitacao(2));
+//print($I->quebrarLotes());
 
+//$M = new Movimentacao(28, 1, 1, '2023-11-18');
+//print($M->realizarMovimentacao());
+//print($M->realizarTransferencia());
+//$M = new Movimentacao()
+
+//print($M->reverterBaixaPorItem(1, 3));
+//print($M->reverterBaixa(6));
 
 
 // ver sobre status aparecendo para todos
@@ -80,3 +92,5 @@ require_once "Movimentacao.php";
 //$I = new ItensSolicitacao($id, null, 50, 1, 1);
 //$I->inserirItemSolicitacao(50);
 //print($I->quebrarLotes());
+//arrumar origem da solicitação
+//validar senha
