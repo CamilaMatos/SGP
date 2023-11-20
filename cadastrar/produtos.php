@@ -2,15 +2,17 @@
 
     include "./Estoque/Item.php";
 
-    if ($_POST) {
-        $nome = $_POST['nome'];
-        $unMedia = $_POST['unMedia'];
-        $categoria = $_POST['categoria'];
-        $marca = $_POST['marca'];
-        $unMedida = $_POST['unMedida'];
-        $status = 1;
+    $nome = $_POST['nome'];
+    $unMedia = $_POST['unMedia'];
+    $categoria = $_POST['categoria'];
+    $marca = $_POST['marca'];
+    $unMedida = $_POST['unMedida'];
+    $status = 1;
 
-        $I = new Item($nome, $unMedia, $categoria, $marca, $unMedida, $status);
+    $I = new Item($nome, $unMedia, $categoria, $marca, $unMedida, $status);
+
+    if ($_POST) {
+        
 
         $resultado = $I->cadastrarItem();
 
@@ -28,7 +30,24 @@
         };
     }
 
+    if(!empty($id)) {
+        $sqlProduto = "select * from produtos where id = :id LIMIT 1";
+        $consultaProduto = $pdo->prepare($sqlProduto);
+        $consultaProduto->bindParam(":id", $id);
+        $consultaProduto->execute();
+
+        //recuperar dados do sql
+        $dados = $consultaProduto->fetch(PDO::FETCH_OBJ);
+    }
+
+    $id = $dados->id ?? NULL;
+    $produto = $dados->produto ?? NULL;
+    $valor = $dados->valor ?? NULL;
+    $categorias_id = $dados->categoria_id ?? NULL;
+    $descricao = $dados->descrição ?? NULL;
+    $imagem = $dados->imagem ?? NULL;
+
 ?>
 
-<h1>teste</h1>
+<h1><?=$id?></h1>
 

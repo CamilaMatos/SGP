@@ -1,17 +1,36 @@
 <?php
     require "configs/conecta.php";
+    require "estoque/ItensSolicitacao.php";
 
     // $idSolicitacao = trim($_GET["venda_id"] ?? $_POST["venda_id"] ?? 1);
 
-    $idSolicitacao = 1;
+    if($_POST){
+        $idItem = $_POST['idItem'];
+        $qtd = $_POST['qtd'];
+        $idSolicitacao = $_POST['idSolicitacao'];
 
-    $sql = "select i.idItem, i.nome, im.quantidade from itensmovimentacao im
-    inner join lote l on (im.idLote = l.idLote)
-    inner join item i on (l.idItem = i.idItem)
+        $I = new ItensSolicitacao ($idSolicitacao, NULL, $qtd, $idItem, NULL);
+
+        $resultado = $I->inserirItemSolicitacao($qtd);
+
+        if($resultado == "E"){
+            echo "<script>alert('Erro ao realizar inserção!');</script>";
+        }
+        else{
+            echo "<script>alert('Produto inserido à requisição!');</script>";
+        }
+    }
+
+    $idSolicitacao = 27;
+
+    $sql = "select i.idItem, i.nome, itens.quantidade from itenssolicitacao itens
+    inner join item i on (itens.idItem = i.idItem)
     where idSolicitacao = :idSolicitacao";
     $consulta = $pdo->prepare($sql);
     $consulta->bindParam(":idSolicitacao", $idSolicitacao);
     $consulta->execute();
+
+
 
     ?>
     <table>
@@ -25,6 +44,9 @@
                 </th>
                 <th>
                     <p>Qtd. Solicitada</p>
+                </th>
+                <th>
+                    <p>Opções</p>
                 </th>
             </tr>
         </thead>
@@ -42,6 +64,14 @@
                             <td>
                                 <?=$dados->quantidade?>
                             </td>
+                            <td>
+
+                                <a href="javascript:Excluir(<?=$dados->idItem?>)" title="Excluir"
+                                class="btn btn-danger btn-sm">
+                                    Apagar
+                                </a>
+
+                            </td>
                         </tr>
                     <?php
                 }
@@ -51,3 +81,9 @@
     <?php
 
 ?>
+
+<script>
+    function Excluir(id){
+        location.href = "excluir/itenssolicitacao/" + id;
+    }
+</script>

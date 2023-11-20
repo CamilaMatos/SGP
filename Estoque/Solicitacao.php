@@ -1,5 +1,5 @@
 <?php
-require_once "../Classes/Conecta.php";
+require_once "./Classes/Conecta.php";
 class Solicitacao {
     private $origem;
     private $idTipo;
@@ -19,7 +19,7 @@ class Solicitacao {
         $this->idStatus = $idStatus;
         $this->idSolicitante = $idSolicitante;
         $this->idEstoque = $idEstoque;
-        $this->data = date('Y-m-d');;
+        $this->data = date('Y-m-d');
         $this->necessidade = $necessidade;
         $this->pdo = $this->conexao();
     }

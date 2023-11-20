@@ -64,12 +64,13 @@
                                 <input type="text" name="nome" id="nome" placeholder="Lt." class="formInput">
                             </div>
                         </div>
+                        <button type="submit" class="formSubmitButton">Enviar</button>
                     </div>
                 </form>
                 <br>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="formSubmitButton">Enviar</button>
+                
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
             </div>
         </div>
