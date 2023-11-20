@@ -19,7 +19,7 @@ class Solicitacao {
         $this->idStatus = $idStatus;
         $this->idSolicitante = $idSolicitante;
         $this->idEstoque = $idEstoque;
-        $this->data = date('Y-m-d');;
+        $this->data = date('Y-m-d');
         $this->necessidade = $necessidade;
         $this->pdo = $this->conexao();
     }

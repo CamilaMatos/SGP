@@ -1,3 +1,6 @@
+<?php
+    require "./configs/functions.php";
+?>
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-2">
         <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
@@ -7,39 +10,7 @@
     </div>
 </div>
 
-<form action="" method="post">
-    <select name="centroOrigem" id="centroOrigem">
-        <option value="">Selecione o Centro de Custo de Origem</option>
-        <?php
-        $sql = "select * from centrocusto order by nome";
-        $consulta = $pdo->prepare($sql);
-        $consulta->execute();
-        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-        ?>
-            <option value="<?= $dados->idCentroCusto ?>"><?= $dados->nome ?></option>
-        <?php
-        }
-        ?>
-    </select>
-    <select name="centroDestino" id="centroDestino">
-        <option value="">Selecione o Centro de Custo de Destino</option>
-        <?php
-        $sql = "select * from centrocusto order by nome";
-        $consulta = $pdo->prepare($sql);
-        $consulta->execute();
-        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-        ?>
-            <option value="<?= $dados->idCentroCusto ?>"><?= $dados->nome ?></option>
-        <?php
-        }
-        ?>
-    </select>
-    <input type="text" name="item" id="item" placeholder="Item da Requisição">
-    <input type="text" name="qtdDisponivel" id="qtdDisponivel" readonly>
-    <input type="text" name="qtdSolicitada" id="qtdSolictada">
-</form>
-
-<button type="button" class="newButton" data-toggle="modal" data-target="#modalCadRequisicao">
+<button type="button" class="newButton" data-toggle="modal" data-target="#modalCadRequisicao" onclick="Requisicao()">
     + Nova Requisição
 </button>
 
@@ -73,8 +44,8 @@
         </thead>
         <tbody>
             <?php
-                $sql = "select s.idSolicitacaoMovimentacao numero, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
-                    st.nome status from solicitacaomovimentacao s
+                $sql = "select s.idSolicitacao numero, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
+                    st.nome as status from solicitacao s
                     inner join centrocusto cc on s.idCentroCusto = cc.idCentroCusto
                     inner join tipo t on s.idTipo = t.idTipo
                     inner join status st on s.idStatus = st.idStatus order by numero desc limit 15";
@@ -121,20 +92,20 @@
                 <div class="formNewProd">
                     <div class="form-row">
                         <div class="formCol">
-                            <label for="id" class="formLabel">Id:</label>
-                            <input type="text" name="id" id="id" placeholder="Id" readonly class="formInput">
+                            <label for="id" class="formLabel">Id da Solicitação:</label>
+                            <input type="text" name="idSolicitacao" id="idSolicitacao" placeholder="Id" class="formInput">
                         </div>
                         <div class="formCol">
                             <label for="marca" class="formLabel">Tipo:</label>
-                            <select name="marca" id="marca" class="formInput">
-                                <option value="">Selecione uma marca</option>
+                            <select name="idItem" id="idItem" class="formInput">
+                                <option value="">Selecione um item:</option>
                                 <?php
-                                $sql = "select * from marca";
+                                $sql = "select * from Item";
                                 $consulta = $pdo->prepare($sql);
                                 $consulta->execute();
                                 while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
                                 ?>
-                                    <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
+                                    <option value="<?= $dados->idItem ?>"><?= $dados->nome ?></option>
                                 <?php
                                 }
                                 ?>
@@ -142,60 +113,18 @@
                         </div>
                     </div>
                     <div class="form-row">
+
                         <div class="formCol">
-                            <label for="marca" class="formLabel">Marca:</label>
-                            <select name="marca" id="marca" class="formInput">
-                                <option value="">Selecione uma marca</option>
-                                <?php
-                                $sql = "select * from marca";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
+                            <label for="qtd">Quantidade</label>
+                            <input type="text" name="qtd" id="qtd" placeholder="Qtd." class="formInput">
                         </div>
+
                         <div class="formCol">
-                            <label for="unMedida" class="formLabel">Un. de Medida</label>
-                            <select name="unMedida" id="unMedida" class="formInput">
-                                <option value="">Selecione uma unidade de medida</option>
-                                <?php
-                                $sql = "select * from unidademedida";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value="<?= $dados->idUnidadeMedida ?>"><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
+                            <div class="submitCol">
+                                <button type="submit" class="formSubmitButton">Enviar</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="formCol">
-                            <label for="unMedia" class="formLabel">Un. Média</label>
-                            <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput">
-                        </div>
-                        <div class="formCol">
-                            <label for="categoria" class="formLabel">Categoria:</label>
-                            <select name="categoria" id="categoria" class="formInput">
-                                <option value="">Selecione uma categoria</option>
-                                <?php
-                                $sql = "select * from categoria";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value=<?= $dados->idCategoria ?>><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
+
                     </div>
                     <br>
                     <iframe name="itens" class="card" width="100%" height="300px" src="itensRequisicao.php?venda_id=<?=$id?>"></iframe>
@@ -278,8 +207,6 @@
                                 ?>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="formCol">
                             <label for="unMedia" class="formLabel">Un. Média</label>
                             <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput">
@@ -316,3 +243,21 @@
     </div>
   </div>
 </div>
+
+<script>
+    function Requisicao(){
+        include "./Estoque/Solicitacao.php";
+
+        $nome = $_POST['nome'];
+        $unMedia = $_POST['unMedia'];
+        $categoria = $_POST['categoria'];
+        $marca = $_POST['marca'];
+        $unMedida = $_POST['unMedida'];
+        $status = 1;
+
+        public function __construct($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade)
+        $I = new Item($nome, $unMedia, $categoria, $marca, $unMedida, $status);
+
+
+    }
+</script>

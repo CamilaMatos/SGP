@@ -121,7 +121,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
         </div>
         <div class="modal-body">
-            <form action="" method="post">
+            <form action="cadastrar/unidadeMedida" method="post">
                 <div class="formNewProd">
                     <div class="form-row">
                         <div class="formCol">

@@ -3,7 +3,7 @@
         <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
     <div class="col-8">
-        <h1>Estoque</h1>
+        <h1>Produção</h1>
     </div>
 </div>
 

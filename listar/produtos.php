@@ -115,6 +115,9 @@
                             <th scope="col">
                                 <p>Status</p>
                             </th>
+                            <th scope="col">
+                                <p>Opções</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,6 +155,18 @@
                                 <td>
                                     <p><?= $dados->status ?></p>
                                 </td>
+                                <td>
+
+                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
+                                    <a href="cadastrar/produtos/<?=$dados->id?>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+
+                                </td>
                             </tr>
                         <?php
                         }
@@ -164,87 +179,188 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalCadProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
-        </div>
-        <div class="modal-body">
-            <form action="cadastrar/produtos" method="post">
-                <div class="formNewProd">
-                    <div class="form-row">
 
-                        <div class="formCol">
-                            <label for="nome" class="formLabel">Nome:</label>
-                            <input type="text" name="nome" id="nome" placeholder="Nome" class="formInput" required>
+
+<div class="modal fade" id="modalCadProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
+            </div>
+            <div class="modal-body">
+                <form action="cadastrar/produtos" method="post">
+                    <div class="formNewProd">
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="nome" class="formLabel">Nome:</label>
+                                <input type="text" name="nome" id="nome" placeholder="Nome" class="formInput">
+                            </div>
                         </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="marca" class="formLabel">Marca:</label>
+                                <select name="marca" id="marca" class="formInput">
+                                    <option value="">Selecione uma marca</option>
+                                    <?php
+                                    $sql = "select * from marca";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="formCol">
+                                <label for="unMedida" class="formLabel">Unidade de Medida:</label>
+                                <select name="unMedida" id="unMedida" class="formInput">
+                                    <option value="">Selecione uma unidade de medida</option>
+                                    <?php
+                                    $sql = "select * from unidademedida";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idUnidadeMedida ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="unidadeMedia" class="formLabel">Unidade Média:</label>
+                                <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput">
+                            </div>
+                            <div class="formCol">
+                                <label for="categoria" class="formLabel">Categoria:</label>
+                                <select name="categoria" id="categoria" class="formInput">
+                                    <option value="">Selecione uma categoria</option>
+                                    <?php
+                                    $sql = "select * from categoria";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value=<?= $dados->idCategoria ?>><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="formSubmitButton">Enviar</button>
                     </div>
-                    <div class="form-row">
-                        <div class="formCol">
-                            <label for="marca" class="formLabel">Marca:</label>
-                            <select name="marca" id="marca" class="formInput" required>
-                                <option value="">Selecione uma marca</option>
-                                <?php
-                                $sql = "select * from marca";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="formCol">
-                            <label for="unMedida" class="formLabel">Un. de Medida</label>
-                            <select name="unMedida" id="unMedida" class="formInput" required>
-                                <option value="">Selecione uma unidade de medida</option>
-                                <?php
-                                $sql = "select * from unidademedida";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value="<?= $dados->idUnidadeMedida ?>"><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="formCol">
-                            <label for="unMedia" class="formLabel">Un. Média</label>
-                            <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput" required>
-                        </div>
-                        <div class="formCol">
-                            <label for="categoria" class="formLabel">Categoria:</label>
-                            <select name="categoria" id="categoria" class="formInput" required>
-                                <option value="">Selecione uma categoria</option>
-                                <?php
-                                $sql = "select * from categoria";
-                                $consulta = $pdo->prepare($sql);
-                                $consulta->execute();
-                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                                ?>
-                                    <option value=<?= $dados->idCategoria ?>><?= $dados->nome ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                            <button type="submit" class="formSubmitButton">Enviar</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <br>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
         </div>
-      <div class="modal-footer">
-        
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
   </div>
 </div>
+
+<div class="modal fade" id="modalCadProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
+            </div>
+            <div class="modal-body">
+                <form action="cadastrar/produtos" method="post">
+                    <div class="formNewProd">
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="nome" class="formLabel">Nome:</label>
+                                <input type="text" name="nome" id="nome" placeholder="Nome" class="formInput">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="marca" class="formLabel">Marca:</label>
+                                <select name="marca" id="marca" class="formInput">
+                                    <option value="">Selecione uma marca</option>
+                                    <?php
+                                    $sql = "select * from marca";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="formCol">
+                                <label for="unMedida" class="formLabel">Unidade de Medida:</label>
+                                <select name="unMedida" id="unMedida" class="formInput">
+                                    <option value="">Selecione uma unidade de medida</option>
+                                    <?php
+                                    $sql = "select * from unidademedida";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idUnidadeMedida ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="unidadeMedia" class="formLabel">Unidade Média:</label>
+                                <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput">
+                            </div>
+                            <div class="formCol">
+                                <label for="categoria" class="formLabel">Categoria:</label>
+                                <select name="categoria" id="categoria" class="formInput">
+                                    <option value="">Selecione uma categoria</option>
+                                    <?php
+                                    $sql = "select * from categoria";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value=<?= $dados->idCategoria ?>><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="formSubmitButton">Enviar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+  </div>
+</div>
+
+<script>
+    function excluir(id) {
+            Swal.fire({
+                icon: "warning",
+                title: "Você deseja mesmo excluir este registro?",
+                showCancelButton: true,
+                confirmButtonText: "Excluir",
+                cancelButtonText: "Cancelar",
+            }).then((result)=>{
+                if (result.isConfirmed) {
+                    location.href = "excluir/produto/" + id;
+                }
+            })
+        }
+</script>
