@@ -1,8 +1,10 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-2">
-        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+    <div class="col-1">
+        <a href="pages/estoque" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
-    <div class="col-8">
+    <div class="col-10">
         <h1>Produtos</h1>
     </div>
 </div>
@@ -24,7 +26,7 @@
         <?php
             if ($_POST && ($_POST['pesquisa'] != NULL)) {
                 ?>
-                <table class="table-striped table70Length">
+                <table class="table table-striped table70Length">
                     <thead>
                         <tr>
                             <th scope="col">
@@ -93,7 +95,7 @@
             <?php
             } else {
                 ?>
-                <table class="table-striped table70Length">
+                <table class="table table-striped table70Length">
                     <thead>
                         <tr>
                             <th scope="col">
@@ -130,7 +132,7 @@
                             on i.idUnidadeMedida = uM.idUnidadeMedida
                             inner join status s
                             on i.idStatus = s.idStatus
-                            order by idItem desc limit 15";
+                            order by idItem";
                         $consulta = $pdo->prepare($sql);
                         $consulta->execute();
                         while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
@@ -186,9 +188,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
             </div>
             <div class="modal-body">
-                <form action="cadastrar/produtos" method="post">
+                <form action="cadastrar/produtos" method="post" id="newProduto">
                     <div class="formNewProd">
                         <div class="form-row">
                             <div class="formCol">
@@ -253,13 +256,12 @@
                                 
                             </div>
                         </div>
-                        <br>
-                        <button type="submit" class="formSubmitButton">Enviar</button>
+                        <br>  
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="submit" class="formSubmitButton" form="newProduto">Enviar</button>
             </div>
         </div>
   </div>
@@ -279,4 +281,28 @@
             }
         })
     }
+    $(document).ready(function(){
+        $(".table").DataTable({
+            searching: false,
+            "pageLength": 15,
+            "bLengthChange" : false,
+            "info":false, 
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
+    })
 </script>

@@ -14,7 +14,6 @@
 
     $idSolicitacao = $S->SolicitarRequisicao();
 
-    echo($idSolicitacao);
 ?>
 
 
@@ -24,28 +23,30 @@
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Nova Requisição:</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Requisição Nº<?=$idSolicitacao?></h1>
+                <a href="listar/solicitacoes">
+                    <button type="button" class="btn btn-secondary">Fechar</button>
+                </a>
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
-                    <form action="cadastrar/solicitacoes" id="formSolicitacao" method="post">
+                    <form action="cadastrar/solicitacoes/<?=$idSolicitacao?>" id="formSolicitacao" method="post">
                         <div class="form-row">
                             <div class="formCol">
                                 <input type="hidden" name="idSolicitante" id="idSolicitante" value="<?=$idSolicitante?>">
                                 <input type="hidden" name="idTipo" id="idTipo" value="<?=$idTipo?>">
                                 <input type="hidden" name="idStatus" id="idStatus" value="<?=$idStatus?>">
-                                <input type="hidden" name="idEstoque" id="idEstoque" value="<?=$idEstoque?>">
 
                                 <label for="origem">Origem:</label>
                                 <select name="origem" id="origem" class="formInput">
                                     <option value="" >Selecione uma origem:</option>
                                     <?php
-                                        $sql = "select * from centrocusto";
+                                        $sql = "select * from estoque";
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
                                         while($dadosc = $consulta->fetch(PDO::FETCH_OBJ)){
                                             ?>
-                                                <option value="<?=$dadosc->idCentroCusto?>"><?=$dadosc->nome?></option>
+                                                <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
                                             <?php
                                         }
                                     ?>
@@ -77,7 +78,7 @@
                     <form name="formProdutos" method="post" action="itensRequisicao.php" data-parsley-validade="" target="itens">
                         <div class="form-row">
                             <div class="formCol">
-                                <input type="hidden" name="idSolicitacao" id="idSolicitacao" value="<?=$id?>" readonly class="formInput">
+                                <input type="hidden" name="idSolicitacao" id="idSolicitacao" value="<?=$idSolicitacao?>" readonly class="formInput">
                             </div>
                             <div class="formCol">
                                 <label for="marca" class="formLabel">Produtos:</label>
@@ -109,9 +110,6 @@
     
                         </div>
                         <br>
-                        <?php
-                            echo($idSolicitacao);
-                        ?>
                         <iframe name="itens" class="card" width="100%" height="300px" src="itensRequisicao.php?idSolicitacao=<?=$idSolicitacao?>"></iframe>
                         <br>
                     </form>
@@ -122,9 +120,6 @@
                 <div class="submitCol" >
                     <button type="submit" class="formSubmitButton" form="formSolicitacao">Cadastrar Requisição</button>
                 </div>
-                <a href="listar/solicitacoes">
-                    <button type="button" class="btn btn-secondary">Fechar</button>
-                </a>
             </div>
         </div>
         

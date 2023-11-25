@@ -43,6 +43,12 @@ include "configs/conecta.php";
     <script src="js/summernote-pt-BR.js"></script>
     <script src="https://kit.fontawesome.com/4af1129b29.js" crossorigin="anonymous"></script>
 
+
+
+
+
+
+  
 </head>
 
 <body>
