@@ -187,6 +187,7 @@ include "configs/conecta.php";
                             $pasta = $param[0] ?? NULL;
                             $arquivo = $param[1] ?? NULL;
                             $id = $param[2] ?? NULL;
+                            $id2 = $param[3] ?? NULL;
                         }
                         
                         if (($pasta == "home") OR ($pasta == "index.php")) {
