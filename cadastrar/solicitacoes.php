@@ -2,16 +2,22 @@
 <?php
     include './Estoque/Solicitacao.php';
 
-    $origem = $_POST['origem'];
-    $idTipo = $_POST['idTipo'];
-    $idCentroCusto = $_POST['idCentroCusto'];
-    $idStatus = ['idStatus'];
-    $idSolicitante = $_SESSION['idUsuario'];
-    $idEstoque = ['idEstoque'];
+    $origem = $_POST['origem'] ?? NULL;
+    $idTipo = $_POST['idTipo'] ?? NULL;
+    $idCentroCusto = $_POST['idCentroCusto'] ?? NULL;
+    $idStatus = $_POST['idStatus'] ?? NULL;
+    $idSolicitante = $_SESSION['idUsuario'] ?? NULL;
+    $idEstoque = $_POST['idEstoque'] ?? NULL;
     $data = date('Y-M-d');
-    $necessidade = ['necessidade'];
+    $necessidade = $_POST['necessidade'] ?? NULL;
+
+    $op = trim($_GET["op"] ?? $_POST["op"] ?? NULL);
+
+    echo ($op);
+
 
     $S = new Solicitacao($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade);
+
 
     if ($_POST && empty($id)) {
         
@@ -34,7 +40,7 @@
 
     if(!empty($id)) {
 
-        $resultado = $I->editarSolicitacao($id);
+        $resultado = $S->finalizarSolicitacao($id);
 
         if ($resultado == "E") {
             echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";

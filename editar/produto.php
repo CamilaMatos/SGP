@@ -3,9 +3,12 @@
     <div class="modal-content">
         <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Produto</h1>
+            <a href="listar/produtos">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </a>
         </div>
         <div class="modal-body">
-            <form action="cadastrar/produtos/<?=$id?>" method="post">
+            <form action="cadastrar/produtos/<?=$id?>" method="post" id="editProduto">
                 <div class="formNewProd">
 
                     <?php
@@ -80,7 +83,6 @@
                                         
                                     </div>
                                 </div>
-                                <button type="submit" class="formSubmitButton">Enviar</button>
                             <?php
                         }
                     ?>
@@ -88,9 +90,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="listar/produtos">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-            </a>
+            <button type="submit" class="formSubmitButton" form="editProduto">Enviar</button>
         </div>
     </div>
 </div>

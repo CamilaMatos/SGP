@@ -1,41 +1,28 @@
 <?php
     include './Estoque/Solicitacao.php';
+    $sql = "select * from solicitacao where idSolicitacao = :idSolicitacao";
+    $consulta = $pdo->prepare($sql);
+    $consulta->bindParam(':idSolicitacao', $id);
+    $consulta->execute();
 
-    $origem = NULL;
-    $idTipo = 3;
-    $idCentroCusto = NULL;
-    $idStatus = 8;
-    $idSolicitante = $_SESSION['idUsuario'];
-    $idEstoque = NULL;
-    $data = date('Y-M-d');
-    $necessidade = $data;
-
-    $S = new Solicitacao($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade);
-
-    $idSolicitacao = $S->solicitarTransferencia();
-
+    $dados = $consulta->fetch(PDO::FETCH_OBJ);
 ?>
-
-
 
 
 <div class="contentDiv">
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Transferência Nº<?=$idSolicitacao?></h1>
-                <a href="listar/solicitacoes">
-                    <button type="button" class="btn btn-secondary">Fechar</button>
-                </a>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Transferência:</h1>
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
-                    <form action="cadastrar/solicitacoes/<?=$idSolicitacao?>" id="formSolicitacao" method="post">
+                    <form action="cadastrar/editSolicitacoes/<?=$id?>" id="formSolicitacao" method="post">
                         <div class="form-row">
                             <div class="formCol">
-                                <input type="hidden" name="idSolicitante" id="idSolicitante" value="<?=$idSolicitante?>">
-                                <input type="hidden" name="idTipo" id="idTipo" value="<?=$idTipo?>">
-                                <input type="hidden" name="idStatus" id="idStatus" value="<?=$idStatus?>">
+                                <input type="hidden" name="idSolicitante" id="idSolicitante" value="<?=$dados->idSolicitante?>">
+                                <input type="hidden" name="idTipo" id="idTipo" value="<?=$dados->idTipo?>">
+                                <input type="hidden" name="idStatus" id="idStatus" value="<?=$dados->idStatus?>">
 
                                 <label for="origem">Origem:</label>
                                 <select name="origem" id="origem" class="formInput">
@@ -70,7 +57,7 @@
                             </div>
                             <div class="formCol">
                                 <label for="necessidade" class="formLabel">Data Limite:</label>
-                                <input type="date" name="necessidade" id="necessidade" class="formInput">
+                                <input type="date" name="necessidade" id="necessidade" class="formInput" value="<?=$dados->necessidade?>">
                             </div>
                         </div>
 
@@ -78,7 +65,7 @@
                     <form name="formProdutos" method="post" action="itensRequisicao.php" data-parsley-validade="" target="itens">
                         <div class="form-row">
                             <div class="formCol">
-                                <input type="hidden" name="idSolicitacao" id="idSolicitacao" value="<?=$idSolicitacao?>" readonly class="formInput">
+                                <input type="hidden" name="idSolicitacao" id="idSolicitacao" value="<?=$id?>" readonly class="formInput">
                             </div>
                             <div class="formCol">
                                 <label for="marca" class="formLabel">Produtos:</label>
@@ -110,7 +97,7 @@
     
                         </div>
                         <br>
-                        <iframe name="itens" class="card" width="100%" height="300px" src="itensRequisicao.php?idSolicitacao=<?=$idSolicitacao?>"></iframe>
+                        <iframe name="itens" class="card" width="100%" height="300px" src="itensRequisicao.php?idSolicitacao=<?=$id?>"></iframe>
                         <br>
                     </form>
                 </div>
@@ -120,6 +107,9 @@
                 <div class="submitCol" >
                     <button type="submit" class="formSubmitButton" form="formSolicitacao">Cadastrar Requisição</button>
                 </div>
+                <a href="listar/solicitacoes">
+                    <button type="button" class="btn btn-secondary">Fechar</button>
+                </a>
             </div>
         </div>
         

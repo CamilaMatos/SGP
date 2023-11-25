@@ -190,10 +190,11 @@ class Solicitacao {
     public function finalizarSolicitacao($id){
             $sql = "update solicitacao SET origem=:origem, idCentroCusto=:idCentroCusto, idEstoque=:idEstoque, idStatus=:idStatus, data=:data, necessidade=:necessidade where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":necessidade", $this->origem);
-            $consulta->bindParam(":necessidade", $this->idCentroCusto);
-            $consulta->bindParam(":necessidade", $this->idStatus);
-            $consulta->bindParam(":necessidade", $this->data);
+            $consulta->bindParam(":origem", $this->origem);
+            $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+            $consulta->bindParam(":idEstoque", $this->idEstoque);
+            $consulta->bindParam(":idStatus", $this->idStatus);
+            $consulta->bindParam(":data", $this->data);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idSolicitacao", $id);
 

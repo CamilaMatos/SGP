@@ -1,8 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-2">
-        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+    <div class="col-1">
+        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
-    <div class="col-8">
+    <div class="col-10">
         <h1>Unidades de Medida</h1>
     </div>
 </div>
@@ -10,7 +10,7 @@
 <br>
 
 <div class="flex-row">
-    <form action="" method="post">
+    <form action="cadastrar/unidadeMedida" method="post">
         <div class="searchBar">
             <input type="text" name="pesquisa" id="pesquisa" placeholder="Ex. Arroz" class="searchBarInput">
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -27,7 +27,7 @@
     <?php
         if ($_POST && ($_POST['pesquisa'] != NULL)) {
             ?>
-            <table class="table table-striped">
+            <table class="table table-striped table70Length">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -68,7 +68,7 @@
         <?php
         } else {
             ?>
-            <table class="table table-striped">
+            <table class="table table-striped table70Length">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -119,9 +119,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         </div>
         <div class="modal-body">
-            <form action="cadastrar/unidadeMedida" method="post">
+            <form action="cadastrar/unidadeMedida" method="post" id="formUM">
                 <div class="formNewProd">
                     <div class="form-row">
                         <div class="formCol">
@@ -138,9 +139,35 @@
             <br>
         </div>
       <div class="modal-footer">
-        <button type="submit" class="formSubmitButton">Enviar</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="formSubmitButton" form="formUM" >Enviar</button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $(".table").DataTable({
+            searching: false,
+            "pageLength": 15,
+            "bLengthChange" : false,
+            "info":false, 
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
+    })
+</script>

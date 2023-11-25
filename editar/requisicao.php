@@ -17,24 +17,23 @@
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
-                    <form action="cadastrar/solicitacoes" id="formSolicitacao" method="post">
+                    <form action="cadastrar/editSolicitacoes/<?=$id?>" id="formSolicitacao" method="post">
                         <div class="form-row">
                             <div class="formCol">
                                 <input type="hidden" name="idSolicitante" id="idSolicitante" value="<?=$dados->idSolicitante?>">
                                 <input type="hidden" name="idTipo" id="idTipo" value="<?=$dados->idTipo?>">
                                 <input type="hidden" name="idStatus" id="idStatus" value="<?=$dados->idStatus?>">
-                                <input type="hidden" name="idEstoque" id="idEstoque" value="NULL">
 
                                 <label for="origem">Origem:</label>
                                 <select name="origem" id="origem" class="formInput">
                                     <option value="" >Selecione uma origem:</option>
                                     <?php
-                                        $sql = "select * from centrocusto";
+                                        $sql = "select * from estoque";
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
                                         while($dadosc = $consulta->fetch(PDO::FETCH_OBJ)){
                                             ?>
-                                                <option value="<?=$dadosc->idCentroCusto?>"><?=$dadosc->nome?></option>
+                                                <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
                                             <?php
                                         }
                                     ?>
