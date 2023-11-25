@@ -166,11 +166,12 @@ class Solicitacao {
         return $resultado;
     }
 
-    public function alterarNecessidade($id){
+    public function editarSolicitacao($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update solicitacao SET necessidade=:necessidade where idSolicitacao=:idSolicitacao";
+            $sql = "update solicitacao SET idCentroCusto=:idCentroCusto, necessidade=:necessidade where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":necessidade", $this->idCentroCusto);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idSolicitacao", $id);
 
@@ -182,6 +183,25 @@ class Solicitacao {
         } else {
             $resultado = "R";//operação recusada
         }
+
+        return $resultado;
+    }
+
+    public function finalizarSolicitacao($id){
+            $sql = "update solicitacao SET origem=:origem, idCentroCusto=:idCentroCusto, idEstoque=:idEstoque, idStatus=:idStatus, data=:data, necessidade=:necessidade where idSolicitacao=:idSolicitacao";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":necessidade", $this->origem);
+            $consulta->bindParam(":necessidade", $this->idCentroCusto);
+            $consulta->bindParam(":necessidade", $this->idStatus);
+            $consulta->bindParam(":necessidade", $this->data);
+            $consulta->bindParam(":necessidade", $this->necessidade);
+            $consulta->bindParam(":idSolicitacao", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
 
         return $resultado;
     }

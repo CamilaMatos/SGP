@@ -243,21 +243,3 @@
     </div>
   </div>
 </div>
-
-<script>
-    function Requisicao(){
-        include "./Estoque/Solicitacao.php";
-
-        $nome = $_POST['nome'];
-        $unMedia = $_POST['unMedia'];
-        $categoria = $_POST['categoria'];
-        $marca = $_POST['marca'];
-        $unMedida = $_POST['unMedida'];
-        $status = 1;
-
-        public function __construct($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade)
-        $I = new Item($nome, $unMedia, $categoria, $marca, $unMedida, $status);
-
-
-    }
-</script>

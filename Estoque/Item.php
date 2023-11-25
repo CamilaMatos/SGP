@@ -106,7 +106,8 @@ class Item{
     }
 
     public function cadastrarItem(){
-        if(empty($this->itemPorNome())) {
+        $id = null;
+        if(empty($this->itemPorNome($id))) {
             $sql = "insert into item values (NULL, :nome, :unidadeMedia, :idCategoria, :idMarca, :idUnidadeMedida, :idStatus)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -129,7 +130,7 @@ class Item{
     }
 
     public function editarItem($id){
-        if(empty($this->itemPorNome())) {
+        if(empty($this->itemPorNome($id))) {
             $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -196,13 +197,22 @@ class Item{
         return $resultado;
     }
 
-    public function itemPorNome(){
-        $sql = "select * from item where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-
+    public function itemPorNome($id){
+        if($id == null){
+            $sql = "select * from item where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from item where nome=:nome and idItem=:id";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
+        
         return $resultado;
     }
 }

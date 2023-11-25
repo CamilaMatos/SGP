@@ -32,7 +32,8 @@ class Categoria {
     }
 
     public function cadastrarCategoria(){
-        if(empty($this->categoriaPorNome())) {
+        $id = null;
+        if(empty($this->categoriaPorNome($id))) {
             $sql = "insert into categoria values (NULL, :nome)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -50,7 +51,7 @@ class Categoria {
     }
 
     public function editarCategoria($id){
-        if(empty($this->categoriaPorNome())) {
+        if(empty($this->categoriaPorNome($id))) {
             $sql = "update categoria SET nome=:nome where idCategoria=:idCategoria";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -97,12 +98,21 @@ class Categoria {
         return $resultado;
     }
 
-    public function categoriaPorNome(){
-        $sql = "select * from categoria where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function categoriaPorNome($id){
+        if($id == null){
+            $sql = "select * from categoria where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from categoria where nome=:nome and idCategoria=:id";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
 
         return $resultado;
     }

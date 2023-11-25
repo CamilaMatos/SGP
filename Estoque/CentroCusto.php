@@ -59,7 +59,8 @@ class CentroCusto {
     }
 
     public function cadastrarCentroCusto(){
-        if(empty($this->centroCustoPorNome())){
+        $id = null;
+        if(empty($this->centroCustoPorNome($id))){
             $sql = "insert into centroCusto values (NULL, :nome, :descricao, :idStatus)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -79,7 +80,7 @@ class CentroCusto {
     }
 
     public function editarCentroCusto($id){
-        if(empty($this->centroCustoPorNome())){
+        if(empty($this->centroCustoPorNome($id))){
             $sql = "update centroCusto SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idCentroCusto=:idCentroCusto";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -143,12 +144,21 @@ class CentroCusto {
         return $resultado;
     }
 
-    public function centroCustoPorNome(){
-        $sql = "select * from centroCusto where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function centroCustoPorNome($id){
+        if($id == null){
+            $sql = "select * from centroCusto where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from centroCusto where nome=:nome and idCentroCusto=:id";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
 
         return $resultado;
     } 
