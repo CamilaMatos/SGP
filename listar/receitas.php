@@ -3,7 +3,7 @@
         <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
     <div class="col-8">
-        <h1>Produtos</h1>
+        <h1>Receitas</h1>
     </div>
 </div>
 <div class="contentDiv">
@@ -15,9 +15,10 @@
             </div>
         </form>
         <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
-            + Novo Produto
+            + Nova Receita
         </button>
     </div>
+    
     <br>
     <br>
     <div class="flex-row">
@@ -161,10 +162,9 @@
                                         <i class="fas fa-trash"></i>
                                     </a>
 
-                                    <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
-                                        <i class="fas fa-edit"></i>
+                                    <a href="editar/produto/<?=$dados->id?>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                </a>
 
                                 </td>
                             </tr>
@@ -180,6 +180,90 @@
 </div>
 
 
+
+<div class="modal fade" id="modalCadProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
+            </div>
+            <div class="modal-body">
+                <form action="cadastrar/produtos" method="post">
+                    <div class="formNewProd">
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="nome" class="formLabel">Nome:</label>
+                                <input type="text" name="nome" id="nome" placeholder="Nome" class="formInput">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="marca" class="formLabel">Marca:</label>
+                                <select name="marca" id="marca" class="formInput">
+                                    <option value="">Selecione uma marca</option>
+                                    <?php
+                                    $sql = "select * from marca";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idMarca ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="formCol">
+                                <label for="unMedida" class="formLabel">Unidade de Medida:</label>
+                                <select name="unMedida" id="unMedida" class="formInput">
+                                    <option value="">Selecione uma unidade de medida</option>
+                                    <?php
+                                    $sql = "select * from unidademedida";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value="<?= $dados->idUnidadeMedida ?>"><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="unidadeMedia" class="formLabel">Unidade Média:</label>
+                                <input type="text" name="unMedia" id="unMedia" placeholder="Un. Média" class="formInput">
+                            </div>
+                            <div class="formCol">
+                                <label for="categoria" class="formLabel">Categoria:</label>
+                                <select name="categoria" id="categoria" class="formInput">
+                                    <option value="">Selecione uma categoria</option>
+                                    <?php
+                                    $sql = "select * from categoria";
+                                    $consulta = $pdo->prepare($sql);
+                                    $consulta->execute();
+                                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                    ?>
+                                        <option value=<?= $dados->idCategoria ?>><?= $dados->nome ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="formSubmitButton">Enviar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+  </div>
+</div>
 
 <div class="modal fade" id="modalCadProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

@@ -163,17 +163,35 @@ table {
     border-width: 1px;
     border-color: rgba(0, 25, 74, 0.3);
     border-style: solid;
+
+}
+
+.tableFullLength{
+    width: 100vw !important;
+    max-width: 100vw !important;
+}
+
+.table70Length{
     width: 70vw !important;
     max-width: 70vw !important;
-
 }
 
 table tbody tr td{
     border: none;
 }
 
+table thead tr{
+    height: 6vh;
+}
+
+table tbody tr{
+    height: 6vh
+}
+
 .contentDiv {
     width: 100vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
 }
 
 .return {
@@ -198,10 +216,10 @@ table tbody tr td{
 .formNewProd {
     padding: 5vh;
     background-color: rgb(243, 243, 243);
-    width: 50vw;
-    max-width: 50vw !important;
+    min-width: 50vw !important;
+    width: 98%;
     border-radius: 25px;
-    height: 55vh;
+    max-height: fit-content;
     min-height: 45vh;
     display: inline-block;
     border-style: solid;

@@ -105,7 +105,7 @@
         <div class="flex-row">
             <div class="optionBorder"></div>
         </div>
-        <a href="listar/newReceitas">
+        <a href="listar/receitas">
             <div class="scrollOption">
                 <p>Receitas</p>           
             </div>
