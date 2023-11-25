@@ -45,7 +45,8 @@ class UnidadeMedida {
     }
 
     public function cadastrarUnidadeMedida(){
-        if(empty($this->unidadeMedidaPorNome())) {
+        $id = null;
+        if(empty($this->unidadeMedidaPorNome($id))) {
             $sql = "insert into unidadeMedida values (NULL, :nome, :descricao)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -64,7 +65,7 @@ class UnidadeMedida {
     }
 
     public function editarUnidadeMedida($id){
-        if(empty($this->unidadeMedidaPorNome())) {
+        if(empty($this->unidadeMedidaPorNome($id))) {
             $sql = "update unidadeMedida SET nome=:nome, descricao=:descricao where idUnidadeMedida=:idUnidadeMedida";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -112,13 +113,21 @@ class UnidadeMedida {
         return $resultado;
     }
 
-    public function unidadeMedidaPorNome(){
-        $sql = "select * from unidadeMedida where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-
+    public function unidadeMedidaPorNome($id){
+        if($id == null){
+            $sql = "select * from unidadeMedida where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from unidadeMedida where nome=:nome and idUnidadeMedida=:id";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
         return $resultado;
     }
 }

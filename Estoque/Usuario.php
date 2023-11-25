@@ -124,7 +124,8 @@ class Usuario{
     }
 
     public function cadastrarUsuario(){
-        if ($this->validarLogin() == "A") {
+        $id = null;
+        if ($this->validarLogin($id) == "A") {
             $senha = $this->encriptador($this->senha);
             $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
             $consulta = $this->pdo->prepare($sql);
@@ -148,7 +149,7 @@ class Usuario{
     }
 
     public function editarUsuario($id){
-        if ($this->validarLogin() == "A") {
+        if ($this->validarLogin($id) == "A") {
             $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login where idUsuario=:idUsuario";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -201,12 +202,21 @@ class Usuario{
         return $resultado;
     }
 
-    public function validarLogin(){
-        $sql = "select login from usuario where login=:login";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":login", $this->login);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function validarLogin($id){
+        if($if = null){
+            $sql = "select login from usuario where login=:login";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select login from usuario where login=:login and idUsuario=:idUsuario";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":login", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
 
         if (empty($resultado)) {
             $resultado = "A"; //autorizado

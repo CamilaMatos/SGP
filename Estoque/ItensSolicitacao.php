@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class ItensSolicitacao{
     private $idSolicitacao;
     private $idLote;
@@ -86,22 +86,42 @@ class ItensSolicitacao{
     }
 
     public function inserirItemSolicitacao($quantidade){
-        //verificar se a solicitação ainda não foi atendida
-        if(empty($this->verificarRegistros($this->idSolicitacao))){
-            $sql = "insert into itensSolicitacao values (:idSolicitacao, :idItem, :quantidade)";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
-            $consulta->bindParam(":idItem", $this->idItem);
-            $consulta->bindParam(":quantidade", $quantidade);
+        if(empty($this->consultarExistenciaItem())){
+            $qtd = $this->consultarEstoqueItem();
+            if($qtd>=$quantidade){
+                //verificar se a solicitação ainda não foi atendida
+                if(empty($this->verificarRegistros($this->idSolicitacao))){
+                    $sql = "insert into itensSolicitacao values (:idSolicitacao, :idItem, :quantidade)";
+                    $consulta = $this->pdo->prepare($sql);
+                    $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+                    $consulta->bindParam(":idItem", $this->idItem);
+                    $consulta->bindParam(":quantidade", $quantidade);
 
-            if ($consulta->execute()) {
-                $resultado = "S";//sucesso
-            } else {
-                $resultado = "E";//erro
+                    if ($consulta->execute()) {
+                        $resultado = "S";//sucesso
+                    } else {
+                        $resultado = "E";//erro
+                    }
+                }else {
+                        $resultado = "R";//operação recusada
+                    }
+            }else {
+                $resultado = "I";//quantidade insuficiente
             }
-        }else {
-                $resultado = "R";//operação recusada
-            }
+        } else{
+            $resultado = "D";//item já inserido
+        }
+
+        return $resultado;
+    }
+
+    public function consultarExistenciaItem() {
+        $sql = "select * from itensSolicitacao where idSolicitacao=:idSolicitacao and idItem=:idItem";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+        $consulta->bindParam(":idItem", $this->idItem);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         return $resultado;
     }

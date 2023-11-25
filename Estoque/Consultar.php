@@ -136,8 +136,6 @@ class Consultar {
         return $resultado;
     }
 
-    
-
     public function marcaPorId(){
         $sql = "select * from marca where idMarca=:parametro1";
         $consulta = $this->pdo->prepare($sql);

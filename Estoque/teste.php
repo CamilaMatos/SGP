@@ -28,13 +28,15 @@
 
 
 
-require_once "ItensSolicitacao.php";
 require_once "Solicitacao.php";
 //require_once "ItensSolicitacao.php";
-require_once "Movimentacao.php";
+
 //require_once "../Producao/ReceitaParametrizacao.php";
 //require_once "Categoria.php";
 //require_once "CentroCusto.php";
+
+$S = new Solicitacao(1, 2, 3, 1, 1, null, '2023-11-11');
+$S->finalizarSolicitacao(35);
 
 //$S = new Solicitacao(1, 1, 2, 1, 1, null, '2023-11-20');
 //print($S->solicitarRequisicao());
