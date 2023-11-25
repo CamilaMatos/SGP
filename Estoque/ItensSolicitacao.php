@@ -86,17 +86,22 @@ class ItensSolicitacao{
     }
 
     public function inserirItemSolicitacao($quantidade){
-        $sql = "insert into itensSolicitacao values (:idSolicitacao, :idItem, :quantidade)";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
-        $consulta->bindParam(":idItem", $this->idItem);
-        $consulta->bindParam(":quantidade", $quantidade);
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($this->idSolicitacao))){
+            $sql = "insert into itensSolicitacao values (:idSolicitacao, :idItem, :quantidade)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+            $consulta->bindParam(":idItem", $this->idItem);
+            $consulta->bindParam(":quantidade", $quantidade);
 
-        if ($consulta->execute()) {
-            $resultado = "S";//sucesso
-        } else {
-            $resultado = "E";//erro
-        }
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        }else {
+                $resultado = "R";//operação recusada
+            }
 
         return $resultado;
     }
