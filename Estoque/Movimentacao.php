@@ -82,19 +82,22 @@ class Movimentacao {
         $consulta->bindParam(":data", $this->data);
 
         if ($consulta->execute()) {
-            $resultado = $this->pdo->lastInsertId();//sucesso
+            $resultado = "S";//sucesso
+
+            $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+            $consulta->execute();
+            
+            while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                $this->baixarItem($dados->idLote);
+            };
+
+            $S = new Solicitacao(null, null, null, null, null, null, null);
+            $S->alterarStatusSolicitacao($this->idSolicitacao, 10);
         } else {
             $resultado = "E";//erro
         }
-
-        $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
-        $consulta->execute();
-        
-        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-            $this->baixarItem($dados->idLote);
-        };
         
         return $resultado;
     }
@@ -109,23 +112,26 @@ class Movimentacao {
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
+
+            $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+            $consulta->execute();
+            
+            while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                $lote = $this->buscarLote($dados->idLote);
+                $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
+                $loteNovo = new Lote($lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario, $dados->idLote);
+                $loteNovo->inserirLote($solicitacao->idSolicitante);
+                $this->baixarItem($dados->idLote);
+            };
+
+            $S = new Solicitacao(null, null, null, null, null, null, null);
+            $S->alterarStatusSolicitacao($this->idSolicitacao, 10);
         } else {
             $resultado = "E";//erro
         }
 
-        $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
-        $consulta->execute();
-        
-        while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-            $lote = $this->buscarLote($dados->idLote);
-            $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
-            $loteNovo = new Lote($lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario, $dados->idLote);
-            $loteNovo->inserirLote($solicitacao->idSolicitante);
-            $this->baixarItem($dados->idLote);
-        };
-        
         return $resultado;
 
     }
@@ -156,6 +162,7 @@ class Movimentacao {
     public function reverterBaixaPorItem($idItem, $idTipoMovimentacao){
         $I = new ItensSolicitacao(null, null, null, null, null);
         $S = new Solicitacao(null, null, null, null, null, null, null);
+
         $sql = "select i.idLote, l.quantidadeAtual, i.quantidade from itensMovimentacao i 
         inner join lote l on (i.idLote = l.idLote)
         where i.idSolicitacao=:idSolicitacao and l.idItem=:idItem";
@@ -170,10 +177,13 @@ class Movimentacao {
             $consultaUpdate = $this->pdo->prepare($sqlUpdate);
             $consultaUpdate->bindParam(":quantidadeAtual", $quantidadeNova);
             $consultaUpdate->bindParam(":idLote", $dados->idLote);
+
             if ($consultaUpdate->execute()) {
                 $resultado = "S";//sucesso
-                print($I->excluirItemMovimentacao($this->idSolicitacao, $idItem));
+
+                $I->excluirItemMovimentacao($this->idSolicitacao, $idItem);
                 $S->alterarStatusSolicitacao($this->idSolicitacao, 5);
+                
                 if($idTipoMovimentacao == 3) {
                     $sql2 = "select e.idLote from entrada e 
                     inner join lote l on (e.idLoteOrigem = l.idLote)

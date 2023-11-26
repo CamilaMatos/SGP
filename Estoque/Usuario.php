@@ -204,15 +204,17 @@ class Usuario{
 
     public function validarLogin($id){
         if($if = null){
-            $sql = "select login from usuario where login=:login";
+            $sql = "select login from usuario where login=:login or documento=:documento";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":documento", $this->documento);
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select login from usuario where login=:login and idUsuario=:idUsuario";
+            $sql = "select login from usuario where (login=:login or documento=:documento) and not(idUsuario=:idUsuario)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":documento", $this->documento);
             $consulta->bindParam(":login", $id);
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);

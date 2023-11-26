@@ -121,7 +121,7 @@ class UnidadeMedida {
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from unidadeMedida where nome=:nome and idUnidadeMedida=:id";
+            $sql = "select * from unidadeMedida where nome=:nome and not(idUnidadeMedida=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);

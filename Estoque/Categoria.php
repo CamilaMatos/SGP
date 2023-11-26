@@ -106,7 +106,7 @@ class Categoria {
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from categoria where nome=:nome and idCategoria=:id";
+            $sql = "select * from categoria where nome=:nome and not(idCategoria=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);

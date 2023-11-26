@@ -104,7 +104,7 @@ class Marca {
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from marca where nome=:nome and idMarca=:id";
+            $sql = "select * from marca where nome=:nome and not(idMarca=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);

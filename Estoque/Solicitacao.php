@@ -128,9 +128,10 @@ class Solicitacao {
     }
 
     public function solicitarRequisicao(){
-        $sql = "insert into solicitacao values (NULL, :origem, 2, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
+        $sql = "insert into solicitacao values (NULL, :origem, :idTipo, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":origem", $this->origem);
+        $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);

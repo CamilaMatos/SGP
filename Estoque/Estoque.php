@@ -151,7 +151,7 @@ class Estoque {
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from estoque where nome=:nome and idEstoque=:id";
+            $sql = "select * from estoque where nome=:nome and not(idEstoque=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);
