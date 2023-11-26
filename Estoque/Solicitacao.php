@@ -228,11 +228,11 @@ class Solicitacao {
         return $resultado;
     }
 
-    public function alterarStatusSolicitacao($id, $idStatus){
+    public function alterarStatusSolicitacao($idSolicitacao, $idStatus){
         $sql = "update solicitacao SET idStatus=:idStatus where idSolicitacao=:idSolicitacao";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idStatus", $idStatus);
-        $consulta->bindParam(":idSolicitacao", $id);
+        $consulta->bindParam(":idSolicitacao", $idSolicitacao);
 
         if ($consulta->execute()) {
             $resultado = "S";//sucesso

@@ -124,8 +124,7 @@ class Usuario{
     }
 
     public function cadastrarUsuario(){
-        $id = null;
-        if ($this->validarLogin($id) == "A") {
+        if ($this->validarLogin() == "A") {
             $senha = $this->encriptador($this->senha);
             $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
             $consulta = $this->pdo->prepare($sql);
@@ -149,7 +148,7 @@ class Usuario{
     }
 
     public function editarUsuario($id){
-        if ($this->validarLogin($id) == "A") {
+        if ($this->validarLogin() == "A") {
             $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login where idUsuario=:idUsuario";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -187,25 +186,6 @@ class Usuario{
         return $resultado;
     }
 
-    public function editarLogin($id, $login){
-        if ($this->validarLogin($id) == "A") {
-            $sql = "update usuario SET login=:login where idUsuario=:idUsuario";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":login", $login);
-            $consulta->bindParam(":idUsuario", $id);
-
-            if ($consulta->execute()) {
-                $resultado = "S"; //sucesso
-            } else {
-                $resultado = "E"; //erro
-            }
-        } else {
-            $resultado = "NA"; //não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
-        }
-
-        return $resultado;
-    }
-
     public function alterarTipoUsuario($idUsuario){
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
         $consulta = $this->pdo->prepare($sql);
@@ -221,23 +201,12 @@ class Usuario{
         return $resultado;
     }
 
-    public function validarLogin($id){
-        if($if = null){
-            $sql = "select login from usuario where login=:login or documento=:documento";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":login", $this->login);
-            $consulta->bindParam(":documento", $this->documento);
-            $consulta->execute();
-            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-        } else {
-            $sql = "select login from usuario where (login=:login or documento=:documento) and not(idUsuario=:idUsuario)";
-            $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":login", $this->login);
-            $consulta->bindParam(":documento", $this->documento);
-            $consulta->bindParam(":login", $id);
-            $consulta->execute();
-            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-        }
+    public function validarLogin(){
+        $sql = "select login from usuario where login=:login";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":login", $this->login);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
 
         if (empty($resultado)) {
             $resultado = "A"; //autorizado

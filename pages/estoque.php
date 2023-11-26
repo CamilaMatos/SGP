@@ -52,6 +52,9 @@
                                     <?=$dados->nome?>
                                 </td>
                                 <td>
+                                    1
+                                </td>
+                                <td>
                                     <?=$dados->quantidadeAtual?>
                                 </td>
                                 <td>

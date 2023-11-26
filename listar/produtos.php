@@ -86,6 +86,19 @@
                                 <td>
                                     <p><?= $dados->status ?></p>
                                 </td>
+                                <td>
+
+                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
+                                    <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                
+
+                                </td>
                             </tr>
                         <?php
                         }
@@ -166,7 +179,7 @@
                                     <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                </a>
+                                
 
                                 </td>
                             </tr>

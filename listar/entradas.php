@@ -3,7 +3,7 @@
         <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
     <div class="col-10">
-        <h1>Movimentações</h1>
+        <h1>Entradas</h1>
     </div>
 </div>
 
@@ -46,8 +46,9 @@
             </thead>
             <tbody>
                 <?php
-                    $sql = "select l.idLote, i.nome, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
+                    $sql = "select l.idLote, i.nome, e.nome estoque, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
                         inner join item i on (l.idItem = i.idItem)
+                        inner join estoque e on (l.idEstoque = e.idEstoque)
                         inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
                     $consulta = $pdo->prepare($sql);
                     $consulta->execute();
@@ -61,6 +62,9 @@
                                     <?=$dados->nome?>
                                 </td>
                                 <td>
+                                    <?=$dados->estoque?>
+                                </td>
+                                <td>
                                     <?=$dados->quantidadeAtual?>
                                 </td>
                                 <td>
@@ -70,7 +74,17 @@
                                     <?=$dados->validade?>
                                 </td>
                                 <td>
-                                    Opção
+
+                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
+                                    <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                
+
                                 </td>
                             </tr>
                         <?php
@@ -78,29 +92,6 @@
                 ?>
             </tbody>
         </table>
-        <div class="optionScroll">
-            <a href="listar/requisicoes">
-                <div class="scrollOption">
-                    <p>Requisições</p>
-                </div>
-            </a>
-            <div class="flex-row">
-                <div class="optionBorder"></div>
-            </div>
-            <a href="listar/transferencias">
-                <div class="scrollOption">
-                    <p>Transferências</p>           
-                </div>
-            </a>
-            <div class="flex-row">
-                <div class="optionBorder"></div>
-            </div>
-            <a href="listar/entradas">
-                <div class="scrollOption">
-                    <p>Entradas</p>
-                </div>
-            </a>
-        </div>
     </div>
 </div>
 
