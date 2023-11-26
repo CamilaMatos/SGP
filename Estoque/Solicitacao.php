@@ -1,5 +1,6 @@
 <?php
 require_once "./Classes/Conecta.php";
+require_once "ItensSolicitacao.php";
 class Solicitacao {
     private $origem;
     private $idTipo;
@@ -212,6 +213,8 @@ class Solicitacao {
     public function excluirSolicitacao($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
+            $I = new ItensSolicitacao(null, null, null, null, null);
+            $I->excluirItensSolicitacao($id);
             $sql = "delete from solicitacao where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $id);

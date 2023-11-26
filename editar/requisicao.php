@@ -100,7 +100,7 @@
     
                             <div class="formCol">
                                 <label for="qtd">Quantidade</label>
-                                <input type="text" name="qtd" id="qtd" placeholder="Qtd." class="formInput">
+                                <input type="number" name="qtd" id="qtd" placeholder="Qtd." class="formInput">
                             </div>
     
                             <div class="formCol">

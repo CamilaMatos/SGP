@@ -201,12 +201,23 @@ class Usuario{
         return $resultado;
     }
 
-    public function validarLogin(){
-        $sql = "select login from usuario where login=:login";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":login", $this->login);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function validarLogin($id){
+        if($id == null){
+            $sql = "select login from usuario where login=:login or documento=:documento";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":documento", $this->documento);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select login from usuario where (login=:login or documento=:documento) and not(idUsuario=:idUsuario)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":login", $this->login);
+            $consulta->bindParam(":documento", $this->documento);
+            $consulta->bindParam(":login", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
 
         if (empty($resultado)) {
             $resultado = "A"; //autorizado

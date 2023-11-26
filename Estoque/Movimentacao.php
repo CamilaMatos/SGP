@@ -3,6 +3,8 @@ require_once "./Classes/Conecta.php";
 require_once "Consultar.php";
 require_once "Solicitacao.php";
 require_once "Lote.php";
+require_once "Solicitacao.php";
+require_once "ItensSolicitacao.php";
 class Movimentacao {
     private $idSolicitacao;
     private $idUsuario;
@@ -84,13 +86,25 @@ class Movimentacao {
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
 
-            $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $sql = "select i.*, s.origem origem from itensSolicitacao i
+            inner join solicitacao s on (s.idSolicitacao = i.idSolicitacao) 
+            where i.idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
             $consulta->execute();
             
             while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                $this->baixarItem($dados->idLote);
+                $I = new ItensSolicitacao($this->idSolicitacao, null, $dados->quantidade, $dados->idItem, $dados->origem);
+                $I->quebrarLotes();
+            };
+
+            $sql2 = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $consulta2 = $this->pdo->prepare($sql2);
+            $consulta2->bindParam(":idSolicitacao", $this->idSolicitacao);
+            $consulta2->execute();
+            
+            while($dados2 = $consulta2->fetch(PDO::FETCH_OBJ)) {
+                $this->baixarItem($dados2->idLote);
             };
 
             $S = new Solicitacao(null, null, null, null, null, null, null);
@@ -112,17 +126,29 @@ class Movimentacao {
         if ($consulta->execute()) {
             $resultado = "S";//sucesso
 
-            $sql = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $sql = "select i.*, s.origem origem from itensSolicitacao i
+            inner join solicitacao s on (s.idSolicitacao = i.idSolicitacao) 
+            where i.idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
             $consulta->execute();
             
             while($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                $lote = $this->buscarLote($dados->idLote);
+                $I = new ItensSolicitacao($this->idSolicitacao, null, $dados->quantidade, $dados->idItem, $dados->origem);
+                $I->quebrarLotes();
+            };
+
+            $sql2 = "select * from itensMovimentacao where idSolicitacao=:idSolicitacao";
+            $consulta2 = $this->pdo->prepare($sql2);
+            $consulta2->bindParam(":idSolicitacao", $this->idSolicitacao);
+            $consulta2->execute();
+            
+            while($dados2 = $consulta2->fetch(PDO::FETCH_OBJ)) {
+                $lote = $this->buscarLote($dados2->idLote);
                 $solicitacao = $this->buscarSolicitacao($this->idSolicitacao);
-                $loteNovo = new Lote($lote->idItem, $solicitacao->idEstoque, $dados->quantidade, $dados->quantidade, $lote->validade, $lote->valorUnitario, $dados->idLote);
+                $loteNovo = new Lote($lote->idItem, $solicitacao->idEstoque, $dados2->quantidade, $dados2->quantidade, $lote->validade, $lote->valorUnitario, $dados2->idLote);
                 $loteNovo->inserirLote($solicitacao->idSolicitante);
-                $this->baixarItem($dados->idLote);
+                $this->baixarItem($dados2->idLote);
             };
 
             $S = new Solicitacao(null, null, null, null, null, null, null);
