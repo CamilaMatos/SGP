@@ -19,6 +19,9 @@
                         <p>Produto</p>
                     </th>
                     <th scope="row">
+                        <p>Estoque</p>
+                    </th>
+                    <th scope="row">
                         <p>Qtd. Restante</p>
                     </th>
                     <th scope="row">
