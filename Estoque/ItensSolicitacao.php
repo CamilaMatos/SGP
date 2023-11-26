@@ -96,7 +96,17 @@ class ItensSolicitacao{
                 $consulta->bindParam(":quantidade", $quantidade);
 
                 if ($consulta->execute()) {
-                    $resultado = "S";//sucesso
+                    $sql = "insert into temporario values (:idSolicitacao, :idItem, :quantidade, 'I')";
+                    $consulta = $this->pdo->prepare($sql);
+                    $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+                    $consulta->bindParam(":idItem", $this->idItem);
+                    $consulta->bindParam(":quantidade", $quantidade);
+
+                    if ($consulta->execute()) {
+                        $resultado = "S";//sucesso
+                    } else {
+                        $resultado = "E";//erro
+                    }
                 } else {
                     $resultado = "E";//erro
                 }
@@ -219,7 +229,17 @@ class ItensSolicitacao{
             $consulta->bindParam(":idItem", $idItem);
 
             if ($consulta->execute()) {
-                $resultado = "S";//sucesso
+                $sql = "insert into temporario values (:idSolicitacao, :idItem, :quantidade, 'E')";
+                $consulta = $this->pdo->prepare($sql);
+                $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+                $consulta->bindParam(":idItem", $this->idItem);
+                $consulta->bindParam(":quantidade", $quantidade);
+
+                if ($consulta->execute()) {
+                    $resultado = "S";//sucesso
+                } else {
+                    $resultado = "E";//erro
+                }
             } else {
                 $resultado = "E";//erro
             }
@@ -304,6 +324,21 @@ class ItensSolicitacao{
         $resultado = $resultado->qtd;
 
         return $resultado;
-    }    
+    }
+
+    public function deletarTemporario(){
+        //incluido temporariamente
+        $sql = "delete from temporario where idSolicitacao=:idSolicitacao";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
+
+        if ($consulta->execute()) {
+            $resultado = "S";//sucesso
+        } else {
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
+    }
 
 }
