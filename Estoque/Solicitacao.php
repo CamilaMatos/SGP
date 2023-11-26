@@ -175,6 +175,7 @@ class Solicitacao {
             $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
             $consulta->bindParam(":idEstoque", $this->idEstoque);
             $consulta->bindParam(":necessidade", $this->necessidade);
+            $consulta->bindParam(":idEstoque", $this->idEstoque);
             $consulta->bindParam(":idSolicitacao", $id);
 
             if ($consulta->execute()) {

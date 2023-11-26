@@ -13,7 +13,7 @@
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Transferência:</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Transferência Nº<?=$id?></h1>
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
@@ -26,15 +26,26 @@
 
                                 <label for="origem">Origem:</label>
                                 <select name="origem" id="origem" class="formInput">
-                                    <option value="" >Selecione uma origem:</option>
+                                    
+                                    <option value="<?=$dados->origem?>" selected>Selecione uma origem...</option>
+
                                     <?php
                                         $sql = "select * from estoque";
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
+                                        
                                         while($dadosc = $consulta->fetch(PDO::FETCH_OBJ)){
-                                            ?>
-                                                <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
-                                            <?php
+                                            if($dadosc->idEstoque == $dados->origem){
+                                                ?>
+                                                    <option value="<?=$dadosc->idEstoque?>" selected><?=$dadosc->nome?></option>
+                                                <?php
+                                                
+                                            }else{
+                                                ?>
+                                                    <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
+                                                <?php
+                                            }
+                                            
                                         }
                                     ?>
                                 </select>
@@ -48,9 +59,17 @@
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
                                         while($dadosc1 = $consulta->fetch(PDO::FETCH_OBJ)){
-                                            ?>
-                                                <option value="<?=$dadosc1->idEstoque?>"><?=$dadosc1->nome?></option>
-                                            <?php
+
+                                            if($dadosc1->idEstoque == $dados->idEstoque){
+                                                ?>
+                                                    <option value="<?=$dadosc1->idEstoque?>" selected><?=$dadosc1->nome?></option>
+                                                <?php
+                                                
+                                            }else{
+                                                ?>
+                                                    <option value="<?=$dadosc1->idEstoque?>"><?=$dadosc1->nome?></option>
+                                                <?php
+                                            }
                                         }
                                     ?>
                                 </select>

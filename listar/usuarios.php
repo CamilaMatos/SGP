@@ -1,47 +1,54 @@
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
     <div class="col-10">
         <h1>Usuários</h1>
     </div>
 </div>
 <!--Botão de ativação da Modal-->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCadUsuario">
-    Adicionar Usuário
-</button>
-<div class="flex-row">
-    <table class="table-striped">
-        <thead>
-            <tr>
-                <th>
-                    <p>Colaborador</p>
-                </th>
-                <th>
-                    <p>Setor</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $sql = "select u.nome funcionario, t.nome setor from usuario u inner join tipo t on u.idTipo = t.idTipo order by u.nome";
-            $consulta = $pdo->prepare($sql);
-            $consulta->execute();
-            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-            ?>
+<div class="contentDiv">
+
+    <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadUsuario">
+        Adicionar Usuário
+    </button>
+
+    <br>
+    <br>
+    
+    <div class="flex-row">
+        <table class="table table-striped table70Length">
+            <thead>
                 <tr>
-                    <td>
-                        <p><?= $dados->funcionario ?></p>
-                    </td>
-                    <td>
-                        <p><?= $dados->setor ?></p>
-                    </td>
+                    <th>
+                        <p>Colaborador</p>
+                    </th>
+                    <th>
+                        <p>Setor</p>
+                    </th>
                 </tr>
-            <?php
-            }
-            ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php
+                $sql = "select u.nome funcionario, t.nome setor from usuario u inner join tipo t on u.idTipo = t.idTipo order by u.nome";
+                $consulta = $pdo->prepare($sql);
+                $consulta->execute();
+                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                ?>
+                    <tr>
+                        <td>
+                            <p><?= $dados->funcionario ?></p>
+                        </td>
+                        <td>
+                            <p><?= $dados->setor ?></p>
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!--Código da Modal -->
@@ -116,5 +123,29 @@
 <script>
     $('#myModal').on('shown.bs.modal', function () {
       $('#myInput').trigger('focus')
+    })
+    $(document).ready(function(){
+        $(".table70Length").DataTable({
+            searching: false,
+            "pageLength": 15,
+            "bLengthChange" : false,
+            "info":false,
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
     })
 </script>

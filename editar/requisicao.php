@@ -13,7 +13,7 @@
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Requisição:</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Requisição Nº<?=$id?></h1>
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
@@ -32,9 +32,16 @@
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
                                         while($dadosc = $consulta->fetch(PDO::FETCH_OBJ)){
-                                            ?>
-                                                <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
-                                            <?php
+                                            if($dadosc->idEstoque == $dados->origem){
+                                                ?>
+                                                    <option value="<?=$dadosc->idEstoque?>" selected><?=$dadosc->nome?></option>
+                                                <?php
+                                                
+                                            }else{
+                                                ?>
+                                                    <option value="<?=$dadosc->idEstoque?>"><?=$dadosc->nome?></option>
+                                                <?php
+                                            }
                                         }
                                     ?>
                                 </select>
@@ -48,9 +55,16 @@
                                         $consulta = $pdo->prepare($sql);
                                         $consulta->execute();
                                         while($dadosc1 = $consulta->fetch(PDO::FETCH_OBJ)){
-                                            ?>
-                                                <option value="<?=$dadosc1->idCentroCusto?>"><?=$dadosc1->nome?></option>
-                                            <?php
+                                            if($dadosc1->idCentroCusto == $dados->idCentroCusto){
+                                                ?>
+                                                    <option value="<?=$dadosc1->idCentroCusto?>" selected><?=$dadosc1->nome?></option>
+                                                <?php
+                                                
+                                            }else{
+                                                ?>
+                                                    <option value="<?=$dadosc1->idCentroCusto?>"><?=$dadosc1->nome?></option>
+                                                <?php
+                                            }
                                         }
                                     ?>
                                 </select>
