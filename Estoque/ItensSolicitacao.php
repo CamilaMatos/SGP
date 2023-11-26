@@ -290,4 +290,5 @@ class ItensSolicitacao{
 
         return $resultado;
     }    
+
 }
