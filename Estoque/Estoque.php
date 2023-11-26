@@ -58,7 +58,8 @@ class Estoque {
     }
 
     public function cadastrarEstoque(){
-        if(empty($this->estoquePorNome())){
+        $id = null;
+        if(empty($this->estoquePorNome($id))){
             $sql = "insert into estoque values (NULL, :nome, :descricao, :idStatus)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -78,7 +79,7 @@ class Estoque {
     }
 
     public function editarEstoque($id){
-        if(empty($this->estoquePorNome())){
+        if(empty($this->estoquePorNome($id))){
             $sql = "update estoque SET nome=:nome, descricao=:descricao, idStatus=:idStatus where idEstoque=:idEstoque";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -142,13 +143,21 @@ class Estoque {
         return $resultado;
     }
 
-    public function estoquePorNome(){
-        $sql = "select * from estoque where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
-
+    public function estoquePorNome($id){
+        if($id == null){
+            $sql = "select * from estoque where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from estoque where nome=:nome and not(idEstoque=:id)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
         return $resultado;
     }
 

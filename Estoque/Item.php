@@ -205,7 +205,7 @@ class Item{
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from item where nome=:nome and idItem=:id";
+            $sql = "select * from item where nome=:nome and not(idItem=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);

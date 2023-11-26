@@ -147,7 +147,6 @@ class OrdemServico {
 
     public function gerarOS($idCentroCusto, $idEstoque){
         $S = new Solicitacao($idEstoque, 2, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
-        print_r($S);
         $idSolicitacao = $S->solicitarRequisicao();
         $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :idSolicitacao, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, :idStatus, :horarioInicio, :horarioFim);";
         $consulta = $this->pdo->prepare($sql);
@@ -161,14 +160,17 @@ class OrdemServico {
         $consulta->bindParam(":idStatus", $this->status);
         $consulta->bindParam(":horarioInicio", $this->horarioInicio);
         $consulta->bindParam(":horarioFim", $this->horarioFim);
-        $consulta->execute();
-        $id = $this->pdo->lastInsertId();
 
-        $this->assinar($id, 3, $this->idUsuario);
-        $this->buscarOrdem($idSolicitacao, $this->idReceita, $id, $idEstoque);
+        if($consulta->execute()){
+            $resultado = $this->pdo->lastInsertId();//sucesso
 
-
-        return $id;
+            $this->assinar($resultado, 3, $this->idUsuario);
+            $this->buscarOrdem($idSolicitacao, $this->idReceita, $resultado, $idEstoque);
+        } else {
+            $resultado = "E";//erro
+        }
+        
+        return $resultado;
     }
 
     public function inserirReceitaOS($id, $idItem, $qtdAjustada) {
@@ -236,7 +238,6 @@ class OrdemServico {
         $rendimentoParametrizado = $this->buscarReceita($this->idReceita)->rendimento;
         while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
             $qtdAjustada = $this->ajustarQuantidade($resultado->quantidade, $rendimentoParametrizado);
-            print($resultado->idItem);
             $this->inserirReceitaOS($idOrdem, $resultado->idItem, $qtdAjustada);
             $I = new ItensSolicitacao($idSolicitacao, null, $qtdAjustada,  $resultado->idItem, $idEstoque);
             $I->inserirItemSolicitacao($qtdAjustada);
@@ -264,5 +265,4 @@ class OrdemServico {
 
 }
 
-// (rendimentoEsperado * qtdPadronizada) / rendimentoPadrão
 ?>

@@ -1,5 +1,5 @@
 <?php
-require_once "./Classes/Conecta.php";
+require_once "../Classes/Conecta.php";
 class Solicitacao {
     private $origem;
     private $idTipo;
@@ -128,9 +128,10 @@ class Solicitacao {
     }
 
     public function solicitarRequisicao(){
-        $sql = "insert into solicitacao values (NULL, :origem, 2, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
+        $sql = "insert into solicitacao values (NULL, :origem, :idTipo, :idCentroCusto, :idEstoque, :idStatus, :idSolicitante, :data, :necessidade)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":origem", $this->origem);
+        $consulta->bindParam(":idTipo", $this->idTipo);
         $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":idStatus", $this->idStatus);
@@ -169,9 +170,10 @@ class Solicitacao {
     public function editarSolicitacao($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update solicitacao SET idCentroCusto=:idCentroCusto, necessidade=:necessidade, idEstoque=:idEstoque where idSolicitacao=:idSolicitacao";
+            $sql = "update solicitacao SET idCentroCusto=:idCentroCusto, idEstoque=:idEstoque, necessidade=:necessidade where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
+            $consulta->bindParam(":idEstoque", $this->idEstoque);
             $consulta->bindParam(":necessidade", $this->necessidade);
             $consulta->bindParam(":idEstoque", $this->idEstoque);
             $consulta->bindParam(":idSolicitacao", $id);

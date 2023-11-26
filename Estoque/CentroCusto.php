@@ -152,7 +152,7 @@ class CentroCusto {
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from centroCusto where nome=:nome and idCentroCusto=:id";
+            $sql = "select * from centroCusto where nome=:nome and not(idCentroCusto=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);

@@ -85,7 +85,8 @@ class ReceitaParametrizacao {
     }
 
     public function cadastrarReceita(){
-        if(empty($this->receitaPorNome())) {
+        $id = null;
+        if(empty($this->receitaPorNome($id))) {
             $sql = "insert into receitaParametrizacao values (NULL, :nome, :idCategoria, :tempo, :modo, :rendimento)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -107,7 +108,7 @@ class ReceitaParametrizacao {
     }
 
     public function editarReceita($id){
-        if(empty($this->receitaPorNome())) {
+        if(empty($this->receitaPorNome($id))) {
             $sql = "update receitaParametrizacao SET nome=:nome, idCategoria=:idCategoria, tempo=:tempo, modo=:modo, rendimento=:rendimento where idReceita=:idReceita";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -164,12 +165,22 @@ class ReceitaParametrizacao {
         return $resultado;
     }
 
-    public function receitaPorNome(){
-        $sql = "select * from receita where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function receitaPorNome($id){
+        if($id == null){
+            $sql = "select * from receita where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from receita where nome=:nome and not(idReceita=:id)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
+        
 
         return $resultado;
     }

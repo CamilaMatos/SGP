@@ -182,6 +182,7 @@ class Lote {
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
+                $this->excluirEntrada($id);
             } else {
                 $resultado = "E";//erro
             }

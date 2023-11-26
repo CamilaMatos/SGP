@@ -30,7 +30,8 @@ class Marca {
     }
 
     public function cadastrarMarca(){
-        if(empty($this->marcaPorNome())) {
+        $id = null;
+        if(empty($this->marcaPorNome($id))) {
             $sql = "insert into marca values (NULL, :nome)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -48,7 +49,7 @@ class Marca {
     }
 
     public function editarMarca($id){
-        if(empty($this->marcaPorNome())) {
+        if(empty($this->marcaPorNome($id))) {
             $sql = "update marca SET nome=:nome where idMarca=:idMarca";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -95,12 +96,21 @@ class Marca {
         return $resultado;
     }
 
-    public function marcaPorNome(){
-        $sql = "select * from marca where nome=:nome";
-        $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":nome", $this->nome);
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+    public function marcaPorNome($id){
+        if($id == null){
+            $sql = "select * from marca where nome=:nome";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        } else {
+            $sql = "select * from marca where nome=:nome and not(idMarca=:id)";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":id", $id);
+            $consulta->execute();
+            $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        }
 
         return $resultado;
     }
