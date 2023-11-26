@@ -222,7 +222,7 @@ class Usuario{
     }
 
     public function validarLogin($id){
-        if($if = null){
+        if($id == null){
             $sql = "select login from usuario where login=:login or documento=:documento";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":login", $this->login);

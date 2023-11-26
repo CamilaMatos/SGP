@@ -210,7 +210,7 @@ class ItensSolicitacao{
         return $resultado;
     }
 
-    public function excluirItemSolicitacao($id, $idItem, $qtd){
+    public function excluirItemSolicitacao($id, $idItem){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
             $sql = "delete from itensSolicitacao where idSolicitacao=:idSolicitacao and idItem=:idItem";
@@ -220,16 +220,25 @@ class ItensSolicitacao{
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
-                $sql = "insert into excluirTemporario values (:idSolicitacao, :idItem, :quantidade)";
-                $consulta = $this->pdo->prepare($sql);
-                $consulta->bindParam(":idSolicitacao", $id);
-                $consulta->bindParam(":idItem", $idItem);
-                $consulta->bindParam(":quantidade", $qtd);
-                if ($consulta->execute()) {
-                    $resultado = "S";//sucesso
-                } else {
-                    $resultado = "E";//erro
-                }
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//operação recusada
+        }
+
+        return $resultado;
+    }
+
+    public function excluirItensSolicitacao($id){
+        //verificar se a solicitação ainda não foi atendida
+        if(empty($this->verificarRegistros($id))){
+            $sql = "delete from itensSolicitacao where idSolicitacao=:idSolicitacao";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":idSolicitacao", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
             } else {
                 $resultado = "E";//erro
             }
