@@ -27,169 +27,177 @@
     <br>
     <br>
     <div class="flex-row">
-        <table class="table table-striped table85Length">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Número
-                    </th>
-                    <th scope="col">
-                        Origem
-                    </th>
-                    <th scope="col">
-                        Destino
-                    </th>
-                    <th scope="col">
-                        Tipo
-                    </th>
-                    <th scope="col">
-                        Data de abertura
-                    </th>
-                    <th scope="col">
-                        Data Limite
-                    </th>
-                    <th scope="col">
-                        Status
-                    </th>
-                    <th scope="col">
-                        Opções
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $sql = "select s.idSolicitacao numero, e.nome origem, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
-                        st.nome as status from solicitacao s
-                        inner join centrocusto cc on s.idCentroCusto = cc.idCentroCusto
-                        inner join estoque e on s.idCentroCusto = e.idEstoque
-                        inner join tipo t on s.idTipo = t.idTipo
-                        inner join status st on s.idStatus = st.idStatus where s.idTipo = 2 order by numero";
+        <div class="card">
+
+            <table class="table table-striped table85Length">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Número
+                        </th>
+                        <th scope="col">
+                            Origem
+                        </th>
+                        <th scope="col">
+                            Destino
+                        </th>
+                        <th scope="col">
+                            Tipo
+                        </th>
+                        <th scope="col">
+                            Data de abertura
+                        </th>
+                        <th scope="col">
+                            Data Limite
+                        </th>
+                        <th scope="col">
+                            Status
+                        </th>
+                        <th scope="col">
+                            Opções
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql = "select s.idSolicitacao numero, e.nome origem, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
+                            st.nome as status from solicitacao s
+                            inner join centrocusto cc on s.idCentroCusto = cc.idCentroCusto
+                            inner join estoque e on s.origem = e.idEstoque
+                            inner join tipo t on s.idTipo = t.idTipo
+                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 2 order by numero";
+            
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->execute();
+                        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?=$dados->numero?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->origem?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->destino?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->tipo?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->abertura?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->limite?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->status?>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:excluir(<?=$dados->numero?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
         
-                    $consulta = $pdo->prepare($sql);
-                    $consulta->execute();
-                    while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
-                        ?>
-                            <tr>
-                                <td>
-                                    <?=$dados->numero?>
-                                </td>
-                                <td>
-                                    <?=$dados->origem?>
-                                </td>
-                                <td>
-                                    <?=$dados->destino?>
-                                </td>
-                                <td>
-                                    <?=$dados->tipo?>
-                                </td>
-                                <td>
-                                    <?=$dados->abertura?>
-                                </td>
-                                <td>
-                                    <?=$dados->limite?>
-                                </td>
-                                <td>
-                                    <?=$dados->status?>
-                                </td>
-                                <td>
-                                    <a href="javascript:excluir(<?=$dados->numero?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-    
-                                    <a href="editar/requisicao/<?=$dados->numero?>" class="btn btn-success btn-sm">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
-    
-                                </td>
-                            </tr>
-                        <?php
-                    }
-                ?>
-            </tbody>
-        </table>
+                                        <a href="editar/requisicao/<?=$dados->numero?>" class="btn btn-success btn-sm">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+        
+                                    </td>
+                                </tr>
+                            <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="flex-row">
-        <table class="table table-striped table85Length">
-            <thead>
-                <tr>
-                    <th>
-                        Número
-                    </th>
-                    <th>
-                        Origem
-                    </th>
-                    <th>
-                        Destino
-                    </th>
-                    <th>
-                        Tipo
-                    </th>
-                    <th>
-                        Data de abertura
-                    </th>
-                    <th>
-                        Data Limite
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Opções
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $sql = "select s.idSolicitacao numero, e.nome origem, e.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
-                        st.nome as status from solicitacao s
-                        inner join estoque e on s.idEstoque = e.idEstoque
-                        inner join tipo t on s.idTipo = t.idTipo
-                        inner join status st on s.idStatus = st.idStatus where s.idTipo = 3 order by numero";
+        <div class="card">
+
+            <table class="table table-striped table85Length">
+                <thead>
+                    <tr>
+                        <th>
+                            Número
+                        </th>
+                        <th>
+                            Origem
+                        </th>
+                        <th>
+                            Destino
+                        </th>
+                        <th>
+                            Tipo
+                        </th>
+                        <th>
+                            Data de abertura
+                        </th>
+                        <th>
+                            Data Limite
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Opções
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql = "select s.idSolicitacao numero, e1.nome origem, e.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
+                            st.nome as status from solicitacao s
+                            inner join estoque e on s.idEstoque = e.idEstoque
+                            inner join estoque e1 on s.origem = e1.idEstoque
+                            inner join tipo t on s.idTipo = t.idTipo
+                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 3 order by numero";
+            
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->execute();
+                        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?=$dados->numero?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->origem?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->destino?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->tipo?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->abertura?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->limite?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->status?>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:excluir(<?=$dados->numero?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
         
-                    $consulta = $pdo->prepare($sql);
-                    $consulta->execute();
-                    while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
-                        ?>
-                            <tr>
-                                <td>
-                                    <?=$dados->numero?>
-                                </td>
-                                <td>
-                                    <?=$dados->origem?>
-                                </td>
-                                <td>
-                                    <?=$dados->destino?>
-                                </td>
-                                <td>
-                                    <?=$dados->tipo?>
-                                </td>
-                                <td>
-                                    <?=$dados->abertura?>
-                                </td>
-                                <td>
-                                    <?=$dados->limite?>
-                                </td>
-                                <td>
-                                    <?=$dados->status?>
-                                </td>
-                                <td>
-                                    <a href="javascript:excluir(<?=$dados->numero?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-    
-                                    <a href="editar/transferencia/<?=$dados->numero?>" class="btn btn-success btn-sm">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
-    
-                                </td>
-                            </tr>
-                        <?php
-                    }
-                ?>
-            </tbody>
-        </table>
+                                        <a href="editar/transferencia/<?=$dados->numero?>" class="btn btn-success btn-sm">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+        
+                                    </td>
+                                </tr>
+                            <?php
+                        }
+                    ?>
+                </tbody>
+            </table>
+            
+        </div>
     </div>
 </div>
 

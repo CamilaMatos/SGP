@@ -23,7 +23,7 @@
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Transferência Nº<?=$idSolicitacao?></h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Nova Transferência </h1>
                 <a href="listar/solicitacoes">
                     <button type="button" class="btn btn-secondary">Fechar</button>
                 </a>
@@ -38,7 +38,7 @@
                                 <input type="hidden" name="idStatus" id="idStatus" value="<?=$idStatus?>">
 
                                 <label for="origem">Origem:</label>
-                                <select name="origem" id="origem" class="formInput">
+                                <select name="origem" id="origem" class="formInput" required>
                                     <option value="" >Selecione uma origem:</option>
                                     <?php
                                         $sql = "select * from estoque";
@@ -54,7 +54,7 @@
                             </div>
                             <div class="formCol">
                                 <label for="idEstoque">Destino:</label>
-                                <select name="idEstoque" id="idEstoque" class="formInput">
+                                <select name="idEstoque" id="idEstoque" class="formInput" required>
                                     <option value="">Selecione um destino:</option>
                                     <?php
                                         $sql = "select * from estoque";
@@ -70,7 +70,7 @@
                             </div>
                             <div class="formCol">
                                 <label for="necessidade" class="formLabel">Data Limite:</label>
-                                <input type="date" name="necessidade" id="necessidade" class="formInput">
+                                <input type="date" name="necessidade" id="necessidade" class="formInput" required>
                             </div>
                         </div>
 

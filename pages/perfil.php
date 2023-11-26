@@ -1,47 +1,72 @@
 
 <div class="flex-row">
     <div class="profileCard">
-        <div class="flex-row">
-            <div class="col-4 pCardLS" >
-                <div class="cAlign">
-                    <div class="flex-row">
-                        <div class="pPictureBackground">
-                            <i class="fa-regular fa-circle-user loginIcon"></i>
-                        </div>
+        
+        <div class="pCardRS">
+            <div class="cAlign">
+                <div class="flex-row">
+                    <div class="pPictureBackground">
+                        <i class="fa-regular fa-circle-user loginIcon"></i>
                     </div>
-                    <label for="nome">Nome:</label>
-                    <input type="text" class="formInput" id="nome" readonly placeholder="<?=$_SESSION['nome']?>">
                 </div>
-            </div>
-            <div class="flex-row">
-                <div class="vOptionBorder"></div>
-            </div>
-            <div class="col-8 pCardRS">
-                <div class="cAlign">
-                    <div class="flex-row">
-                        <div class="formCol">
-                            <label for="login">Login:</label>
-                            <input type="text" class="formInput" id="login" readonly placeholder="<?=$_SESSION['login']?>">
-                        </div>
-                        <div class="formCol">
-                            <label for="cargo">Cargo:</label>
-                            <input type="text" class="formInput" id="cargo" readonly placeholder="<?=$_SESSION['tipo']?>">
-                        </div>
+                <br>
+                <div class="profile-row">
+                    <div class="col-3"></div>
+                    <div class="col-3 text-left">
+                        <label for="nome">Nome:  </label>
                     </div>
-                    <div class="flex-row">
-                        <div class="formCol">
-                            <label for="nacimento">Data de Nascimento:</label>
-                            <input type="text" class="formInput" readonly placeholder="<?=$_SESSION['nascimento']?>">
-                        </div>
+                    <div class="col-6 text-left">
+                        <?=$_SESSION['nome']?>
                     </div>
-                    <div class="flex-row">
-                        <button type="button" class="newButton" data-toggle="modal" data-target="#modalTrocaSenha">
-                            Alterar Senha
-                        </button>
+                </div>
+                        
+                <div class="profile-row">
+                    <div class="col-3"></div>
+                    <div class="col-3 text-left">
+                        <label for="login">Login:   </label>
                     </div>
+                    <div class="col-6 text-left">
+                        <?=$_SESSION['login']?>
+                    </div>
+                </div>
+                    
+                <div class="profile-row">
+                    <div class="col-3"></div>
+                    <div class="col-3 text-left">
+                        <label for="cargo">Cargo:</label>
+                    </div>
+                    <?php
+                        $tipo = $_SESSION['tipo'];
+                        $sql = "select t.nome from tipo t where idTipo=:idTipo";
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->bindParam(":idTipo", $tipo);
+                        $consulta->execute();
+                        $dadosT = $consulta->fetch(PDO::FETCH_OBJ);
+                        
+                    ?>
+                    <div class="col-6 text-left">
+                        <?=$dadosT->nome?>
+                    </div>
+                    
+                </div>
+                <div class="profile-row">
+                    <div class="col-3"></div>
+                    <div class="col-3 text-left">
+                        <label for="nacimento">Nascimento:</label>
+                    </div>
+                    <div class="col-6 text-left">
+                        <?=$_SESSION['nascimento']?>
+                    </div>
+                    
+                </div>
+                <div class="form-row">
+                    <button type="button" class="newButton" data-toggle="modal" data-target="#modalTrocaSenha">
+                        Alterar Senha
+                    </button>
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 

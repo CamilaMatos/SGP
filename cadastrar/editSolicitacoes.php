@@ -10,8 +10,6 @@
     $data = date('Y-M-d');
     $necessidade = $_POST['necessidade'] ?? NULL;
 
-    print_r($_POST);
-
     $S = new Solicitacao($origem, $idTipo, $idCentroCusto, $idStatus, $idSolicitante, $idEstoque, $necessidade);
 
     if(!empty($id)) {
@@ -20,15 +18,15 @@
 
         if ($resultado == "E") {
             echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
-            
+            echo "<script>location.href='listar/solicitacoes'</script>";
 
         } else if ($resultado == "R"){
             echo "<script>alert('Erro, item já cadastrado');</script>";
-            
+            echo "<script>location.href='listar/solicitacoes'</script>";
         }
         else {
             echo "<script>alert('Requisição editada com sucesso!!!');</script>";
-            
+            echo "<script>location.href='listar/solicitacoes'</script>";
         };
 
     }

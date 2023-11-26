@@ -23,6 +23,7 @@ if (!empty($_POST)) {
         $_SESSION['nome'] = $dados->nome;
         $_SESSION['tipo'] = $dados->idTipo;
         $_SESSION['idUsuario'] = $dados->idUsuario;
+        $_SESSION['nascimento'] = $dados->dataNasc;
 
         echo "<script>location.href='pages/home'</script>";
     }

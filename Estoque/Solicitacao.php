@@ -169,10 +169,11 @@ class Solicitacao {
     public function editarSolicitacao($id){
         //verificar se a solicitação ainda não foi atendida
         if(empty($this->verificarRegistros($id))){
-            $sql = "update solicitacao SET idCentroCusto=:idCentroCusto, necessidade=:necessidade where idSolicitacao=:idSolicitacao";
+            $sql = "update solicitacao SET idCentroCusto=:idCentroCusto, necessidade=:necessidade, idEstoque=:idEstoque where idSolicitacao=:idSolicitacao";
             $consulta = $this->pdo->prepare($sql);
-            $consulta->bindParam(":necessidade", $this->idCentroCusto);
+            $consulta->bindParam(":idCentroCusto", $this->idCentroCusto);
             $consulta->bindParam(":necessidade", $this->necessidade);
+            $consulta->bindParam(":idEstoque", $this->idEstoque);
             $consulta->bindParam(":idSolicitacao", $id);
 
             if ($consulta->execute()) {

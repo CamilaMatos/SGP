@@ -472,6 +472,12 @@ a:hover{
     margin-bottom: 2.5vh;
 }
 
+.profile-row{
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1vh;
+}
+
 .formSubmitButton{
     background-color: white;
     color: black;
@@ -635,12 +641,13 @@ footer .footerLettering{
 }
 
 .pPictureBackground{
-    background-color: red;
+    background-color: rgb(82, 82, 82);
     border-radius: 50%;
     width: 6.7vw;
     height: 6.7vw;
     padding-top: 0.35vw;
     margin-bottom: 3vh;
+    color: lightgray;
 }
 
 .pPictureBackground:hover{
@@ -650,9 +657,9 @@ footer .footerLettering{
 }
 
 .profileCard{
-    width: 85vw;
+    width: 40vw;
     height: 70vh;
-    background-color:#5c758d;
+    background-color:#b2b2b5;
     border-radius: 15px;
     overflow: hidden;
     margin: 5vh;
