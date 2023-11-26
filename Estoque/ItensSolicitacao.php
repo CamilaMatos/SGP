@@ -87,7 +87,7 @@ class ItensSolicitacao{
 
     public function inserirItemSolicitacao($quantidade){
         if(empty($this->consultarExistenciaItem())){
-            $qtd = $this->consultarEstoqueItem();
+            $qtd = $this->consultarEstoqueItemTotal();
             if($qtd>=$quantidade){
                 //verificar se a solicitação ainda não foi atendida
                 if(empty($this->verificarRegistros($this->idSolicitacao))){
@@ -281,6 +281,18 @@ class ItensSolicitacao{
 
     public function consultarEstoqueItem(){
         $sql = "select SUM(quantidadeAtual) as qtd from lote where idItem=:idItem and idEstoque=:idEstoque";
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":idItem", $this->idItem);
+        $consulta->bindParam(":idEstoque", $this->idEstoque);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_OBJ);
+        $resultado = $resultado->qtd;
+
+        return $resultado;
+    }    
+
+    public function consultarEstoqueItemTotal(){
+        $sql = "select SUM(quantidadeAtual) as qtd from lote where idItem=:idItem";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
