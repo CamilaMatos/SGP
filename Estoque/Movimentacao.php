@@ -74,11 +74,10 @@ class Movimentacao {
     }
 
     public function realizarMovimentacao(){
-        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
+        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, NULL, :data)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
-        $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":data", $this->data);
 
         if ($consulta->execute()) {
@@ -103,11 +102,10 @@ class Movimentacao {
     }
 
     public function realizarTransferencia(){
-        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, :idStatus, :data)";
+        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, NULL, :data)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
-        $consulta->bindParam(":idStatus", $this->idStatus);
         $consulta->bindParam(":data", $this->data);
 
         if ($consulta->execute()) {
