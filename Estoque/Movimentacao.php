@@ -74,7 +74,7 @@ class Movimentacao {
     }
 
     public function realizarMovimentacao(){
-        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, NULL, :data)";
+        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, 10, :data)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
@@ -102,7 +102,7 @@ class Movimentacao {
     }
 
     public function realizarTransferencia(){
-        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, NULL, :data)";
+        $sql = "insert into movimentacao values (NULL, :idSolicitacao, :idUsuario, 10, :data)";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $this->idSolicitacao);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
@@ -181,7 +181,7 @@ class Movimentacao {
 
                 $I->excluirItemMovimentacao($this->idSolicitacao, $idItem);
                 $S->alterarStatusSolicitacao($this->idSolicitacao, 5);
-                
+
                 if($idTipoMovimentacao == 3) {
                     $sql2 = "select e.idLote from entrada e 
                     inner join lote l on (e.idLoteOrigem = l.idLote)

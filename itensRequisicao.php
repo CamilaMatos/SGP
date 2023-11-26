@@ -69,7 +69,7 @@
             if($op == "excluir"){
 
                 $Itens = new ItensSolicitacao(NULL, NULL, NULL, NULL, NULL);
-                $resultado = $Itens->excluirItemSolicitacao($idSolicitacao, $idItem);
+                $resultado = $Itens->excluirItemSolicitacao($idSolicitacao, $idItem, $qtd);
 
                 if($resultado == "R"){
                     echo "<script>alert('Item não foi excluido pois a solicitação já foi atendida!');</script>";

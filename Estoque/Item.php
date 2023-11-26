@@ -131,7 +131,7 @@ class Item{
 
     public function editarItem($id){
         if(empty($this->itemPorNome($id))) {
-            $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, :idStatus where idItem=:idItem";
+            $sql = "update item SET nome=:nome, unidadeMedia=:unidadeMedia, idCategoria=:idCategoria, idMarca=:idMarca, idUnidadeMedida=:idUnidadeMedida, idStatus=:idStatus where idItem=:idItem";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":unidadeMedia", $this->unidadeMedia);
