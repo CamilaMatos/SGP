@@ -187,6 +187,25 @@ class Usuario{
         return $resultado;
     }
 
+    public function editarLogin($id, $login){
+        if ($this->validarLogin($id) == "A") {
+            $sql = "update usuario SET login=:login where idUsuario=:idUsuario";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":login", $login);
+            $consulta->bindParam(":idUsuario", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S"; //sucesso
+            } else {
+                $resultado = "E"; //erro
+            }
+        } else {
+            $resultado = "NA"; //não autorizado, pois não pode cadastrar o usuário com um login que já está cadastrado para outro usuário
+        }
+
+        return $resultado;
+    }
+
     public function alterarTipoUsuario($idUsuario){
         $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
         $consulta = $this->pdo->prepare($sql);
