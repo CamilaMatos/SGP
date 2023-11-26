@@ -96,7 +96,7 @@ class Consultar {
     }
 
     public function usuarioPorLogin(){
-        $sql = "select * from usuario where login=:parametro1";
+        $sql = "select * from usuario where login=:parametro1 and idStatus=1";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":parametro1", $this->parametro1);
         $consulta->execute();

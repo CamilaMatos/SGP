@@ -9,8 +9,9 @@ class Usuario{
     private $login;
     private $senha;
     private $pdo;
+    private $idStatus;
 
-    public function __construct($nome, $dataNasc, $documento, $idTipo, $login, $senha){
+    public function __construct($nome, $dataNasc, $documento, $idTipo, $login, $senha, $idStatus){
         $this->nome = $nome;
         $this->dataNasc = $dataNasc;
         $this->documento = $documento;
@@ -18,6 +19,7 @@ class Usuario{
         $this->login = $login;
         $this->senha = $senha;
         $this->pdo = $this->conexao();
+        $this->idStatus = $idStatus;
     }
 
     public function getNome()
@@ -92,6 +94,18 @@ class Usuario{
         return $this;
     }
 
+    public function getIdStatus()
+    {
+        return $this->idStatus;
+    }
+
+    public function setIdStatus($idStatus)
+    {
+        $this->idStatus = $idStatus;
+
+        return $this;
+    }
+
     public function conexao()
     {
         $conectar = new Conecta();
@@ -124,9 +138,10 @@ class Usuario{
     }
 
     public function cadastrarUsuario(){
-        if ($this->validarLogin() == "A") {
+        $id = null;
+        if ($this->validarLogin($id) == "A") {
             $senha = $this->encriptador($this->senha);
-            $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha)";
+            $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha, :idStatus)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":dataNasc", $this->dataNasc);
@@ -134,6 +149,7 @@ class Usuario{
             $consulta->bindParam(":idTipo", $this->idTipo);
             $consulta->bindParam(":login", $this->login);
             $consulta->bindParam(":senha", $senha);
+            $consulta->bindParam(":sidStatus", $this->idStatus);
 
             if ($consulta->execute()) {
                 $resultado = $this->pdo->lastInsertId();//sucesso
@@ -148,7 +164,7 @@ class Usuario{
     }
 
     public function editarUsuario($id){
-        if ($this->validarLogin() == "A") {
+        if ($this->validarLogin($id) == "A") {
             $sql = "update usuario SET nome=:nome, dataNasc=:dataNasc, documento=:documento, idTipo=:idTipo, login=:login where idUsuario=:idUsuario";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
@@ -186,10 +202,10 @@ class Usuario{
         return $resultado;
     }
 
-    public function alterarTipoUsuario($idUsuario){
-        $sql = "update usuario SET idTipo=:idTipo where idUsuario=:idUsuario";
+    public function alterarStatusUsuario($idUsuario, $idStatus){
+        $sql = "update usuario SET idStatus=:idStatus where idUsuario=:idUsuario";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idTipo", $this->idTipo);
+        $consulta->bindParam(":idStatus", $idStatus);
         $consulta->bindParam(":idUsuario", $idUsuario);
 
         if ($consulta->execute()) {
@@ -214,7 +230,7 @@ class Usuario{
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":login", $this->login);
             $consulta->bindParam(":documento", $this->documento);
-            $consulta->bindParam(":login", $id);
+            $consulta->bindParam(":idUsuario", $id);
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         }
@@ -227,4 +243,5 @@ class Usuario{
 
         return $resultado;
     }
+
 }
