@@ -53,6 +53,15 @@
                 if($resultado == "E"){
                     echo "<script>alert('Erro ao realizar inserção!');</script>";
                 }
+                if($resultado == "R"){
+                    echo "<script>alert('Erro! Não é possível inserir itens em uma solicitação atendida!');</script>";
+                }
+                if($resultado == "D"){
+                    echo "<script>alert('Item já inserido à solicitação');</script>";
+                }
+                if($resultado == "I"){
+                    echo "<script>alert('Erro, saldo insulficiente!');</script>";
+                }
                 else{
                     echo "<script>alert('Produto inserido à requisição!');</script>";
                 }
