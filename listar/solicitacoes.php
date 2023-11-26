@@ -3,7 +3,9 @@
 ?>
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <a href="pages/estoque" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Solicitações</h1>
@@ -60,12 +62,13 @@
                 </thead>
                 <tbody>
                     <?php
+                        $solicitante = $_SESSION['idUsuario'];
                         $sql = "select s.idSolicitacao numero, e.nome origem, cc.nome destino, t.nome tipo, s.data abertura, s.necessidade limite,
                             st.nome as status from solicitacao s
                             inner join centrocusto cc on s.idCentroCusto = cc.idCentroCusto
                             inner join estoque e on s.origem = e.idEstoque
                             inner join tipo t on s.idTipo = t.idTipo
-                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 2 order by numero";
+                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 2  and s.idSolicitante = $solicitante order by numero";
             
                         $consulta = $pdo->prepare($sql);
                         $consulta->execute();
@@ -151,7 +154,7 @@
                             inner join estoque e on s.idEstoque = e.idEstoque
                             inner join estoque e1 on s.origem = e1.idEstoque
                             inner join tipo t on s.idTipo = t.idTipo
-                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 3 order by numero";
+                            inner join status st on s.idStatus = st.idStatus where s.idTipo = 3 and s.idSolicitante = $solicitante order by numero";
             
                         $consulta = $pdo->prepare($sql);
                         $consulta->execute();

@@ -80,6 +80,9 @@
                         <th scope="col">
                             <p>Descrição</p>
                         </th>
+                        <th scope="col">
+                            <p>Opções</p>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,6 +101,19 @@
                             </td>
                             <td>
                                 <p><?= $dados->descricao ?></p>
+                            </td>
+                            <td>
+
+                                <a href="javascript:excluir(<?=$dados->idUnidadeMedida?>)" title="Excluir"
+                                class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+
+                                <a href="editar/unidadeMedida/<?=$dados->idUnidadeMedida?>" class="btn btn-success btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            
+
                             </td>
                         </tr>
                         <?php
@@ -120,32 +136,45 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar Produto</h1>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        </div>
-        <div class="modal-body">
-            <form action="cadastrar/unidadeMedida" method="post" id="formUM">
-                <div class="formNewProd">
-                    <div class="form-row">
-                        <div class="formCol">
-                            <label for="nome" class="formLabel">Nome da Unidade de Medida:</label>
-                            <input type="text" name="nome" id="nome" placeholder="Ex. Lt" class="formInput">
-                        </div>
-                        <div class="formCol">
-                            <label for="nome" class="formLabel">Descrição da Unidade de Medida:</label>
-                            <input type="text" name="descricao" id="descricao" placeholder="Ex. Litro" class="formInput">
+            </div>
+            <div class="modal-body">
+                <form action="cadastrar/unidadeMedida" method="post" id="formUM">
+                    <div class="formNewProd">
+                        <div class="form-row">
+                            <div class="formCol">
+                                <label for="nome" class="formLabel">Nome da Unidade de Medida:</label>
+                                <input type="text" name="nome" id="nome" placeholder="Ex. Lt" class="formInput">
+                            </div>
+                            <div class="formCol">
+                                <label for="nome" class="formLabel">Descrição da Unidade de Medida:</label>
+                                <input type="text" name="descricao" id="descricao" placeholder="Ex. Litro" class="formInput">
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-            <br>
+                </form>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="formSubmitButton" form="formUM" >Enviar</button>
+            </div>
         </div>
-      <div class="modal-footer">
-        <button type="submit" class="formSubmitButton" form="formUM" >Enviar</button>
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
+    function excluir(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "excluir/unidadeMedida/" + id;
+            }
+        })
+    }
     $(document).ready(function(){
         $(".table").DataTable({
             searching: false,

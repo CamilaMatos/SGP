@@ -30,9 +30,6 @@
                     <th scope="row">
                         <p>Validade</p>
                     </th>
-                    <th scope="row">
-                        <p>Opções</p>
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -61,10 +58,11 @@
                                     <?=$dados->unMedida?>
                                 </td>
                                 <td>
-                                    <?=$dados->validade?>
-                                </td>
-                                <td>
-                                    Opção
+                                    <?php
+                                        $data = explode("-", $dados->validade);
+                                        $dataF = $data[2]."/".$data[1]."/".$data[0];
+                                    ?>
+                                    <?=$dataF?>
                                 </td>
                             </tr>
                         <?php
@@ -105,7 +103,7 @@
             "pageLength": 15,
             "bLengthChange" : false,
             "info":false, 
-            "order": [[0, 'desc']],
+            "order": [[5, 'desc']],
             language: {
             "emptyTable": "Nenhum registro encontrado",
             "infoFiltered": "(Filtrados de _MAX_ registros)",

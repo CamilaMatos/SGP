@@ -154,9 +154,9 @@ class Lote {
 
 
     public function editarLote($id){
-        $sql = "update lote SET idEstoque=:idEstoque, quantidadeInicial=:quantidadeInicial, quantidadeAtual=:quantidadeAtual, validade=:validade, valorUnitario=:valorUnitario where idLote=:idLote";
+        $sql = "update lote SET idEstoque=:idEstoque, quantidadeInicial=:quantidadeInicial, quantidadeAtual=:quantidadeAtual, 
+        validade=:validade, valorUnitario=:valorUnitario where idLote=:idLote";
         $consulta = $this->pdo->prepare($sql);
-        $consulta->bindParam(":idItem", $this->idItem);
         $consulta->bindParam(":idEstoque", $this->idEstoque);
         $consulta->bindParam(":quantidadeInicial", $this->quantidadeInicial);
         $consulta->bindParam(":quantidadeAtual", $this->quantidadeAtual);
@@ -176,13 +176,13 @@ class Lote {
     public function excluirLote($id){
         //verificar se não existe solicitação com esse lote
         if(empty($this->verificarRegistros($id))){
+            $this->excluirEntrada($id);
             $sql = "delete from lote where idLote=:idLote";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":idLote", $id);
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
-                $this->excluirEntrada($id);
             } else {
                 $resultado = "E";//erro
             }

@@ -1,21 +1,20 @@
 <?php
-    include "./Estoque/Movimentacao.php";
+    include "./Estoque/Solicitacao.php";
 
     $idSolicitacao = $id;
-    $idUsuario = $_SESSION['idUsuario'];
+    $idStatus = 11;
     
-    $M = new Movimentacao($idSolicitacao, $idUsuario, NULL, NULL);
-
-    $resultado = $M->realizarTransferencia($idSolicitacao);
+    $S = new Solicitacao(NULL, NULL, NULL, $idStatus, NULL, NULL, NULL);
+    $resultado = $S->alterarStatusSolicitacao($idSolicitacao, $idStatus);
 
     if ($resultado == "E") {
-        echo "<script>alert('Erro!!!');</script>";
+        echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     }if ($resultado == "R") {
         echo "<script>alert('Erro! Item já cadastrado com esse nome!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     } else {
-        echo "<script>alert('Transferência recusada!!!');</script>";
+        echo "<script>alert('Cadastro realizado com sucesso!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     }
 

@@ -66,6 +66,7 @@
                                     <?=$dados->status?>
                                 </td>
                                 <td>
+                                    
                                     <a href="cadastrar/baixarTransferencia/<?=$dados->numero?>" class="btn btn-success btn-sm">
                                         <i class="fa-solid fa-check"></i>
                                     </a>
@@ -86,7 +87,7 @@
 </div>
 
 <script>
-    function excluir(id) {
+    function recusar(id) {
         Swal.fire({
             icon: "warning",
             title: "Você deseja mesmo excluir este registro?",
@@ -95,7 +96,7 @@
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {
-                location.href = "excluir/solicitacao/" + id;
+                location.href = "cadastrar/recusarTransferencia/" + id;
             }
         })
     }
