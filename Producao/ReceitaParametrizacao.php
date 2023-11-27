@@ -98,8 +98,6 @@ class ReceitaParametrizacao {
 
             if ($consulta->execute()) {
                 $resultado = $this->pdo->lastInsertId();//sucesso
-                $I = new Item($this->nome, 1, $this->categoria, 5, 1, 1);
-                $I->cadastrarItem();
             } else {
                 $resultado = "E";//erro
             }
@@ -133,6 +131,32 @@ class ReceitaParametrizacao {
                 $idItem = $consulta2->fetch(PDO::FETCH_OBJ);
                 $R = new Item($this->nome, 1, $this->categoria, 5, 1, 1);
                 $R->editarItem($idItem);
+            } else {
+                $resultado = "E";//erro
+            }
+        } else {
+            $resultado = "R";//recusado pois já existe cadastro dessa receita
+        }
+
+        return $resultado;
+    }
+
+    public function finalizarCadastroReceita($id){
+        if(empty($this->receitaPorNome($id))) {
+            $sql = "update receitaParametrizacao SET nome=:nome, idCategoria=:idCategoria, tempo=:tempo, modo=:modo, rendimento=:rendimento where idReceita=:idReceita";
+            $consulta = $this->pdo->prepare($sql);
+            $consulta->bindParam(":nome", $this->nome);
+            $consulta->bindParam(":idCategoria", $this->categoria);
+            $consulta->bindParam(":tempo", $this->tempo);
+            $consulta->bindParam(":modo", $this->modo);
+            $consulta->bindParam(":rendimento", $this->rendimento);
+            $consulta->bindParam(":idReceita", $id);
+
+            if ($consulta->execute()) {
+                $resultado = "S";//sucesso
+
+                $I = new Item($this->nome, 1, $this->categoria, 5, 1, 1);
+                $I->cadastrarItem();
             } else {
                 $resultado = "E";//erro
             }
