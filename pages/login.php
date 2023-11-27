@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="css/style.css">
 
-<header class="">
+<header class="header">
 
 </header>
 <?php
@@ -14,11 +14,24 @@ if (!empty($_POST)) {
 
     $U = new Usuario(null, null, null, null, $login, $password, NULL);
 
+    $sql = "select * from usuario where login=:login";
+    $consulta = $pdo->prepare($sql);
+    $consulta->bindParam(":login", $login);
+    $consulta->execute();
+
+    $dadosU = $consulta->fetch(PDO::FETCH_OBJ);
+
     $dados = $U->logar();
 
     if (!$dados) {
+
         echo "<script>alert('Credenciais erradas, tente novamente!');</script>";
-    } else {
+
+    }if($dados && ($dadosU->idStatus == 2)){
+
+        echo "<script>alert('Usuário Inativado, não foi possível fazer login!');</script>";
+
+    } if($dados && ($dadosU->idStatus == 1) ) {
         $_SESSION['login'] = $dados->login;
         $_SESSION['nome'] = $dados->nome;
         $_SESSION['tipo'] = $dados->idTipo;
