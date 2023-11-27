@@ -9,67 +9,69 @@
 </div>
 <div class="contentDiv">
     <div class="flex-row">
-        <table class="table table-striped table70Length">
-            <thead>
-                <tr>
-                    <th scope="row">
-                        <p>Lote</p>
-                    </th>
-                    <th scope="row">
-                        <p>Produto</p>
-                    </th>
-                    <th scope="row">
-                        <p>Estoque</p>
-                    </th>
-                    <th scope="row">
-                        <p>Qtd. Restante</p>
-                    </th>
-                    <th scope="row">
-                        <p>Un.Medida</p>
-                    </th>
-                    <th scope="row">
-                        <p>Validade</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $sql = "select l.idLote, i.nome, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
-                        inner join item i on (l.idItem = i.idItem)
-                        inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
-                    $consulta = $pdo->prepare($sql);
-                    $consulta->execute();
-                    while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <?=$dados->idLote?>
-                                </th>
-                                <td>
-                                    <?=$dados->nome?>
-                                </td>
-                                <td>
-                                    1
-                                </td>
-                                <td>
-                                    <?=$dados->quantidadeAtual?>
-                                </td>
-                                <td>
-                                    <?=$dados->unMedida?>
-                                </td>
-                                <td>
-                                    <?php
-                                        $data = explode("-", $dados->validade);
-                                        $dataF = $data[2]."/".$data[1]."/".$data[0];
-                                    ?>
-                                    <?=$dataF?>
-                                </td>
-                            </tr>
-                        <?php
-                    };
-                ?>
-            </tbody>
-        </table>
+        <div class="card">
+            <table class="table table-striped table70Length">
+                <thead>
+                    <tr>
+                        <th scope="row">
+                            <p>Lote</p>
+                        </th>
+                        <th scope="row">
+                            <p>Produto</p>
+                        </th>
+                        <th scope="row">
+                            <p>Estoque</p>
+                        </th>
+                        <th scope="row">
+                            <p>Qtd. Restante</p>
+                        </th>
+                        <th scope="row">
+                            <p>Un.Medida</p>
+                        </th>
+                        <th scope="row">
+                            <p>Validade</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql = "select l.idLote, i.nome, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
+                            inner join item i on (l.idItem = i.idItem)
+                            inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->execute();
+                        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <?=$dados->idLote?>
+                                    </th>
+                                    <td>
+                                        <?=$dados->nome?>
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <?=$dados->quantidadeAtual?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->unMedida?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            $data = explode("-", $dados->validade);
+                                            $dataF = $data[2]."/".$data[1]."/".$data[0];
+                                        ?>
+                                        <?=$dataF?>
+                                    </td>
+                                </tr>
+                            <?php
+                        };
+                    ?>
+                </tbody>
+            </table>
+        </div>
         <div class="optionScroll">
             <a href="listar/produtos">
                 <div class="scrollOption">
@@ -99,7 +101,6 @@
 <script>
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
             "pageLength": 15,
             "bLengthChange" : false,
             "info":false, 
@@ -109,6 +110,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",
