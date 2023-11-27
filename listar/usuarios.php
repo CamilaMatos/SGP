@@ -27,13 +27,13 @@
                         <p>Colaborador</p>
                     </th>
                     <th scope="col">
-                        <p>Aniversário</p>
+                        <p>Nascimento</p>
                     </th>
                     <th scope="col">
                         <p>Documento</p>
                     </th>
                     <th scope="col">
-                        <p>Setor</p>
+                        <p>Tipo</p>
                     </th>
                     <th scope="col">
                         <p>Login</p>

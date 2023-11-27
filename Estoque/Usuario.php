@@ -141,7 +141,7 @@ class Usuario{
         $id = null;
         if ($this->validarLogin($id) == "A") {
             $senha = $this->encriptador($this->senha);
-            $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha, :idStatus)";
+            $sql = "insert into usuario values (NULL, :nome, :dataNasc, :documento, :idTipo, :login, :senha, 1)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":dataNasc", $this->dataNasc);
@@ -149,7 +149,6 @@ class Usuario{
             $consulta->bindParam(":idTipo", $this->idTipo);
             $consulta->bindParam(":login", $this->login);
             $consulta->bindParam(":senha", $senha);
-            $consulta->bindParam(":sidStatus", $this->idStatus);
 
             if ($consulta->execute()) {
                 $resultado = $this->pdo->lastInsertId();//sucesso

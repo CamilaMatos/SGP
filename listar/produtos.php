@@ -47,6 +47,9 @@
                             <th scope="col">
                                 <p>Status</p>
                             </th>
+                            <th scope="col">
+                                <p>Opções</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

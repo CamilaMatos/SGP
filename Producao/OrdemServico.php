@@ -251,7 +251,6 @@ class OrdemServico {
 
         $M = new Movimentacao($idSolicitacao, $idUsuario, 4, $data);
         $M->realizarMovimentacao();
-        $this->assinar($idOrdem, 7, $idUsuario);
     }
 
     public function buscarOrdem($idSolicitacao, $idReceita, $idOrdem, $idEstoque) {

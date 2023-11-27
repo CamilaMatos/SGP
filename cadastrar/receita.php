@@ -19,7 +19,7 @@
             echo "<script>location.href='listar/receitas'</script>";
 
         } else if ($resultado == "R"){
-            echo "<script>alert('Erro, item já cadastrado');</script>";
+            echo "<script>alert('Erro! Já existe uma receita com esse nome!');</script>";
             echo "<script>location.href='listar/receitas'</script>";
         }
         else {
@@ -33,15 +33,15 @@
         $resultado = $R->editarReceita($id);
 
         if ($resultado == "E") {
-            echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
+            echo "<script>alert('A edição não pode ser realizada!');</script>";
             echo "<script>location.href='listar/receitas'</script>";
 
         } else if ($resultado == "R"){
-            echo "<script>alert('Erro, item já cadastrado');</script>";
+            echo "<script>alert('Erro! Já existe uma receita com esse nome!');</script>";
             echo "<script>location.href='listar/receitas'</script>";
         }
         else {
-            echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
+            echo "<script>alert('Edição realizada com sucesso!!!!');</script>";
             echo "<script>location.href='listar/receitas'</script>";
         };
 

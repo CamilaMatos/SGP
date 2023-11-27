@@ -8,7 +8,7 @@
     $login = $_POST['login'];
     $senha =  $_POST['senha'];
 
-    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha);
+    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha, null);
 
     if ($_POST && empty($id)) {
         $E = $Ul->cadastrarUsuario();
@@ -17,7 +17,7 @@
             echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
         } else if ($E == "NA"){
-            echo "<script>alert('Erro, usuário já cadastrado');</script>";
+            echo "<script>alert('Erro! Login não disponível!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
         }
         else {
@@ -29,14 +29,14 @@
         $E = $Ul->editarUsuario($id);
 
         if ($E == "E") {
-            echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
+            echo "<script>alert('Usuário não pode ser editado!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
         } else if ($E == "NA"){
-            echo "<script>alert('Erro, usuário já cadastrado');</script>";
+            echo "<script>alert('Erro! Login não disponível!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
         }
         else {
-            echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
+            echo "<script>alert('Cadastro editado com sucesso!!!!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
         };
         if(!empty($senha)){

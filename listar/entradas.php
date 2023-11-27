@@ -140,13 +140,9 @@
                         </div>
                         <div class="form-row">
                             <div class="formCol">
-                                <label for="qtdInicial" class="formLabel">Quantidade Inicial:</label>
+                                <label for="qtdInicial" class="formLabel">Quantidade:</label>
                                 <input type="number" name="qtdInicial" id="qtdInicial" placeholder="Insira a quantidade inicial do lote:" required class="formInput">
                             </div>
-                            <div class="formCol">
-                                <label for="qtdAtual" class="formLabel">Quantidade Atual:</label>
-                                <input type="number" name="qtdAtual" id="qtdAtual" placeholder="Insira a quantidade Atual do lote:" required class="formInput">
-                            </div>           
                         </div>
                         <div class="form-row">
                             <div class="formCol">

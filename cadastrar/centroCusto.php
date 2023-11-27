@@ -14,7 +14,7 @@
             echo "<script>alert('Cadastro não pode ser realizado por que algo deu errado!!!');</script>";
             echo "<script>location.href='listar/centrosCusto'</script>";
         }if ($resultado == "R") {
-            echo "<script>alert('Erro! Item já cadastrado com esse nome!!!');</script>";
+            echo "<script>alert('Erro! Já existe um centro de custo com esse nome!!!');</script>";
             echo "<script>location.href='listar/centrosCusto'</script>";
         } else {
             echo "<script>alert('Cadastro realizado com sucesso!!!');</script>";

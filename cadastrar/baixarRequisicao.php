@@ -12,10 +12,10 @@
         echo "<script>alert('Erro!!!');</script>";
         echo "<script>location.href='listar/requisicoes'</script>";
     }if ($resultado == "R") {
-        echo "<script>alert('Erro! Item já cadastrado com esse nome!!!');</script>";
+        echo "<script>alert('Erro! Saldo insuficiente para atender a requisição!!!');</script>";
         echo "<script>location.href='listar/requisicoes'</script>";
     } else {
-        echo "<script>alert('Requisição Recusada!!!');</script>";
+        echo "<script>alert('Sucesso! Requisição atendida!!!');</script>";
         echo "<script>location.href='listar/requisicoes'</script>";
     }
 

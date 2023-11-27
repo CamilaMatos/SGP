@@ -22,7 +22,7 @@
         
         <a href="novos/transferencia">
             <button type="button" class="newButton">
-                Solicitar Transferência
+                + Solicitar Transferência
             </button>
         </a>
     </div>
@@ -208,9 +208,9 @@
     function excluir(id) {
         Swal.fire({
             icon: "warning",
-            title: "Você deseja mesmo excluir este registro?",
+            title: "Você deseja mesmo recusar essa requisição?",
             showCancelButton: true,
-            confirmButtonText: "Excluir",
+            confirmButtonText: "Recusar",
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {

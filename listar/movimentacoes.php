@@ -45,7 +45,7 @@
                     $sql = "select e.idEntrada, e.idLote, i.nome item, u.nome usuario, e.data from entrada e
                         inner join lote l on (e.idLote = l.idLote)
                         inner join item i on (l.idItem = i.idItem)
-                        inner join usuario u on (e.idUsuario = u.idUsuario) where order by e.data desc";
+                        inner join usuario u on (e.idUsuario = u.idUsuario) order by e.data desc";
                     $consulta = $pdo->prepare($sql);
                     $consulta->execute();
                     while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
