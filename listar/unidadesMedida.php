@@ -12,12 +12,6 @@
 <br>
 
 <div class="flex-row">
-    <form action="cadastrar/unidadeMedida" method="post">
-        <div class="searchBar">
-            <input type="text" name="pesquisa" id="pesquisa" placeholder="Ex. Arroz" class="searchBarInput">
-            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-    </form>
     <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
         + Nova Unidade de medida
     </button>
