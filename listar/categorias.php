@@ -71,6 +71,9 @@
                             <th scope="col">
                                 <p>Categoria</p>
                             </th>
+                            <th scope="col">
+                                <p>Opções</p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

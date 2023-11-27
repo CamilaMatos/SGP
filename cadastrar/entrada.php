@@ -12,8 +12,6 @@
 
     $L = new Lote ($idItem, $idEstoque, $qtdInicial, $qtdInicial, $validade, $vlUnitario, $idLoteOrigem);
 
-    print_r($_POST);
-
     if ($_POST && empty($id)) {
 
         $resultado = $L->inserirLote($idUsuario);
