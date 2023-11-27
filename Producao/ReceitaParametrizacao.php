@@ -123,6 +123,16 @@ class ReceitaParametrizacao {
 
             if ($consulta->execute()) {
                 $resultado = "S";//sucesso
+
+                $sql2 = "select i.idItem from item i
+                inner join receitaParametrizacao r on (r.nome = i.nome)
+                where r.idReceita=:id";
+                $consulta2 = $this->conexao()->prepare($sql2);
+                $consulta2->bindParam(":id", $id);
+                $consulta2->execute();
+                $idItem = $consulta2->fetch(PDO::FETCH_OBJ);
+                $R = new Item($this->nome, 1, $this->categoria, 5, 1, 1);
+                $R->editarItem($idItem);
             } else {
                 $resultado = "E";//erro
             }
