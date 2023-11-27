@@ -1,8 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-2">
-        <button type="button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+    <div class="col-1">
+        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
     </div>
-    <div class="col-8">
+    <div class="col-10">
         <h1>Receitas</h1>
     </div>
 </div>
@@ -14,9 +14,11 @@
                 <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
-        <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
-            + Nova Receita
-        </button>
+        <a href="novos/receita">
+            <button type="button" class="newButton" data-target="#modalCadProduto">
+                + Nova Receita
+            </button>
+        </a>
     </div>
     
     <br>
@@ -24,70 +26,65 @@
     <div class="flex-row">
         <?php
             if ($_POST && ($_POST['pesquisa'] != NULL)) {
+                $pesquisa = trim($_POST['pesquisa']);
                 ?>
                 <table class="table-striped table70Length">
                     <thead>
                         <tr>
                             <th scope="col">
-                                <p>Id. Produto</p>
+                                <p>Id. Receita</p>
                             </th>
                             <th scope="col">
-                                <p>Produto</p>
+                                <p>Receita</p>
                             </th>
                             <th scope="col">
                                 <p>Categoria</p>
                             </th>
                             <th scope="col">
-                                <p>Marca</p>
+                                <p>Tempo de Preparo</p>
                             </th>
                             <th scope="col">
-                                <p>Unidade de Medida</p>
-                            </th>
-                            <th scope="col">
-                                <p>Status</p>
+                                <p>Opções</p>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $pesquisa = trim($_POST['pesquisa']);
-                        $sql = "select i.idItem id, i.nome nome, c.nome categoria, m.nome marca, uM.nome unidadeMedida, s.nome status from item i
-                        inner join categoria c
-                        on i.idcategoria = c.idCategoria 
-                        inner join marca m
-                        on i.idMarca = m.idmarca
-                        inner join unidadeMedida uM
-                        on i.idUnidadeMedida = uM.idUnidadeMedida
-                        inner join status s
-                        on i.idStatus = s.idStatus
-                        where i.nome like '%$pesquisa%'
-                        order by idItem ";
-                        $consulta = $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <p><?= $dados->id ?></p>
-                                </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->categoria ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->marca ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->unidadeMedida ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->status ?></p>
-                                </td>
-                            </tr>
-                        <?php
-                        }
+                            $sql = "select r.idReceita id, r.nome nome, c.nome categoria, r.tempo tempo from receitaparametrizacao r
+                                inner join categoria c on (r.idCategoria = c.idCategoria)
+                                where nome LIKE %$pesquisa%order by id desc";
+                            $consulta = $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <p><?= $dados->id ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->categoria ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->tempo ?></p>
+                                    </td>
+                                    <td>
+
+                                        <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+
+                                        <a href="editar/receita/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            <?php
+                            }
                         ?>
                     </tbody>
                 </table>
@@ -98,22 +95,16 @@
                     <thead>
                         <tr>
                             <th scope="col">
-                                <p>Id. Produto</p>
+                                <p>Id. Receita</p>
                             </th>
                             <th scope="col">
-                                <p>Produto</p>
+                                <p>Receita</p>
                             </th>
                             <th scope="col">
                                 <p>Categoria</p>
                             </th>
                             <th scope="col">
-                                <p>Marca</p>
-                            </th>
-                            <th scope="col">
-                                <p>Unidade de Medida</p>
-                            </th>
-                            <th scope="col">
-                                <p>Status</p>
+                                <p>Tempo de Preparo</p>
                             </th>
                             <th scope="col">
                                 <p>Opções</p>
@@ -122,54 +113,41 @@
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "select i.idItem id, i.nome nome, c.nome categoria, m.nome marca, uM.nome unidadeMedida, s.nome status from item i
-                            inner join categoria c
-                            on i.idcategoria = c.idCategoria 
-                            inner join marca m
-                            on i.idMarca = m.idmarca
-                            inner join unidadeMedida uM
-                            on i.idUnidadeMedida = uM.idUnidadeMedida
-                            inner join status s
-                            on i.idStatus = s.idStatus
-                            order by idItem desc limit 15";
-                        $consulta = $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <p><?= $dados->id ?></p>
-                                </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->categoria ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->marca ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->unidadeMedida ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->status ?></p>
-                                </td>
-                                <td>
+                            $sql = "select r.idReceita id, r.nome nome, c.nome categoria, r.tempo tempo from receitaparametrizacao r
+                                inner join categoria c on (r.idCategoria = c.idCategoria)
+                                order by id desc";
+                            $consulta = $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <p><?= $dados->id ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->categoria ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->tempo ?></p>
+                                    </td>
+                                    <td>
 
-                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                        <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
 
-                                    <a href="editar/produto/<?=$dados->id?>">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
+                                        <a href="editar/receita/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
 
-                                </td>
-                            </tr>
-                        <?php
-                        }
+                                    </td>
+                                </tr>
+                            <?php
+                            }
                         ?>
                     </tbody>
                 </table>

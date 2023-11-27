@@ -12,7 +12,7 @@ if (!empty($_POST)) {
     $login =  trim($_POST['login']);
     $password = trim($_POST['password']);
 
-    $U = new Usuario(null, null, null, null, $login, $password);
+    $U = new Usuario(null, null, null, null, $login, $password, NULL);
 
     $dados = $U->logar();
 

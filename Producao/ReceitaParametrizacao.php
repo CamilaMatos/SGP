@@ -1,5 +1,5 @@
 <?php
-require_once "../Classes/Conecta.php";
+require_once "./Classes/Conecta.php";
 class ReceitaParametrizacao {
     private $nome;
     private $categoria;
@@ -167,13 +167,13 @@ class ReceitaParametrizacao {
 
     public function receitaPorNome($id){
         if($id == null){
-            $sql = "select * from receita where nome=:nome";
+            $sql = "select * from receitaparametrizacao where nome=:nome";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from receita where nome=:nome and not(idReceita=:id)";
+            $sql = "select * from receitaparametrizacao where nome=:nome and not(idReceita=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);
