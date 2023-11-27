@@ -125,7 +125,7 @@
             </div>
             <div class="modal-footer">
                 <div class="submitCol" >
-                    <button type="submit" class="formSubmitButton" form="formReceita">Cadastrar Requisição</button>
+                    <button type="submit" class="formSubmitButton" form="formReceita">Cadastrar Receita</button>
                 </div>
             </div>
         </div>
