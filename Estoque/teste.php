@@ -26,17 +26,22 @@
 
 
 
+//SELECT l.valorUnitario, i.quantidade from lote l inner join itensmovimentacao i on (i.idLote = l.idLote) where i.idSolicitacao=
 
-
-require_once "Solicitacao.php";
+//require_once "Solicitacao.php";
 //require_once "ItensSolicitacao.php";
 
-//require_once "../Producao/ReceitaParametrizacao.php";
+require_once "../Producao/OrdemServico.php";
 //require_once "Categoria.php";
 //require_once "CentroCusto.php";
 
-$S = new Solicitacao(1, 2, 3, 1, 1, null, '2023-11-11');
-$S->finalizarSolicitacao(35);
+$OS = new OrdemServico(2, 1, '2023-11-27', 10, null, null, 1, null, null);
+//$OS->gerarOS(2, 1);
+$OS->reservarIngredientes(33, 1, 53, 1);
+//$OS->concluirOS(53, 33, 1, '2024-01-01');
+
+//$S = new Solicitacao(1, 2, 3, 1, 1, null, '2023-11-11');
+//$S->finalizarSolicitacao(35);
 
 //$S = new Solicitacao(1, 1, 2, 1, 1, null, '2023-11-20');
 //print($S->solicitarRequisicao());

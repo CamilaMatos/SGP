@@ -146,9 +146,9 @@ class OrdemServico {
     }
 
     public function gerarOS($idCentroCusto, $idEstoque){
-        $S = new Solicitacao($idEstoque, 2, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
+        $S = new Solicitacao($idEstoque, 5, $idCentroCusto, 3, $this->idUsuario, null, $this->entrega);
         $idSolicitacao = $S->solicitarRequisicao();
-        $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :idSolicitacao, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, :idStatus, :horarioInicio, :horarioFim);";
+        $sql = "insert into ordemServico values (null, :idReceita, :idUsuario, :idSolicitacao, :entrega, :rendimentoEsperado, :rendimentoReal, :observacao, 3, :horarioInicio, :horarioFim);";
         $consulta = $this->pdo->prepare($sql);
         $consulta->bindParam(":idReceita", $this->idReceita);
         $consulta->bindParam(":idUsuario", $this->idUsuario);
@@ -157,7 +157,6 @@ class OrdemServico {
         $consulta->bindParam(":rendimentoEsperado", $this->rendimentoEsperado);
         $consulta->bindParam(":rendimentoReal", $this->rendimentoReal);
         $consulta->bindParam(":observacao", $this->observacao);
-        $consulta->bindParam(":idStatus", $this->status);
         $consulta->bindParam(":horarioInicio", $this->horarioInicio);
         $consulta->bindParam(":horarioFim", $this->horarioFim);
 
@@ -166,6 +165,7 @@ class OrdemServico {
 
             $this->assinar($resultado, 3, $this->idUsuario);
             $this->buscarOrdem($idSolicitacao, $this->idReceita, $resultado, $idEstoque);
+            $this->reservarIngredientes($resultado, $this->idUsuario, $idSolicitacao, $idEstoque);
         } else {
             $resultado = "E";//erro
         }
@@ -193,24 +193,48 @@ class OrdemServico {
         $consulta->bindParam(":idUsuario", $idUsuario);
         $consulta->bindParam(":data", $data);
         $consulta->bindParam(":hora", $hora);
-        $consulta->execute();
+        if($consulta->execute()){
+            $sql2 = "update ordemServico SET idStatus=:idStatus where idOrdemServico=:idOrdem";
+            $consulta2 = $this->pdo->prepare($sql2);
+            $consulta2->bindParam(":idStatus", $idStatus);
+            $consulta2->bindParam(":idOrdem", $idOrdem);
+            if($consulta2->execute()){
+                $resultado = "S";//sucesso
+            } else {
+                $resultado = "E";//erro
+            }
+        } else{
+            $resultado = "E";//erro
+        }
+
+        return $resultado;
     }
 
-    public function concluirOS($idOrdem, $idUsuario, $idSolicitacao, $idEstoque){
+    public function concluirOS($idSolicitacao, $idOrdem, $idEstoque, $validade){
         $data = date('Y-m-d');
         $sql = "select * from receitaServico where idOrdemServico=:idOrdem";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idOrdem", $idOrdem);
         $consulta->execute();
-        $M = new Movimentacao($idSolicitacao, $idUsuario, 4, $data);
+        $M = new Movimentacao($idSolicitacao, $this->idUsuario, 4, $data);
         $M->reverterBaixa(6);
         while($resultado = $consulta->fetch(PDO::FETCH_OBJ)){
             $I = new ItensSolicitacao($idSolicitacao, null, $resultado->quantidadeRealizada, $resultado->idItem, $idEstoque);
             $I->quebrarLotes();
         }
 
+        $sql2 = "select i.idItem from item i
+        inner join receitaParametrizacao r on (r.nome = i.nome)
+        where r.idReceita=:id";
+        $consulta2 = $this->conexao()->prepare($sql2);
+        $consulta2->bindParam(":id", $this->idReceita);
+        $consulta2->execute();
+        $idItem = $consulta2->fetch(PDO::FETCH_OBJ);
+
         $M->realizarMovimentacao();
-        $this->assinar($idOrdem, 4, $idUsuario);
+        $this->assinar($idOrdem, 4, $this->idUsuario);
+        $L = new Lote($idItem, $idEstoque, $this->rendimentoReal, $this->rendimentoReal, $validade, $this->definirPreco($idSolicitacao), null);
+        $L->inserirLote($this->idUsuario);
     }
 
     public function reservarIngredientes($idOrdem, $idUsuario, $idSolicitacao, $idEstoque){
@@ -260,6 +284,20 @@ class OrdemServico {
         $qtdAjustada = ($this->rendimentoEsperado*$quantidade)/$rendimento;
 
         return $qtdAjustada;
+    }
+
+    public function definirPreco($idSolicitacao){
+        $valor = 0;
+        $sql = "select l.valorUnitario, i.quantidade from lote l inner join itensmovimentacao i on (i.idLote = l.idLote) where i.idSolicitacao=:i.idSolicitacao";
+        $consulta = $this->conexao()->prepare($sql);
+        $consulta->bindParam(":idSolicitacao", $idSolicitacao);
+        $consulta->execute();
+        
+        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+            $valor = $valor + ($dados->valorUnitario*$dados->quantidade);
+        }
+
+        return $valor;
     }
 
 
