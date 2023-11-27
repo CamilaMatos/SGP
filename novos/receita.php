@@ -21,7 +21,7 @@
     <div class="flex-row">
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Nova Requisição</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Nova Receita</h1>
                 <a href="listar/solicitacoes">
                     <button type="button" class="btn btn-secondary">Fechar</button>
                 </a>

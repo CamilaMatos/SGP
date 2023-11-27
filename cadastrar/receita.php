@@ -34,15 +34,15 @@
 
         if ($resultado == "E") {
             echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
-            echo "<script>location.href='listar/solicitacoes'</script>";
+            echo "<script>location.href='listar/receitas'</script>";
 
         } else if ($resultado == "R"){
             echo "<script>alert('Erro, item já cadastrado');</script>";
-            echo "<script>location.href='listar/solicitacoes'</script>";
+            echo "<script>location.href='listar/receitas'</script>";
         }
         else {
             echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
-            echo "<script>location.href='listar/solicitacoes'</script>";
+            echo "<script>location.href='listar/receitas'</script>";
         };
 
     }
