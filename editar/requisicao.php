@@ -14,6 +14,9 @@
         <div class="modal-content" style="width: 75vw !important; margin: 0;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Requisição Nº<?=$id?></h1>
+                
+                <button type="button" class="btn btn-secondary" onclick="history.back()" data-dismiss="modal">Fechar</button>
+                
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
@@ -121,9 +124,6 @@
                 <div class="submitCol" >
                     <button type="submit" class="formSubmitButton" form="formSolicitacao">Cadastrar Requisição</button>
                 </div>
-                <a href="listar/solicitacoes">
-                    <button type="button" class="btn btn-secondary">Fechar</button>
-                </a>
             </div>
         </div>
         

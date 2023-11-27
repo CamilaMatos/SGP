@@ -24,10 +24,13 @@
                 <thead>
                         <tr>
                             <th scope="col">
-                                <p>Id. Marca</p>
+                                <p>Id. Categoria</p>
                             </th>
                             <th scope="col">
-                                <p>Marca</p>
+                                <p>Categoria</p>
+                            </th>
+                            <th scope="col">
+                                <p>Opções</p>
                             </th>
                         </tr>
                     </thead>
@@ -45,6 +48,10 @@
                                 </th>
                                 <td>
                                     <p><?= $dados->nome ?></p>
+                                </td>
+                                <td>
+
+
                                 </td>
                             </tr>
                             <?php
@@ -80,6 +87,19 @@
                                 <td>
                                     <p><?= $dados->nome ?></p>
                                 </td>
+                                <td>
+
+                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
+                                    <a href="editar/categoria/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                </td>
+                                
                             </tr>
                         <?php
                         }
@@ -123,6 +143,19 @@
 </div>
 
 <script>
+    function excluir(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "excluir/categoria/" + id;
+            }
+        })
+    }
     $(document).ready(function(){
         $(".table").DataTable({
             searching: false,

@@ -13,8 +13,6 @@
         + Nova Entrada
     </button>
 </div>
-    
-
 
 <div class="contentDiv">
     <div class="flex-row">
@@ -75,12 +73,12 @@
                                 </td>
                                 <td>
 
-                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                    <a href="javascript:excluir(<?=$dados->idLote?>)" title="Excluir"
                                     class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i>
                                     </a>
 
-                                    <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                    <a href="editar/entrada/<?=$dados->idLote?>" class="btn btn-success btn-sm">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 
@@ -172,3 +170,43 @@
         </div>
   </div>
 </div>
+
+<script>
+    function excluir(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "excluir/entrada/" + id;
+            }
+        })
+    }
+    $(document).ready(function(){
+        $(".table").DataTable({
+            searching: false,
+            "pageLength": 15,
+            "bLengthChange" : false,
+            "info":false, 
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
+    })
+</script>

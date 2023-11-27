@@ -1,9 +1,9 @@
 <?php
-require_once "../Classes/Conecta.php";
-require_once "../Estoque/Lote.php";
-require_once "../Estoque/Solicitacao.php";
-require_once "../Estoque/ItensSolicitacao.php";
-require_once "../Estoque/Movimentacao.php";
+require_once "./Classes/Conecta.php";
+require_once "./Estoque/Lote.php";
+require_once "./Estoque/Solicitacao.php";
+require_once "./Estoque/ItensSolicitacao.php";
+require_once "./Estoque/Movimentacao.php";
 class OrdemServico {
     private $idReceita;
     private $idUsuario;

@@ -1,6 +1,6 @@
 <?php
-require_once "../Classes/Conecta.php";
-require_once "../Estoque/Item.php";
+require_once "./Classes/Conecta.php";
+require_once "./Estoque/Item.php";
 class ReceitaParametrizacao {
     private $nome;
     private $categoria;

@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <a href="pages/estoque" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Movimentações</h1>
@@ -22,55 +24,51 @@
             <thead>
                 <tr>
                     <th scope="row">
+                        <p>Id. Entrada</p>
+                    </th>
+                    <th scope="row">
                         <p>Lote</p>
                     </th>
                     <th scope="row">
                         <p>Produto</p>
                     </th>
                     <th scope="row">
-                        <p>Estoque</p>
+                        <p>Responsável</p>
                     </th>
                     <th scope="row">
-                        <p>Qtd. Restante</p>
-                    </th>
-                    <th scope="row">
-                        <p>Un.Medida</p>
-                    </th>
-                    <th scope="row">
-                        <p>Validade</p>
-                    </th>
-                    <th scope="row">
-                        <p>Opções</p>
+                        <p>Data</p>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                    $sql = "select l.idLote, i.nome, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
+                    $sql = "select e.idEntrada, e.idLote, i.nome item, u.nome usuario, e.data from entrada e
+                        inner join lote l on (e.idLote = l.idLote)
                         inner join item i on (l.idItem = i.idItem)
-                        inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
+                        inner join usuario u on (e.idUsuario = u.idUsuario) where order by e.data desc";
                     $consulta = $pdo->prepare($sql);
                     $consulta->execute();
                     while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
                         ?>
                             <tr>
                                 <th scope="row">
-                                    <?=$dados->idLote?>
+                                    <?=$dados->idEntrada?>
                                 </th>
                                 <td>
-                                    <?=$dados->nome?>
+                                    <?=$dados->idLote?>
                                 </td>
                                 <td>
-                                    <?=$dados->quantidadeAtual?>
+                                    <?=$dados->item?>
                                 </td>
                                 <td>
-                                    <?=$dados->unMedida?>
+                                    <?=$dados->usuario?>
                                 </td>
                                 <td>
-                                    <?=$dados->validade?>
-                                </td>
-                                <td>
-                                    Opção
+                                <?php
+                                        $data = explode("-", $dados->data);
+                                        $dataF = $data[2]."/".$data[1]."/".$data[0];
+                                    ?>
+                                    <?=$dataF?>
                                 </td>
                             </tr>
                         <?php
