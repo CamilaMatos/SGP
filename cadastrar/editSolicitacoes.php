@@ -17,7 +17,7 @@
         $resultado = $S->editarSolicitacao($id);
 
         if ($resultado == "E") {
-            echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
+            echo "<script>alert('A solicitação não pode ser cadastrada por que algo deu errado!');</script>";
             echo "<script>location.href='listar/solicitacoes'</script>";
 
         } else if ($resultado == "R"){

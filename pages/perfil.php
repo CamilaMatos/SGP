@@ -33,7 +33,7 @@
                 <div class="profile-row">
                     <div class="col-3"></div>
                     <div class="col-3 text-left">
-                        <label for="cargo">Cargo:</label>
+                        <label for="cargo">Tipo:</label>
                     </div>
                     <?php
                         $tipo = $_SESSION['tipo'];

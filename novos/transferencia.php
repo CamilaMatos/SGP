@@ -118,7 +118,7 @@
             </div>
             <div class="modal-footer">
                 <div class="submitCol" >
-                    <button type="submit" class="formSubmitButton" form="formSolicitacao">Cadastrar Requisição</button>
+                    <button type="submit" class="formSubmitButton" form="formSolicitacao">Solicitar Transferência</button>
                 </div>
             </div>
         </div>

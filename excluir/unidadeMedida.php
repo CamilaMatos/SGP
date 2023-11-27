@@ -13,7 +13,7 @@
             echo "<script>alert('Unidade de Medida excluida com sucesso!!');</script>";
             echo "<script>location.href='listar/unidadesMedida'</script>";
         } else{
-            echo "<script>alert('Erro duarante a exclusão do item!!');</script>";
+            echo "<script>alert('Erro duarante a exclusão da unidade de medida!!');</script>";
             echo "<script>location.href='listar/unidadesMedida'</script>";
         }
         

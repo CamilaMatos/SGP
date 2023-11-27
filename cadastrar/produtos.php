@@ -21,7 +21,7 @@
             echo "<script>location.href='listar/produtos'</script>";
 
         } else if ($resultado == "R"){
-            echo "<script>alert('Erro, item já cadastrado');</script>";
+            echo "<script>alert('Erro! Já existe um produto com esse nome');</script>";
             echo "<script>location.href='listar/produtos'</script>";
         }
         else {
@@ -35,15 +35,15 @@
         $resultado = $I->editarItem($id);
 
         if ($resultado == "E") {
-            echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
+            echo "<script>alert('Produto não pode ser editado!');</script>";
             echo "<script>location.href='listar/produtos'</script>";
 
         } else if ($resultado == "R"){
-            echo "<script>alert('Erro, item já cadastrado');</script>";
+            echo "<script>alert('Erro! Já existe um item cadastrado com esse nome!');</script>";
             echo "<script>location.href='listar/produtos'</script>";
         }
         else {
-            echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
+            echo "<script>alert('Produto editado com sucesso!!!!');</script>";
             echo "<script>location.href='listar/produtos'</script>";
         };
 

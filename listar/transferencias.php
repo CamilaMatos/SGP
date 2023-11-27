@@ -93,9 +93,9 @@
     function recusar(id) {
         Swal.fire({
             icon: "warning",
-            title: "Você deseja mesmo excluir este registro?",
+            title: "Você deseja mesmo recusar essa transferência?",
             showCancelButton: true,
-            confirmButtonText: "Excluir",
+            confirmButtonText: "Recusar",
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {

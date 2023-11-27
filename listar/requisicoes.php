@@ -93,13 +93,13 @@
     function recusar(id) {
         Swal.fire({
             icon: "warning",
-            title: "Você deseja mesmo excluir este registro?",
+            title: "Você deseja mesmo recusar esta requisição?",
             showCancelButton: true,
-            confirmButtonText: "Excluir",
+            confirmButtonText: "Recusar",
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {
-                location.href = "cadastrar/recusar/" + id;
+                location.href = "cadastrar/recusarRequisicao/" + id;
             }
         })
     }

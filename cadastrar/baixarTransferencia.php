@@ -12,10 +12,10 @@
         echo "<script>alert('Erro!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     }if ($resultado == "R") {
-        echo "<script>alert('Erro! Item já cadastrado com esse nome!!!');</script>";
+        echo "<script>alert('Erro! Saldo insuficiente para atender a transferência!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     } else {
-        echo "<script>alert('Transferência recusada!!!');</script>";
+        echo "<script>alert('Sucesso! Transferência atendida!!!');</script>";
         echo "<script>location.href='listar/transferencias'</script>";
     }
 
