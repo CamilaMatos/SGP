@@ -54,7 +54,7 @@ footer {
     height: 10vh;
     max-height: 10vh;
     margin: 0;
-    padding-top: 5vh;
+    padding-top: 6vh;
     background-color: #1C5D99;
 
     color: white;
@@ -563,7 +563,7 @@ input:focus{
 }
 
 footer .footerLettering{
-    font-size: 25px;
+    font-size: 17px;
     transform: translateY(-2.5vh);
 }
 
