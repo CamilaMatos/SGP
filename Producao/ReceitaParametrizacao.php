@@ -1,5 +1,6 @@
 <?php
 require_once "./Classes/Conecta.php";
+require_once "./Estoque/Item.php";
 class ReceitaParametrizacao {
     private $nome;
     private $categoria;
@@ -97,6 +98,8 @@ class ReceitaParametrizacao {
 
             if ($consulta->execute()) {
                 $resultado = $this->pdo->lastInsertId();//sucesso
+                $I = new Item($this->nome, 1, $this->categoria, 5, 1, 1);
+                $I->cadastrarItem();
             } else {
                 $resultado = "E";//erro
             }
@@ -167,13 +170,13 @@ class ReceitaParametrizacao {
 
     public function receitaPorNome($id){
         if($id == null){
-            $sql = "select * from receitaparametrizacao where nome=:nome";
+            $sql = "select * from receitaParametrizacao where nome=:nome";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->execute();
             $resultado = $consulta->fetch(PDO::FETCH_OBJ);
         } else {
-            $sql = "select * from receitaparametrizacao where nome=:nome and not(idReceita=:id)";
+            $sql = "select * from receitaParametrizacao where nome=:nome and not(idReceita=:id)";
             $consulta = $this->pdo->prepare($sql);
             $consulta->bindParam(":nome", $this->nome);
             $consulta->bindParam(":id", $id);
