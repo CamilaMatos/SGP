@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <a href="pages/manutencao" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Receitas</h1>
@@ -8,12 +10,6 @@
 </div>
 <div class="contentDiv">
     <div class="flex-row">
-        <form action="" method="post">
-            <div class="searchBar">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Ex. Arroz" class="searchBarInput">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-        </form>
         <a href="novos/receita">
             <button type="button" class="newButton" data-target="#modalCadProduto">
                 + Nova Receita
@@ -28,7 +24,7 @@
             if ($_POST && ($_POST['pesquisa'] != NULL)) {
                 $pesquisa = trim($_POST['pesquisa']);
                 ?>
-                <table class="table-striped table70Length">
+                <table class="table-striped table85Length">
                     <thead>
                         <tr>
                             <th scope="col">
@@ -91,66 +87,69 @@
             <?php
             } else {
                 ?>
-                <table class="table-striped table70Length">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <p>Id. Receita</p>
-                            </th>
-                            <th scope="col">
-                                <p>Receita</p>
-                            </th>
-                            <th scope="col">
-                                <p>Categoria</p>
-                            </th>
-                            <th scope="col">
-                                <p>Tempo de Preparo</p>
-                            </th>
-                            <th scope="col">
-                                <p>Opções</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            $sql = "select r.idReceita id, r.nome nome, c.nome categoria, r.tempo tempo from receitaparametrizacao r
-                                inner join categoria c on (r.idCategoria = c.idCategoria)
-                                order by id desc";
-                            $consulta = $pdo->prepare($sql);
-                            $consulta->execute();
-                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                            ?>
-                                <tr>
-                                    <th scope="row">
-                                        <p><?= $dados->id ?></p>
-                                    </th>
-                                    <td>
-                                        <p><?= $dados->nome ?></p>
-                                    </td>
-                                    <td>
-                                        <p><?= $dados->categoria ?></p>
-                                    </td>
-                                    <td>
-                                        <p><?= $dados->tempo ?></p>
-                                    </td>
-                                    <td>
+                <div class="card">
 
-                                        <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
-                                        class="btn btn-danger btn-sm">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-
-                                        <a href="editar/receita/<?=$dados->id?>" class="btn btn-success btn-sm">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </a>
-
-                                    </td>
-                                </tr>
+                    <table class="table-striped table85Length">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <p>Id. Receita</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Receita</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Categoria</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Tempo de Preparo</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Opções</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <?php
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                                $sql = "select r.idReceita id, r.nome nome, c.nome categoria, r.tempo tempo from receitaparametrizacao r
+                                    inner join categoria c on (r.idCategoria = c.idCategoria)
+                                    order by id desc";
+                                $consulta = $pdo->prepare($sql);
+                                $consulta->execute();
+                                while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                                ?>
+                                    <tr>
+                                        <th scope="row">
+                                            <p><?= $dados->id ?></p>
+                                        </th>
+                                        <td>
+                                            <p><?= $dados->nome ?></p>
+                                        </td>
+                                        <td>
+                                            <p><?= $dados->categoria ?></p>
+                                        </td>
+                                        <td>
+                                            <p><?= $dados->tempo ?></p>
+                                        </td>
+                                        <td>
+    
+                                            <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                            class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+    
+                                            <a href="editar/receita/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+    
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php
             }
         ?>
@@ -337,8 +336,32 @@
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {
-                location.href = "excluir/produto/" + id;
+                location.href = "excluir/receitaParametrizacao/" + id;
             }
         })
     }
+    $(document).ready(function(){
+        $(".table85Length").DataTable({
+            "pageLength": 10,
+            "bLengthChange" : false,
+            "info":false, 
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
+    })
 </script>

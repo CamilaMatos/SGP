@@ -8,88 +8,92 @@
 </div>
 
 
-<div class="flex-row">
-    <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
-        + Nova Entrada
-    </button>
-</div>
-
 <div class="contentDiv">
     <div class="flex-row">
-        <table class="table table-striped table70Length">
-            <thead>
-                <tr>
-                    <th scope="row">
-                        <p>Lote</p>
-                    </th>
-                    <th scope="row">
-                        <p>Produto</p>
-                    </th>
-                    <th scope="row">
-                        <p>Estoque</p>
-                    </th>
-                    <th scope="row">
-                        <p>Qtd. Restante</p>
-                    </th>
-                    <th scope="row">
-                        <p>Un.Medida</p>
-                    </th>
-                    <th scope="row">
-                        <p>Validade</p>
-                    </th>
-                    <th scope="row">
-                        <p>Opções</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $sql = "select l.idLote, i.nome, e.nome estoque, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
-                        inner join item i on (l.idItem = i.idItem)
-                        inner join estoque e on (l.idEstoque = e.idEstoque)
-                        inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
-                    $consulta = $pdo->prepare($sql);
-                    $consulta->execute();
-                    while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <?=$dados->idLote?>
-                                </th>
-                                <td>
-                                    <?=$dados->nome?>
-                                </td>
-                                <td>
-                                    <?=$dados->estoque?>
-                                </td>
-                                <td>
-                                    <?=$dados->quantidadeAtual?>
-                                </td>
-                                <td>
-                                    <?=$dados->unMedida?>
-                                </td>
-                                <td>
-                                    <?=$dados->validade?>
-                                </td>
-                                <td>
+        <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
+            + Nova Entrada
+        </button>
+    </div>
+    <br>
+    <br>
+    <div class="flex-row">
+        <div class="card">
 
-                                    <a href="javascript:excluir(<?=$dados->idLote?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-
-                                    <a href="editar/entrada/<?=$dados->idLote?>" class="btn btn-success btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                
-
-                                </td>
-                            </tr>
-                        <?php
-                    };
-                ?>
-            </tbody>
-        </table>
+            <table class="table table-striped table70Length">
+                <thead>
+                    <tr>
+                        <th scope="row">
+                            <p>Lote</p>
+                        </th>
+                        <th scope="row">
+                            <p>Produto</p>
+                        </th>
+                        <th scope="row">
+                            <p>Estoque</p>
+                        </th>
+                        <th scope="row">
+                            <p>Qtd. Restante</p>
+                        </th>
+                        <th scope="row">
+                            <p>Un.Medida</p>
+                        </th>
+                        <th scope="row">
+                            <p>Validade</p>
+                        </th>
+                        <th scope="row">
+                            <p>Opções</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql = "select l.idLote, i.nome, e.nome estoque, l.quantidadeAtual, un.nome unMedida, l.validade from lote l
+                            inner join item i on (l.idItem = i.idItem)
+                            inner join estoque e on (l.idEstoque = e.idEstoque)
+                            inner join unidademedida un on (i.idUnidadeMedida = un.idUnidadeMedida) order by l.validade";
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->execute();
+                        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <?=$dados->idLote?>
+                                    </th>
+                                    <td>
+                                        <?=$dados->nome?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->estoque?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->quantidadeAtual?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->unMedida?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->validade?>
+                                    </td>
+                                    <td>
+    
+                                        <a href="javascript:excluir(<?=$dados->idLote?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+    
+                                        <a href="editar/entrada/<?=$dados->idLote?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    
+    
+                                    </td>
+                                </tr>
+                            <?php
+                        };
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -187,8 +191,7 @@
     }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -197,6 +200,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

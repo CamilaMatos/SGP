@@ -17,7 +17,8 @@
     <br>
 
     <div class="flex-row">
-        <table class="table table-striped table70Length">
+        
+        <table class="table table-striped table85Length">
             <thead>
                 <tr>
                     <th scope="col">
@@ -48,7 +49,7 @@
             </thead>
             <tbody>
                 <?php
-                    $sql = "select u.idUsuario, u.nome, u.dataNasc, u.documento, t.nome cargo, u.login, s.nome status from usuario u
+                    $sql = "select u.idUsuario, u.nome, u.dataNasc, u.documento, t.nome cargo, u.login, s.nome status, u.idStatus from usuario u
                         inner join status s on (u.idStatus = s.idStatus) 
                         inner join tipo t on (u.idTipo = t.idTipo) order by u.nome";
                     $consulta = $pdo->prepare($sql);
@@ -78,15 +79,32 @@
                                 <p><?= $dados-> status?></p>
                             </td>
                             <td>
-                                
-                                <a href="editar/usuario/<?=$dados->idUsuario?>" class="btn btn-success btn-sm">
-                                <i class="fas fa-edit"></i>
-                                </a>
+                                <?php
+                                    if($dados->idStatus == 2){
+                                        ?>
+                                            <a href="editar/usuario/<?=$dados->idUsuario?>" class="btn btn-success btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            
+                                            <a href="javascript:ativar(<?=$dados->idUsuario?>)" title="Recusar"
+                                            class="btn btn-warning btn-sm">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </a>
+                                        <?php
 
-                                <a href="javascript:desativar(<?=$dados->idUsuario?>)" title="Recusar"
-                                class="btn btn-danger btn-sm">
-                                    <i class="fa-solid fa-ban"></i>
-                                </a>
+                                    }if($dados->idStatus == 1){
+                                        ?>
+                                            <a href="editar/usuario/<?=$dados->idUsuario?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                            </a>
+                                            
+                                            <a href="javascript:desativar(<?=$dados->idUsuario?>)" title="Recusar"
+                                            class="btn btn-danger btn-sm">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </a>
+                                        <?php
+                                    }
+                                ?>
 
                             </td>
                         </tr>
@@ -171,9 +189,22 @@
     function desativar(id) {
         Swal.fire({
             icon: "warning",
-            title: "Você deseja mesmo excluir este registro?",
+            title: "Você deseja mesmo inativar este usuário?",
             showCancelButton: true,
-            confirmButtonText: "Excluir",
+            confirmButtonText: "Inativar",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "cadastrar/statusFuncionario/" + id;
+            }
+        })
+    }
+    function ativar(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo reativar este usuário?",
+            showCancelButton: true,
+            confirmButtonText: "Reativar",
             cancelButtonText: "Cancelar",
         }).then((result)=>{
             if (result.isConfirmed) {
@@ -186,8 +217,7 @@
     })
     $(document).ready(function(){
         $(".table70Length").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false,
             "order": [[0, 'desc']],
@@ -196,6 +226,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

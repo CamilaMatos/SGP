@@ -8,74 +8,68 @@
         <h1>Movimentações</h1>
     </div>
 </div>
-
-
-<div class="flex-row">
-    <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
-        + Nova Entrada
-    </button>
-</div>
     
-
-
 <div class="contentDiv">
     <div class="flex-row">
-        <table class="table table-striped table70Length">
-            <thead>
-                <tr>
-                    <th scope="row">
-                        <p>Id. Entrada</p>
-                    </th>
-                    <th scope="row">
-                        <p>Lote</p>
-                    </th>
-                    <th scope="row">
-                        <p>Produto</p>
-                    </th>
-                    <th scope="row">
-                        <p>Responsável</p>
-                    </th>
-                    <th scope="row">
-                        <p>Data</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                    $sql = "select e.idEntrada, e.idLote, i.nome item, u.nome usuario, e.data from entrada e
-                        inner join lote l on (e.idLote = l.idLote)
-                        inner join item i on (l.idItem = i.idItem)
-                        inner join usuario u on (e.idUsuario = u.idUsuario) where order by e.data desc";
-                    $consulta = $pdo->prepare($sql);
-                    $consulta->execute();
-                    while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
-                        ?>
-                            <tr>
-                                <th scope="row">
-                                    <?=$dados->idEntrada?>
-                                </th>
-                                <td>
-                                    <?=$dados->idLote?>
-                                </td>
-                                <td>
-                                    <?=$dados->item?>
-                                </td>
-                                <td>
-                                    <?=$dados->usuario?>
-                                </td>
-                                <td>
-                                <?php
-                                        $data = explode("-", $dados->data);
-                                        $dataF = $data[2]."/".$data[1]."/".$data[0];
-                                    ?>
-                                    <?=$dataF?>
-                                </td>
-                            </tr>
-                        <?php
-                    };
-                ?>
-            </tbody>
-        </table>
+        <div class="card">
+
+            <table class="table table-striped table70Length">
+                <thead>
+                    <tr>
+                        <th scope="row">
+                            <p>Id. Entrada</p>
+                        </th>
+                        <th scope="row">
+                            <p>Lote</p>
+                        </th>
+                        <th scope="row">
+                            <p>Produto</p>
+                        </th>
+                        <th scope="row">
+                            <p>Responsável</p>
+                        </th>
+                        <th scope="row">
+                            <p>Data</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $sql = "select e.idEntrada, e.idLote, i.nome item, u.nome usuario, e.data from entrada e
+                            inner join lote l on (e.idLote = l.idLote)
+                            inner join item i on (l.idItem = i.idItem)
+                            inner join usuario u on (e.idUsuario = u.idUsuario) order by e.data desc";
+                        $consulta = $pdo->prepare($sql);
+                        $consulta->execute();
+                        while($dados = $consulta->fetch(PDO::FETCH_OBJ)){
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <?=$dados->idEntrada?>
+                                    </th>
+                                    <td>
+                                        <?=$dados->idLote?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->item?>
+                                    </td>
+                                    <td>
+                                        <?=$dados->usuario?>
+                                    </td>
+                                    <td>
+                                    <?php
+                                            $data = explode("-", $dados->data);
+                                            $dataF = $data[2]."/".$data[1]."/".$data[0];
+                                        ?>
+                                        <?=$dataF?>
+                                    </td>
+                                </tr>
+                            <?php
+                        };
+                    ?>
+                </tbody>
+            </table>
+        </div>
         <div class="optionScroll">
             <a href="listar/requisicoes">
                 <div class="scrollOption">
@@ -179,3 +173,46 @@
         </div>
   </div>
 </div>
+
+<script>
+    function desativar(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "cadastrar/statusFuncionario/" + id;
+            }
+        })
+    }
+    $('#myModal').on('shown.bs.modal', function () {
+      $('#myInput').trigger('focus')
+    })
+    $(document).ready(function(){
+        $(".table70Length").DataTable({
+            "pageLength": 10,
+            "bLengthChange" : false,
+            "info":false,
+            "order": [[0, 'desc']],
+            language: {
+            "emptyTable": "Nenhum registro encontrado",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+            "loadingRecords": "Carregando...",
+            "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
+            "paginate": {
+                "next": "Próximo",
+                "previous": "Anterior",
+                "first": "Primeiro",
+                "last": "Último"
+            },
+            "lengthMenu": "Exibir _MENU_ resultados por página",
+            "searchable": false
+        },
+        
+        });
+    })
+</script>

@@ -7,6 +7,7 @@
     $tempo = $_POST['tempo'];
     $modo = $_POST['modo'];
     $rendimento = $_POST['rendimento'];
+    $op = $_POST['op'];
 
     $R = new ReceitaParametrizacao($nome, $idCategoria, $tempo, $modo, $rendimento);
 
@@ -28,7 +29,26 @@
         };
     }
 
-    if(!empty($id)) {
+    if(!empty($id) && $op == "f") {
+
+        $resultado = $R->finalizarCadastroReceita($id);
+
+        if ($resultado == "E") {
+            echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
+            echo "<script>location.href='listar/receitas'</script>";
+
+        } else if ($resultado == "R"){
+            echo "<script>alert('Erro, item já cadastrado');</script>";
+            echo "<script>location.href='listar/receitas'</script>";
+        }
+        else {
+            echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
+            echo "<script>location.href='listar/receitas'</script>";
+        };
+
+    }
+
+    if(!empty($id) && $op == "e") {
 
         $resultado = $R->editarReceita($id);
 

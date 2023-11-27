@@ -33,6 +33,7 @@
                             <div class="formCol">
                                 <label for="nome" class="formLabel">Nome da Receita</label>
                                 <input type="text" name="nome" id="nome" placeholder="Ex. Arroz" class="formInput" required>
+                                <input type="hidden" name="op" id="op" required value="f" readonly>
                             </div>
                             <div class="formCol">
                                 <label for="idCategoria">Categoria</label>

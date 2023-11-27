@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+<div class="col-1">
+        <a href="pages/home" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Produção</h1>
@@ -99,7 +101,7 @@
         </table>
         <div class="optionScroll">
             <a href="listar/ordensServico">
-                <div class="scrollOption">
+                <div class="scrollOption2">
                     <p>Ordens de Serviço</p>
                 </div>
             </a>
@@ -107,18 +109,10 @@
                 <div class="optionBorder"></div>
             </div>
             <a href="listar/receitas">
-                <div class="scrollOption">
+                <div class="scrollOption2">
                     <p>Receitas</p>           
                 </div>
             </a>
-            <!-- <div class="flex-row">
-                <div class="optionBorder"></div>
-            </div>
-            <a href="listar/solicitacoes">
-                <div class="scrollOption">
-                    <p>Solicitações</p>
-                </div>
-            </a> -->
         </div>
     </div>
 </div>

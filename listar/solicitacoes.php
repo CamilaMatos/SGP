@@ -30,7 +30,7 @@
     <br>
     <div class="flex-row">
         <div class="card">
-
+            <h1>Requisições</h1>
             <table class="table table-striped table85Length">
                 <thead>
                     <tr>
@@ -115,9 +115,11 @@
             </table>
         </div>
     </div>
+    <br>
+    <br>
     <div class="flex-row">
         <div class="card">
-
+            <h1>Transferências</h1>
             <table class="table table-striped table85Length">
                 <thead>
                     <tr>
@@ -220,8 +222,7 @@
     }
     $(document).ready(function(){
         $(".table85Length").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false,
             "order": [[0, 'desc']],
@@ -230,6 +231,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

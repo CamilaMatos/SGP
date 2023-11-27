@@ -10,12 +10,6 @@
 </div>
 <div class="contentDiv">
     <div class="flex-row">
-        <form action="" method="post">
-            <div class="searchBar">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Ex. Arroz" class="searchBarInput">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-        </form>
         <button type="button" class="newButton" data-toggle="modal" data-target="#modalCadProduto">
             + Novo Produto
         </button>
@@ -108,86 +102,88 @@
             <?php
             } else {
                 ?>
-                <table class="table table-striped table70Length">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <p>Id. Produto</p>
-                            </th>
-                            <th scope="col">
-                                <p>Produto</p>
-                            </th>
-                            <th scope="col">
-                                <p>Categoria</p>
-                            </th>
-                            <th scope="col">
-                                <p>Marca</p>
-                            </th>
-                            <th scope="col">
-                                <p>Unidade de Medida</p>
-                            </th>
-                            <th scope="col">
-                                <p>Status</p>
-                            </th>
-                            <th scope="col">
-                                <p>Opções</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "select i.idItem id, i.nome nome, c.nome categoria, m.nome marca, uM.nome unidadeMedida, s.nome status from item i
-                            inner join categoria c
-                            on i.idcategoria = c.idCategoria 
-                            inner join marca m
-                            on i.idMarca = m.idmarca
-                            inner join unidadeMedida uM
-                            on i.idUnidadeMedida = uM.idUnidadeMedida
-                            inner join status s
-                            on i.idStatus = s.idStatus
-                            order by idItem";
-                        $consulta = $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
+                <div class="card">
+                    <table class="table table-striped table70Length">
+                        <thead>
                             <tr>
-                                <th scope="row">
-                                    <p><?= $dados->id ?></p>
+                                <th scope="col">
+                                    <p>Id. Produto</p>
                                 </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->categoria ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->marca ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->unidadeMedida ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->status ?></p>
-                                </td>
-                                <td>
-
-                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-
-                                    <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                
-
-                                </td>
+                                <th scope="col">
+                                    <p>Produto</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Categoria</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Marca</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Unidade de Medida</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Status</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Opções</p>
+                                </th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "select i.idItem id, i.nome nome, c.nome categoria, m.nome marca, uM.nome unidadeMedida, s.nome status from item i
+                                inner join categoria c
+                                on i.idcategoria = c.idCategoria 
+                                inner join marca m
+                                on i.idMarca = m.idmarca
+                                inner join unidadeMedida uM
+                                on i.idUnidadeMedida = uM.idUnidadeMedida
+                                inner join status s
+                                on i.idStatus = s.idStatus
+                                order by idItem";
+                            $consulta = $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <p><?= $dados->id ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->categoria ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->marca ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->unidadeMedida ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->status ?></p>
+                                    </td>
+                                    <td>
+    
+                                        <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+    
+                                        <a href="editar/produto/<?=$dados->id?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    
+    
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php
             }
         ?>
@@ -296,8 +292,7 @@
     }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -306,6 +301,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

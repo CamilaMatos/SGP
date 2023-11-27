@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <a href="pages/manutencao" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Unidades de Medida</h1>
@@ -68,59 +70,62 @@
         <?php
         } else {
             ?>
-            <table class="table table-striped table70Length">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                            <p>Id. Unidade de Medida</p>
-                        </th>
-                        <th scope="col">
-                            <p>Unidade de Medida</p>
-                        </th>
-                        <th scope="col">
-                            <p>Descrição</p>
-                        </th>
-                        <th scope="col">
-                            <p>Opções</p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $sql = "select * from unidademedida order by idUnidadeMedida desc limit 10";
-                    $consulta =  $pdo->prepare($sql);
-                    $consulta->execute();
-                    while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
+            <div class="card">
+
+                <table class="table table-striped table70Length">
+                    <thead>
                         <tr>
-                            <th scope="row">
-                                <p><?= $dados->idUnidadeMedida ?></p>
+                            <th scope="col">
+                                <p>Id. Unidade de Medida</p>
                             </th>
-                            <td>
-                                <p><?= $dados->nome ?></p>
-                            </td>
-                            <td>
-                                <p><?= $dados->descricao ?></p>
-                            </td>
-                            <td>
-
-                                <a href="javascript:excluir(<?=$dados->idUnidadeMedida?>)" title="Excluir"
-                                class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-
-                                <a href="editar/unidadeMedida/<?=$dados->idUnidadeMedida?>" class="btn btn-success btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            
-
-                            </td>
+                            <th scope="col">
+                                <p>Unidade de Medida</p>
+                            </th>
+                            <th scope="col">
+                                <p>Descrição</p>
+                            </th>
+                            <th scope="col">
+                                <p>Opções</p>
+                            </th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        $sql = "select * from unidademedida order by idUnidadeMedida desc limit 10";
+                        $consulta =  $pdo->prepare($sql);
+                        $consulta->execute();
+                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                            <tr>
+                                <th scope="row">
+                                    <p><?= $dados->idUnidadeMedida ?></p>
+                                </th>
+                                <td>
+                                    <p><?= $dados->nome ?></p>
+                                </td>
+                                <td>
+                                    <p><?= $dados->descricao ?></p>
+                                </td>
+                                <td>
+    
+                                    <a href="javascript:excluir(<?=$dados->idUnidadeMedida?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+    
+                                    <a href="editar/unidadeMedida/<?=$dados->idUnidadeMedida?>" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                
+    
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
             <?php
         }
     ?>
@@ -177,8 +182,7 @@
     }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -187,6 +191,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

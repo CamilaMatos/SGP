@@ -277,7 +277,7 @@ table tbody tr{
 }
 
 .loginIcon {
-    font-size: 90px;
+    font-size: 12.7vh;
     font-weight: lighter;
 }
 
@@ -594,6 +594,23 @@ footer .footerLettering{
     color: white;
     transform: scale(1.05);
 }
+.scrollOption2{
+    width: 20vw;
+    height: 22.5vh;
+    padding-top: 11.25vh;
+    text-decoration: none;
+}
+
+.scrollOption2 p{
+    transform: translateY(-50%);
+    transition: 500ms;
+}
+
+.scrollOption2:hover{
+    background-color: #072f55;
+    color: white;
+    transform: scale(1.05);
+}
 
 .optionBorder{
     height: 1px;
@@ -613,10 +630,15 @@ footer .footerLettering{
 }
 
 .paramMenuItem{
-    background-color: red;
+    background-color: rgb(223, 223, 223);
     width: 16vw;
     height: 10vh;
     padding-top: 5vh;
+}
+
+.paramMenuContainer{
+    border-radius: 2vh;
+    overflow: hidden;
 }
 
 .paramMenuItem p{
@@ -624,9 +646,10 @@ footer .footerLettering{
 }
 
 .paramMenuItem:hover{
-    background-color: blue;
+    background-color: #072f55;
     color: white;
-    transition: 500ms;
+    transform: scale(1.05);
+    transition: 400ms;
 }
 
 .table-striped>tbody>tr:nth-child(odd)>td,
@@ -647,13 +670,17 @@ footer .footerLettering{
     height: 6.7vw;
     padding-top: 0.35vw;
     margin-bottom: 3vh;
-    color: lightgray;
+    color: rgb(238, 238, 238);
 }
 
 .pPictureBackground:hover{
     background-color: #072f55;
     color: white;
     transform: scale(1.1);
+}
+
+.card{
+    background-color: lightgray !important;
 }
 
 .profileCard{

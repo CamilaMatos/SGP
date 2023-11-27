@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+<div class="col-1">
+        <a href="pages/manutencao" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Centros de Custo</h1>
@@ -55,50 +57,68 @@
             <?php
             } else {
                 ?>
-                <table class="table table-striped table70Length">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <p>Id. Centro de Custo</p>
-                            </th>
-                            <th scope="col">
-                                <p>Centro de Custo</p>
-                            </th>
-                            <th scope="col">
-                                <p>Descrição</p>
-                            </th>
-                            <th scope="col">
-                                <p>Status</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "select cc.*,s.nome status from centrocusto cc
-                            inner join status s on (cc.idStatus = s.idStatus) order by idCentroCusto";
-                        $consulta =  $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
+                <div class="card">
+
+                    <table class="table table-striped table70Length">
+                        <thead>
                             <tr>
-                                <th scope="row">
-                                    <p><?= $dados->idCentroCusto ?></p>
+                                <th scope="col">
+                                    <p>Id. Centro de Custo</p>
                                 </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->descricao ?></p>
-                                </td>
-                                <td>
-                                    <p><?= $dados->status ?></p>
-                                </td>
+                                <th scope="col">
+                                    <p>Centro de Custo</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Descrição</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Status</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Opções</p>
+                                </th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "select cc.*,s.nome status from centrocusto cc
+                                inner join status s on (cc.idStatus = s.idStatus) order by idCentroCusto";
+                            $consulta =  $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <p><?= $dados->idCentroCusto ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->descricao ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?= $dados->status ?></p>
+                                    </td>
+                                    <td>
+    
+                                        <a href="javascript:excluir(<?=$dados->idCentroCusto?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+    
+                                        <a href="editar/centroCusto/<?=$dados->idCentroCusto?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+    
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php
             }
         ?>
@@ -162,10 +182,22 @@
 </div>
 
 <script>
+    function excluir(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "excluir/centroCusto/" + id;
+            }
+        })
+    }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -174,6 +206,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

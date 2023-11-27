@@ -149,7 +149,7 @@ class Usuario{
             $consulta->bindParam(":idTipo", $this->idTipo);
             $consulta->bindParam(":login", $this->login);
             $consulta->bindParam(":senha", $senha);
-            $consulta->bindParam(":sidStatus", $this->idStatus);
+            $consulta->bindParam(":idStatus", $this->idStatus);
 
             if ($consulta->execute()) {
                 $resultado = $this->pdo->lastInsertId();//sucesso

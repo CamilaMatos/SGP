@@ -1,6 +1,8 @@
 <div class="col-12 pageHeader" style="display: flex">
-    <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+<div class="col-1">
+        <a href="pages/manutencao" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Categorias</h1>
@@ -62,50 +64,56 @@
             <?php
             } else {
                 ?>
-                <table class="table table-striped table70Length">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <p>Id. Categoria</p>
-                            </th>
-                            <th scope="col">
-                                <p>Categoria</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "select * from categoria order by idCategoria desc limit 10";
-                        $consulta =  $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
+                <div class="card">
+
+                    <table class="table table-striped table70Length">
+                        <thead>
                             <tr>
-                                <th>
-                                    <p><?= $dados->idCategoria ?></p>
+                                <th scope="col">
+                                    <p>Id. Categoria</p>
                                 </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
-                                <td>
-
-                                    <a href="javascript:excluir(<?=$dados->id?>)" title="Excluir"
-                                    class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-
-                                    <a href="editar/categoria/<?=$dados->id?>" class="btn btn-success btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                </td>
-                                
+                                <th scope="col">
+                                    <p>Categoria</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Opções</p>
+                                </th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "select * from categoria order by idCategoria desc limit 10";
+                            $consulta =  $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th>
+                                        <p><?= $dados->idCategoria ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+    
+                                        <a href="javascript:excluir(<?=$dados->idCategoria?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+    
+                                        <a href="editar/categoria/<?=$dados->idCategoria?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+    
+                                    </td>
+                                    
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php
             }
         ?>
@@ -158,8 +166,7 @@
     }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -168,6 +175,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",

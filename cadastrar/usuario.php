@@ -7,8 +7,8 @@
     $tipo = $_POST['tipo'];
     $login = $_POST['login'];
     $senha =  $_POST['senha'];
-
-    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha);
+    $status = 1;
+    $Ul = new Usuario($nome, $nascimento, $cpf, $tipo, $login, $senha, $status);
 
     if ($_POST && empty($id)) {
         $E = $Ul->cadastrarUsuario();
@@ -28,6 +28,10 @@
 
         $E = $Ul->editarUsuario($id);
 
+        if(!empty($senha)){
+            $Ul->editarSenha($id);
+        }
+        
         if ($E == "E") {
             echo "<script>alert('Faltam informações para realizar o cadastro!!!!!!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
@@ -38,9 +42,6 @@
         else {
             echo "<script>alert('Cadastro realizado com sucesso!!!!');</script>";
             echo "<script>location.href='listar/usuarios'</script>";
-        };
-        if(!empty($senha)){
-            $Ul->editarSenha($id);
         }
 
     };

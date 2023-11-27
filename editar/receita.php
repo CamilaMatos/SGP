@@ -23,11 +23,12 @@
             </div>
             <div class="modal-body">
                 <div class="formNewProd">
-                    <form action="cadastrar/receita/<?=$idReceita?>" id="formReceita" method="post">
+                    <form action="cadastrar/receita/<?=$id?>" id="formReceita" method="post">
                         <div class="form-row">
                             <div class="formCol">
                                 <label for="nome" class="formLabel">Nome da Receita</label>
                                 <input type="text" name="nome" id="nome" value="<?=$dadosR->nome?>" class="formInput" required>
+                                <input type="hidden" name="op" id="op" value="e" required readonly>
                             </div>
                             <div class="formCol">
                                 <label for="idCategoria">Categoria</label>

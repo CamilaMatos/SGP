@@ -233,7 +233,7 @@ class OrdemServico {
 
         $M->realizarMovimentacao();
         $this->assinar($idOrdem, 4, $this->idUsuario);
-        $L = new Lote($idItem, $idEstoque, $this->rendimentoReal, $this->rendimentoReal, $validade, $this->definirPreco($idSolicitacao), null);
+        $L = new Lote($idItem->idItem, $idEstoque, $this->rendimentoReal, $this->rendimentoReal, $validade, $this->definirPreco($idSolicitacao), null);
         $L->inserirLote($this->idUsuario);
     }
 
@@ -251,7 +251,6 @@ class OrdemServico {
 
         $M = new Movimentacao($idSolicitacao, $idUsuario, 4, $data);
         $M->realizarMovimentacao();
-        $this->assinar($idOrdem, 7, $idUsuario);
     }
 
     public function buscarOrdem($idSolicitacao, $idReceita, $idOrdem, $idEstoque) {
@@ -288,7 +287,7 @@ class OrdemServico {
 
     public function definirPreco($idSolicitacao){
         $valor = 0;
-        $sql = "select l.valorUnitario, i.quantidade from lote l inner join itensmovimentacao i on (i.idLote = l.idLote) where i.idSolicitacao=:i.idSolicitacao";
+        $sql = "select l.valorUnitario, i.quantidade from lote l inner join itensmovimentacao i on (i.idLote = l.idLote) where i.idSolicitacao=:idSolicitacao";
         $consulta = $this->conexao()->prepare($sql);
         $consulta->bindParam(":idSolicitacao", $idSolicitacao);
         $consulta->execute();

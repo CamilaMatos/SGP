@@ -1,7 +1,9 @@
 
 <div class="col-12 pageHeader" style="display: flex">
     <div class="col-1">
-        <button type="button" onclick="history.back()" class="backButton"><i class="fa-solid fa-arrow-left-long" style="float: left"></i></button>
+        <a href="pages/manutencao" class="backButton">
+            <i class="fa-solid fa-arrow-left-long" style="float: left; margin-top: 43%;"></i>
+        </a>
     </div>
     <div class="col-10">
         <h1>Marcas</h1>
@@ -47,6 +49,18 @@
                                 <td>
                                     <p><?= $dados->nome ?></p>
                                 </td>
+                                <td>
+
+                                    <a href="javascript:excluir(<?=$dados->idEstoque?>)" title="Excluir"
+                                    class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+
+                                    <a href="editar/marca/<?=$dados->idEstoque?>" class="btn btn-success btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                </td>
                             </tr>
                             <?php
                         }
@@ -56,37 +70,53 @@
             <?php
             } else {
                 ?>
-                <table class="table table-striped table70Length">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                                <p>Id. Marca</p>
-                            </th>
-                            <th scope="col">
-                                <p>Marca</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $sql = "select * from Marca order by idMarca desc limit 10";
-                        $consulta =  $pdo->prepare($sql);
-                        $consulta->execute();
-                        while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
-                        ?>
+                <div class="card">
+
+                    <table class="table table-striped table70Length">
+                        <thead>
                             <tr>
-                                <th scope="row">
-                                    <p><?= $dados->idMarca ?></p>
+                                <th scope="col">
+                                    <p>Id. Marca</p>
                                 </th>
-                                <td>
-                                    <p><?= $dados->nome ?></p>
-                                </td>
+                                <th scope="col">
+                                    <p>Marca</p>
+                                </th>
+                                <th scope="col">
+                                    <p>Opções</p>
+                                </th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "select * from Marca order by idMarca desc limit 10";
+                            $consulta =  $pdo->prepare($sql);
+                            $consulta->execute();
+                            while ($dados = $consulta->fetch(PDO::FETCH_OBJ)) {
+                            ?>
+                                <tr>
+                                    <th scope="row">
+                                        <p><?= $dados->idMarca ?></p>
+                                    </th>
+                                    <td>
+                                        <p><?= $dados->nome ?></p>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:excluir(<?=$dados->idMarca?>)" title="Excluir"
+                                        class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+    
+                                        <a href="editar/marca/<?=$dados->idMarca?>" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <?php
             }
         ?>
@@ -122,10 +152,22 @@
 </div>
 
 <script>
+    function excluir(id) {
+        Swal.fire({
+            icon: "warning",
+            title: "Você deseja mesmo excluir este registro?",
+            showCancelButton: true,
+            confirmButtonText: "Excluir",
+            cancelButtonText: "Cancelar",
+        }).then((result)=>{
+            if (result.isConfirmed) {
+                location.href = "excluir/marca/" + id;
+            }
+        })
+    }
     $(document).ready(function(){
         $(".table").DataTable({
-            searching: false,
-            "pageLength": 15,
+            "pageLength": 10,
             "bLengthChange" : false,
             "info":false, 
             "order": [[0, 'desc']],
@@ -134,6 +176,7 @@
             "infoFiltered": "(Filtrados de _MAX_ registros)",
             "loadingRecords": "Carregando...",
             "zeroRecords": "Nenhum registro encontrado",
+            "search": "Pesquisar",
             "paginate": {
                 "next": "Próximo",
                 "previous": "Anterior",
